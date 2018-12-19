@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annotation.dao.TaskMapper">
+
+    <insert id="insertTask" useGeneratedKeys="true" keyProperty="tid" parameterType="com.annotation.model.Task">
+        insert into task
+          (title, `description`, `createtime`, deadline,taskcomptime,taskcompstatus, otherinfo,userid,`type`)
+        values
+          (#{title}, #{description},  #{createtime}, #{deadline}, #{taskcomptime},#{taskcompstatus},#{otherinfo},#{userid},#{type})
+    </insert>
+
+
+    <select id="selectTaskByRelatedInfo" parameterType="map" resultType="com.annotation.model.Task">
+        select * from task where userid = #{userid} limit #{currIndex},#{pageSize}
+    </select>
+
+    <select id="countTaskNumByUserid" parameterType="Integer" resultType="Integer">
+        select count(*) from task where userid = #{userid}
+    </select>
+
+
+</mapper>

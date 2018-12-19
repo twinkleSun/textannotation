@@ -1,0 +1,15 @@
+com\annotation\model\UserAssociateFile.class
+com\annotation\dao\FileMapper.class
+com\annotation\controller\UserController.class
+com\annotation\dao\UserMapper.class
+com\annotation\model\User.class
+com\annotation\service\impl\FileServiceImpl.class
+com\annotation\dao\UserAssociateFileMapper.class
+com\annotation\TextannotationApplication.class
+com\annotation\controller\PageController.class
+com\annotation\service\IFileService.class
+com\annotation\controller\htmlController.class
+com\annotation\controller\FileController.class
+com\annotation\service\impl\UserServiceImpl.class
+com\annotation\model\File.class
+com\annotation\service\IUserService.class

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annotation.dao.LabelMapper">
+
+    <insert id="insertLabel" useGeneratedKeys="true" keyProperty="lid" parameterType="com.annotation.model.Label">
+        insert into label (labelname) values (#{labelname})
+    </insert>
+
+    <select id="selectLabel" resultType="com.annotation.model.Label">
+        SELECT * FROM label WHERE labelname = #{labelname}
+    </select>
+
+    <!--<resultMap id="taskLabelMapper" type="java.util.List">-->
+        <!--<id column="id" property="tid"></id>-->
+        <!--<collection property="labelList" ofType="Label" javaType="java.util.List">-->
+            <!--<id column="lid" property="lid"></id>-->
+            <!--<result column="labelname" property="labelname"></result>-->
+        <!--</collection>-->
+    <!--</resultMap>-->
+
+    <select id="selectLabelByTaskid" parameterType="Integer" resultType="com.annotation.model.Label">
+        SELECT l.lid lid,l.labelname labelname FROM task t INNER JOIN task_label tl ON t.tid=tl.taskid
+        INNER JOIN label l on tl.labelid = l.lid WHERE t.tid=#{taskid}
+    </select>
+
+</mapper>

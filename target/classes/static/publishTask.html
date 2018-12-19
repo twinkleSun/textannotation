@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" type="text/css" href="./css/tag.css" />
+    <!--<link rel="stylesheet" href="./css/bootstrap/bootstrap.css"/>-->
+</head>
+
+<body>
+
+    <blockquote class="layui-elem-quote layui-text">
+        <div class="layui-row">
+            <div class="layui-col-md1">
+                <!--请先选择类型-->
+                <label class="layui-form-label">请选择类型</label>
+            </div>
+            <div class="layui-col-md2">
+                <select name="type" id="type">
+                    <option value="0">请选择标注类型：</option>
+                    <option value="1">信息抽取</option>
+                    <option value="2">分类</option>
+                    <option value="3">多文本关系</option>
+                    <option value="4">多文本内逻辑关系</option>
+                </select>
+            </div>
+            <div class="layui-col-md8">
+                .
+            </div>
+            <div class="layui-col-md1">
+                <input  type="button" class="layui-btn layui-btn-normal" id="sub-info" value="确认发布">
+            </div>
+        </div>
+    </blockquote>
+
+    <br>
+
+    <div class="layui-row">
+        <div class="layui-col-md7">
+            <div class="layui-row grid-demo">
+                <div class="layui-row">
+                    <div class="layui-col-md2">
+                        <label class="layui-form-label">任务标题</label>
+                    </div>
+                    <div class="layui-col-md10">
+                        <input type="text" name="title" id="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                    </div>
+                </div>
+
+                <br>
+                <div class="layui-row">
+                    <div class="layui-col-md2">
+                        <label class="layui-form-label">任务描述</label>
+                    </div>
+                    <br>
+                    <div class="layui-col-md10">
+                        <textarea placeholder="请输入内容" class="layui-textarea" id="description"></textarea>
+                    </div>
+                </div>
+
+                <br>
+                <div class="layui-row">
+                    <div class="layui-col-md2">
+                        <label class="layui-form-label" >其他备注</label>
+                    </div>
+                    <div class="layui-col-md10">
+                        <input type="text" name="otherinfo" id="otherinfo" autocomplete="off" placeholder="请输入任务描述" class="layui-input">
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="layui-row" id="singleFileDiv" style="display: none">
+                    <div class="layui-col-md2">
+                        <label class="layui-form-label">上传文件</label>
+                    </div>
+                    <div class="layui-col-md7">
+                        <input id="sfileCover" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-col-md1">
+                        <input id="sf" type="file" style="display:none" name="sf">
+                        <button type="button" class="layui-btn layui-btn-primary" onclick="$('input[id=sf]').click();"><i class="layui-icon">&#xe654;</i></button>
+                    </div>
+                    <div class="layui-col-md2">
+
+                        <button type="button" class="layui-btn layui-btn-primary" id="sf-upload"><i class="layui-icon">&#xe67c;</i>上传文件</button>
+                    </div>
+                </div>
+
+                <div class="layui-row" id="multiFileDiv" style="display: none">
+                    <div class="layui-col-md2">
+                        <label class="layui-form-label">多文件上传</label>
+                    </div>
+                    <div class="layui-col-md7">
+                        <input id="mfileCover" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-col-md1">
+                        <input id="mf" type="file" style="display:none" name="mf" multiple="multiple">
+                        <button type="button" class="layui-btn layui-btn-primary" onclick="$('input[id=mf]').click();"><i class="layui-icon">&#xe654;</i></button>
+                    </div>
+
+
+                    <div class="layui-col-md2">
+                        <!--<input type="button" class="layui-btn layui-btn-primary" id="sub-upload" value="上传文件">-->
+                        <button type="button" class="layui-btn layui-btn-primary" id="mf-upload"><i class="layui-icon">&#xe67c;</i>上传文件</button>
+                    </div>
+                </div>
+
+                <br>
+
+            </div>
+        </div>
+        <div class="layui-col-md5">
+            <div class="layui-row grid-demo">
+
+                <div class="layui-row">
+                    <div class="layui-col-md3">
+                        <label class="layui-form-label">截止日期</label>
+                    </div>
+                    <div class="layui-col-md5">
+                        <input type="text" name="date" id="date" autocomplete="off" class="layui-input">
+                    </div>
+
+                </div>
+
+                <br>
+                <div class="layui-row">
+                    <div class="layui-col-md3">
+                        <label class="layui-form-label">添加标签</label>
+                    </div>
+                    <div class="layui-col-md8">
+                        <input type="text" id="tagValue">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/core/publishTask.js"></script>
+
+
+    <script type="text/javascript">
+        layui.use(['form', 'layedit', 'laydate'], function() {
+            var laydate = layui.laydate;
+
+            //日期
+            laydate.render({
+                elem: '#date',
+                type: 'datetime'
+            });
+
+        });
+
+    </script>
+</body>
+</html>

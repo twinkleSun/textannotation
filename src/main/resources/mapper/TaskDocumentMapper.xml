@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annotation.dao.TaskDocumentMapper">
+
+    <insert id="insertTaskDocument" parameterType="com.annotation.model.TaskDocument">
+        insert into task_document
+        (taskid, documentid) values (#{taskid}, #{documentid})
+    </insert>
+
+</mapper>
