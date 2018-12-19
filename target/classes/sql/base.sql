@@ -49,7 +49,7 @@ CREATE TABLE `task` (
   PRIMARY KEY (`tid`),
   FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-INSERT INTO `task` VALUES ('1', '测试', '任务描述', '2017-03-28 09:40:31', '2017-03-28 09:40:31', '2017-03-28 09:40:31', '进行中','备注','1');
+INSERT INTO `task` VALUES ('1', '测试', '任务描述','信息抽取', '2017-03-28 09:40:31', '2017-03-28 09:40:31', '2017-03-28 09:40:31', '进行中','备注','1');
 
 use textannotation;
 DROP TABLE IF EXISTS `task_document`;
