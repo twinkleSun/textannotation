@@ -68,12 +68,25 @@ public interface DocumentMapper {
        List<Document> selectDocumentByRelatedInfo(Map<String,Object> data);
 
        /**
+        * 根据文档ID查询
+        * 参数：文档ID
+        * @param documentid
+        * @return
+        */
+       Document  selectDocumentById(int documentid);
+
+       /**
         * 根据用户ID获取记录总数
         * @param userid
         * @return
         */
        Integer countDocNumByUserId(int userid);
 
-
+       /**
+        * 根据contentid更新content的完成状态
+        * @param document
+        * @return
+        */
+       int updateDocumentById(Document document);
 
 }

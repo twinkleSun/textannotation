@@ -2,7 +2,6 @@ package com.annotation.service;
 
 import com.annotation.model.Task;
 import com.annotation.model.User;
-
 import java.util.List;
 
 /**
@@ -36,5 +35,16 @@ public interface ITaskService {
      */
      int countTasknumByUserId(int userId);
 
+    /**
+     * 获取所有的任务
+     * @return
+     */
+    public List<Task> getAll();
+
+
+    List<Task> queryAllTask(int page,int limit);
+
+
+    int countAllTasknum();
 
 }

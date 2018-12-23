@@ -133,5 +133,39 @@ public class TaskServiceImpl implements ITaskService{
         }
     }
 
+    /**
+     * 获取所有的任务
+     * @return
+     */
+    public List<Task> getAll(){
+        List<Task> tasks = taskMapper.getAll();
+        return tasks;
+    }
+
+
+
+    public List<Task> queryAllTask(int page,int limit){
+        int startNum =(page-1)*limit;
+        Map<String,Object> data =new HashMap();
+        data.put("currIndex",startNum);
+        data.put("pageSize",limit);
+        List<Task> task =taskMapper.selectAllTask(data);
+        return task;
+    }
+
+
+    public int countAllTasknum(){
+        Integer numInt = taskMapper.countAllTaskNum();
+        if(numInt == null){
+            return 0;
+        } else{
+            return numInt.intValue();
+        }
+    }
 
 }
+
+
+
+
+

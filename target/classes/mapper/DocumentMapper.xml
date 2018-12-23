@@ -71,4 +71,33 @@
   <select id="countDocNumByUserId" parameterType="Integer" resultType="Integer">
     select count(*) from document where userid = #{userid}
   </select>
+
+  <select id="selectDocumentByTaskid" parameterType="Integer" resultType="com.annotation.model.Document">
+        SELECT d.did,d.filename,d.filetype,d.filesize FROM task t INNER JOIN task_document td ON t.tid=td.taskid
+        INNER JOIN document d on td.documentid = d.did WHERE t.tid=#{taskid}
+  </select>
+
+  <select id="selectDocumentById" parameterType="Integer" resultType="com.annotation.model.Document" >
+    select * from document where did = #{did}
+  </select>
+
+
+  <update id="updateDocumentById" parameterType="com.annotation.model.Document">
+    UPDATE Document
+    <trim prefix="set" suffixOverrides=",">
+      <if test="filename!=null">filename=#{filename},</if>
+      <if test="filetype!=null">filetype=#{filetype},</if>
+      <if test="filesize!=null">filesize=#{filesize},</if>
+      <if test="relativepath!=null">relativepath=#{relativepath},</if>
+      <if test="absolutepath!=null">absolutepath=#{absolutepath},</if>
+      <if test="docuploadtime!=null">docuploadtime=#{docuploadtime},</if>
+      <if test="doccomptime!=null">doccomptime=#{doccomptime},</if>
+      <if test="docstatus!=null">docstatus=#{docstatus},</if>
+      <if test="userid!=null">userid=#{userid},</if>
+    </trim>
+    WHERE did = #{did}
+  </update>
+
+
+
 </mapper>

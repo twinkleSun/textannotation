@@ -82,3 +82,40 @@ CREATE TABLE `task_label` (
 
 INSERT INTO `task_label` VALUES ('1', '1');
 
+
+use textannotation;
+DROP TABLE IF EXISTS `dotask`;
+CREATE TABLE `dotask` (
+  `dtid` int(11) NOT NULL COMMENT '做任务ID',
+  `userid` int(11) DEFAULT NULL COMMENT '做任务用户ID',
+  `taskid` int(11) DEFAULT NULL COMMENT '做任务任务ID',
+  `contentid` int(11) DEFAULT NULL COMMENT '做任务段落ID',
+  PRIMARY KEY (`dtid`),
+  FOREIGN KEY (`userid`) REFERENCES `user` (`id`),
+  FOREIGN KEY (`taskid`) REFERENCES `task` (`tid`),
+  FOREIGN KEY (`contentid`) REFERENCES `content` (`cid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+INSERT INTO `dotask` VALUES ('1', '1','1','1');
+INSERT INTO `dotask` VALUES ('2', '1','1','2');
+INSERT INTO `dotask` VALUES ('3', '1','1','3');
+
+use textannotation;
+DROP TABLE IF EXISTS `dotaskdetail`;
+CREATE TABLE `dotaskdetail` (
+  `dtdid` int(11) NOT NULL COMMENT '做任务详细描述ID',
+  `dotaskid` int(11) DEFAULT NULL COMMENT '做任务详细描述做任务ID',
+  `labelid` int(11) DEFAULT NULL COMMENT '做任务详细描述标签ID',
+  `contentbegin` int(11) DEFAULT NULL COMMENT '做任务详细描述段落开始ID',
+  `contentend` int(11) DEFAULT NULL COMMENT '做任务详细描述段落结束ID',
+  PRIMARY KEY (`dtdid`),
+  FOREIGN KEY (`dotaskid`) REFERENCES `dotask` (`dtid`),
+  FOREIGN KEY (`labelid`) REFERENCES `label` (`lid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+INSERT INTO `dotaskdetail` VALUES ('1', '1','1','1','2');
+INSERT INTO `dotaskdetail` VALUES ('2', '1','1','2','3');
+INSERT INTO `dotaskdetail` VALUES ('3', '1','1','3','4');
+
+
+

@@ -27,4 +27,13 @@ public interface ContentMapper {
      * @return
      */
     List<Content> selectContentByDocumentId(Integer documentid);
+
+    /**
+     * 根据contentID查找documentid
+     * @param contentid
+     * @return
+     */
+    int selectContentDocumentId(Integer contentid);
+
+
 }

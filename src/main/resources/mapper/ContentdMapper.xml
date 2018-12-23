@@ -11,4 +11,10 @@
     <select id="selectContentByDocumentId" parameterType="Integer" resultType="com.annotation.model.Content">
         select * from content where documentid = #{documentid}
     </select>
+
+    <select id="selectContentDocumentId" parameterType="Integer" resultType="Integer" >
+    select documentid from content where cid = #{cid}
+    </select>
+
+
 </mapper>

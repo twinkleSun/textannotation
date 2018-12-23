@@ -7,4 +7,8 @@
         (taskid, documentid) values (#{taskid}, #{documentid})
     </insert>
 
+    <select id="selectTaskDocumentBytId" parameterType="Integer" resultType="com.annotation.model.TaskDocument" >
+    select * from task where taskid = #{taskid}
+    </select>
+
 </mapper>

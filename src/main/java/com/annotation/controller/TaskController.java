@@ -111,8 +111,31 @@ public class TaskController {
         return rs;
     }
 
+    @RequestMapping(value = "selectAll",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Task> selectAll() {
+        List<Task> tasks = iTaskService.getAll();
+        return tasks;
+    }
 
+    @RequestMapping(value = "getAllTask", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getAllTask(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int page, int limit) {
+        List<Task> allTasklist = iTaskService.queryAllTask(page,limit);
+        int countAll=iTaskService.countAllTasknum();
+        JSONObject jso =new JSONObject();
+        if(allTasklist==null){
+            jso.put("msg","查询失败");
+            jso.put("code",-1);
+        }else{
+            jso.put("msg","success");
+            jso.put("code",0);
+            jso.put("data",allTasklist);
+            jso.put("count",countAll);
+        }
 
+        return jso;
+    }
 
 
 }
