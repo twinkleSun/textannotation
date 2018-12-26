@@ -141,6 +141,10 @@ public class DocumentController {
        String retuName ="";
         for(int i=0;i<multipartFiles.length;i++){
             MultipartFile file=multipartFiles[i];
+
+
+
+
             retuName=retuName+file.getOriginalFilename()+"#";
         }
         return retuName;

@@ -4,14 +4,14 @@
 $(function () {
 
     $.ajax({
-        url: "/user/getUserInfo",
+        url: "/user/getUserinfo",
         type: "get",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: "json",
         success: function (data) {
 
-            var username =data.username;
+            var username =data.data.userInfo.username;
 
             $("#username").append(username);
             console.log(username);

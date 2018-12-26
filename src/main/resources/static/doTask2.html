@@ -11,64 +11,123 @@
     <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="./js/bootstrap/bootstrap.min.js"></script>
+    <!--<style type="text/css">-->
+        <!--#p-para ::selection { color:red;}-->
+    <!--</style>-->
 </head>
 <body>
 
 <!--折叠面板-->
 <div class="panel panel-success">
     <div class="panel-heading">
-        <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion"
-               href="#collapseTwo">
-                <img src="./images/open.png">
-                任务相关信息
-            </a>
-        </h4>
+        <div class="row">
+            <div class="col-lg-11">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#taskInfoPanel">
+                        <img src="./images/open.png">
+                        任务相关信息
+                    </a>
+                </h4>
+            </div>
+            <div class="col-lg-1">
+                <input type="button" class="btn-default" id="input-dotask" value="我要做任务">
+            </div>
+        </div>
     </div>
-    <div id="collapseTwo" class="panel-collapse collapse">
+    <div id="taskInfoPanel" class="panel-collapse collapse">
         <div class="panel-body">
-            <div class="row">
-                <div class="col-lg-1">
-                    <h5 class="panel-title">任务标题:</h5>
+            <div class="row" id="taskDetailInfo">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title">任务标题:</h5>
+                        </div>
+                        <div class="col-lg-10">
+                            <h6 class="panel-title"><p id="taskTitle"></p></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title">任务描述:</h5>
+                        </div>
+                        <div class="col-lg-10">
+                            <h6 class="panel-title"><p id="taskDescription"></p></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title">其他备注:</h5>
+                        </div>
+                        <div class="col-lg-10">
+                            <h6 class="panel-title"><p id="taskOtherInfo"></p></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title">文件列表:</h5>
+                        </div>
+                        <div class="col-lg-10" id="taskFiles">
+
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-11">
-                    <h6 class="panel-title"><p id="tasktitle">任务标题前端测试文本</p></h6>
+
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title">创建时间:</h5>
+                        </div>
+                        <div class="col-lg-10">
+                            <h6 class="panel-title"><p id="taskCreateTime"></p></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title">截止日期:</h5>
+                        </div>
+                        <div class="col-lg-10">
+                            <h6 class="panel-title"><p id="taskDeadline"></p></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title"> 发布者:</h5>
+                        </div>
+                        <div class="col-lg-10">
+                            <h6 class="panel-title"><p id="pubUserName"></p></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="panel-title">相关标签:</h5>
+                        </div>
+                        <div class="col-lg-10" id="taskLabels">
+
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    <h5 class="panel-title">任务描述:</h5>
-                </div>
-                <div class="col-lg-11">
-                    <h6 class="panel-title"><p id="taskdesciption">任务描述前端测试文本</p></h6>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    <h5 class="panel-title">其他备注:</h5>
-                </div>
-                <div class="col-lg-11">
-                    <h6 class="panel-title"><p id="taskotherinfo">其他备注前端测试文本</p></h6>
-                </div>
-            </div>
+
+
         </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row" id="row-div-dotask" style="display: none">
     <div class="col-lg-6">
         <div class="panel panel-success">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-lg-8"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
-                    <div class="col-lg-4">
-                        <input type="button" class="form-control" value="提交该段内容并加载下一段" id="submit-nextPara">
+                    <div class="col-lg-10"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
+                    <div class="col-lg-2">
+                        <input type="button" class="btn-success" value="结束任务" id="submit-nextPara">
                     </div>
                 </div>
 
             </div>
             <div class="panel-body" style="max-height: 500px;overflow:auto" id="div-para">
-                <p id="p-para" class="layui-form-text" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;">
+                <p id="p-para" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;">
                     经审理查明，2015年8月12日12时50分许，被告人袁某某驾驶皖KH0766号重型自卸货车，
                     沿着省道216线由北向南行驶至淮滨县王店乡北庙村向阳路口男200米处时，
                     由于观察不周、操作不当，与庞某甲驾驶两轮电动车发生碰撞，
@@ -162,27 +221,50 @@
 
 
 
-<div class="layui-row">
+<!--<div class="layui-row">-->
 
-    <!--todo:右边-->
-    <div class="layui-col-md6">
-        <div class="layui-row grid-demo" >
+    <!--&lt;!&ndash;todo:右边&ndash;&gt;-->
+    <!--<div class="layui-col-md6">-->
+        <!--<div class="layui-row grid-demo" >-->
 
 
-            <br>
+            <!--<br>-->
 
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
 </div>
-
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    文件内容
+                </h4>
+            </div>
+            <div class="modal-body" id="modal_content">
+                在这里添加一些文本
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary">
+                    确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
-
 
 
 <script src="./js/core/doTask2.js" ></script>
 <script type="text/javascript">
 
-    $(function () { $('#collapseTwo').collapse('hide')});
+    $(function () { $('#taskInfoPanel').collapse('show')});
 //    $(function () { $('#collapseTwo2').collapse('hide')});
 
 </script>

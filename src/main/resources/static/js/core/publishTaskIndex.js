@@ -11,7 +11,7 @@ $(function () {
         dataType: "json",
         success: function (data) {
 
-            var username =data.username;
+            var username =data.data.userInfo.username;
 
             $("#username").append(username);
             console.log(username);

@@ -163,6 +163,17 @@ public class TaskServiceImpl implements ITaskService{
         }
     }
 
+    public TaskInfoEntity queryTaskInfo(int tid){
+        TaskInfoEntity taskInfoEntity =taskMapper.selectTaskInfo(tid);
+        return taskInfoEntity;
+    }
+
+    public String queryUserName(int tid){
+        String username=taskMapper.selectUserName(tid);
+
+        return username;
+    }
+
 }
 
 

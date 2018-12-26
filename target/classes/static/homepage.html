@@ -8,9 +8,9 @@
 
 </head>
 <body>
-
-<script src="js/core/index.js"></script>
 <script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/core/index.js"></script>
+
 <div id="hero-slides">
     <div id="header">
         <div id="logo"></div>
@@ -74,7 +74,7 @@
 
     function goToPage(pageNumber = 0) {
         currentPage = Math.min(maxPageCount(), Math.max(0, pageNumber));
-        console.log(currentPage);
+        //console.log(currentPage);
         hero.style.setProperty('--page', currentPage);
     }
 

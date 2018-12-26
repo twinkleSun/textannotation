@@ -1,10 +1,7 @@
 package com.annotation.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.annotation.model.Label;
-import com.annotation.model.ResponseEntity;
-import com.annotation.model.Task;
-import com.annotation.model.User;
+import com.annotation.model.*;
 import com.annotation.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -132,6 +129,27 @@ public class TaskController {
             jso.put("code",0);
             jso.put("data",allTasklist);
             jso.put("count",countAll);
+        }
+
+        return jso;
+    }
+
+
+    @RequestMapping(value = "getTaskInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getTaskInfo(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int tid) {
+        TaskInfoEntity taskInfoEntity = iTaskService.queryTaskInfo(tid);
+
+        String username=iTaskService.queryUserName(tid);
+        JSONObject jso =new JSONObject();
+        if(taskInfoEntity==null){
+            jso.put("msg","查询失败");
+            jso.put("code",-1);
+        }else{
+            jso.put("msg","success");
+            jso.put("code",0);
+            jso.put("data",taskInfoEntity);
+            jso.put("pubUserName",username);
         }
 
         return jso;

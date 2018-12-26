@@ -370,11 +370,11 @@ public class Task implements Serializable {
     }
 
 
-    private List<Label> labelList;
-    public List<Label> getLabelList(){
-        return labelList;
-    }
-    public void setLabelList(List<Label> labelList){
-        this.labelList = labelList;
-    }
+//    private List<Label> labelList;
+//    public List<Label> getLabelList(){
+//        return labelList;
+//    }
+//    public void setLabelList(List<Label> labelList){
+//        this.labelList = labelList;
+//    }
 }

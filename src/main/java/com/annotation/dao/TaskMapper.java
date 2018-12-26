@@ -1,6 +1,7 @@
 package com.annotation.dao;
 
 import com.annotation.model.Task;
+import com.annotation.model.TaskInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -69,5 +70,9 @@ public interface TaskMapper {
      * @return
      */
     Integer countAllTaskNum();
+
+    TaskInfoEntity selectTaskInfo(Integer tid);
+
+    String selectUserName(Integer tid);
 
 }
