@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.annotation.dao.InstanceMapper" >
+  <resultMap id="BaseResultMap" type="com.annotation.model.Instance" >
+    <id column="insid" property="insid" jdbcType="INTEGER" />
+    <result column="insindex" property="insindex" jdbcType="VARCHAR" />
+    <result column="insstatus" property="insstatus" jdbcType="VARCHAR" />
+    <result column="inscomptime" property="inscomptime" jdbcType="VARCHAR" />
+    <result column="documentid" property="documentid" jdbcType="INTEGER" />
+    <result column="labelid" property="labelid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from instance
+    where insid = #{insid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.annotation.model.Instance" >
+    insert into instance (insid, insindex, insstatus, 
+      inscomptime, documentid, labelid
+      )
+    values (#{insid,jdbcType=INTEGER}, #{insindex,jdbcType=VARCHAR}, #{insstatus,jdbcType=VARCHAR}, 
+      #{inscomptime,jdbcType=VARCHAR}, #{documentid,jdbcType=INTEGER}, #{labelid,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.annotation.model.Instance" >
+    update instance
+    set insindex = #{insindex,jdbcType=VARCHAR},
+      insstatus = #{insstatus,jdbcType=VARCHAR},
+      inscomptime = #{inscomptime,jdbcType=VARCHAR},
+      documentid = #{documentid,jdbcType=INTEGER},
+      labelid = #{labelid,jdbcType=INTEGER}
+    where insid = #{insid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select insid, insindex, insstatus, inscomptime, documentid, labelid
+    from instance
+    where insid = #{insid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select insid, insindex, insstatus, inscomptime, documentid, labelid
+    from instance
+  </select>
+</mapper>

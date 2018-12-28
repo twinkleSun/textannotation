@@ -2,6 +2,7 @@ package com.annotation.dao;
 
 import com.annotation.model.Document;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -88,5 +89,9 @@ public interface DocumentMapper {
         * @return
         */
        int updateDocumentById(Document document);
+
+
+
+       int updateDocStatusByInstanceId(@Param("instId")int instId, @Param("docStatus")String docStatus);
 
 }

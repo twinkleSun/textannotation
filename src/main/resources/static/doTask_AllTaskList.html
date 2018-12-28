@@ -70,7 +70,7 @@
 
 <script src="./lib/layui/layui.js" charset="utf-8"></script>
 <!--<script src="js/jquery-2.1.4.min.js"></script>-->
-<script type="text/javascript" src="js/core/myTask.js"></script>
+<script type="text/javascript" src="js/core/doTask_AllTaskList.js"></script>
 
 <script>
     layui.use('table', function(){
@@ -122,9 +122,9 @@
 
                         console.log(taskType);
                         if(taskType=="分类"){
-                            window.location.href="./doTask3.html?taskid="+taskid;
+                            window.location.href="./doTask_Classification.html?taskid="+taskid;
                         }else if(taskType=="信息抽取"){
-                            window.location.href="./doTask2.html?taskid="+taskid;
+                            window.location.href="./doTask_Info_Extraction.html?taskid="+taskid;
                         }
 
 

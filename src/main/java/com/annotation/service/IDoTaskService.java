@@ -2,6 +2,7 @@ package com.annotation.service;
 
 import com.annotation.model.Content;
 import com.annotation.model.DoTask;
+import com.annotation.model.DtInstance;
 import com.annotation.model.User;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface IDoTaskService {
      * @return
      */
     int addDoTask(DoTask dotask, String userid, int labelId, int conbegin,int conend);
+
+    int addInstanceItem(DtInstance dtInstance,int userId,int itemId,int labelId,String itemLabel);
+
+   int addListItem(DtInstance dtInstance,int userId,int aListItemId,int bListItemId);
 }

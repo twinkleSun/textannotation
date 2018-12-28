@@ -1,10 +1,7 @@
 package com.annotation.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.annotation.model.Content;
-import com.annotation.model.ResponseEntity;
-import com.annotation.model.DoTask;
-import com.annotation.model.User;
+import com.annotation.model.*;
 import com.annotation.service.IDoTaskService;
 import com.annotation.service.IUserService;
 import com.annotation.service.ITaskService;
@@ -84,6 +81,89 @@ public class DoTaskController {
                 responseEntity.setMsg("添加做任务表成功");
                 Map<String, Object> data = new HashMap<>();
                 data.put("dotaskid", dotaskRes);//返回做任务id
+                responseEntity.setData(data);
+        }
+        return responseEntity;
+    }
+
+
+
+    @RequestMapping(value = "addInstanceItem", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity addInstanceItem(HttpSession httpSession, DtInstance dtInstance, int itemId, int labelId, String item_label) {
+
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        //User user =(User)iUserService.queryUserByUsername("test");
+        // userid = user.getId();
+
+        int dtInstItRes =iDoTaskService.addInstanceItem(dtInstance,user.getId(),itemId,labelId,item_label);//创建做任务表的结果
+
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        switch (dtInstItRes){
+            case -1:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("添加做任务失败，请检查");
+                break;
+            case -2:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("添加做任务详细信息失败");
+                break;
+            case -3:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("更新任务状态失败");
+                break;
+            case -4:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("更新文档状态失败");
+                break;
+            default:
+                responseEntity.setStatus(0);
+                responseEntity.setMsg("添加做任务表成功");
+                Map<String, Object> data = new HashMap<>();
+                data.put("dtInstid", dtInstItRes);//返回做任务id
+                responseEntity.setData(data);
+        }
+        return responseEntity;
+    }
+
+
+    @RequestMapping(value = "addListItem", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity addListItem(HttpSession httpSession, DtInstance dtInstance, int aListitemId, int bListitemId) {
+
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        //User user =(User)iUserService.queryUserByUsername("test");
+        // userid = user.getId();
+
+        int dtInstItRes =iDoTaskService.addListItem(dtInstance,user.getId(),aListitemId,bListitemId);//创建做任务表的结果
+
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        switch (dtInstItRes){
+            case -1:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("添加做任务失败，请检查");
+                break;
+            case -2:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("添加做任务详细信息失败");
+                break;
+            case -3:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("更新任务状态失败");
+                break;
+            case -4:
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("更新文档状态失败");
+                break;
+            default:
+                responseEntity.setStatus(0);
+                responseEntity.setMsg("添加做任务表成功");
+                Map<String, Object> data = new HashMap<>();
+                data.put("dtInstid", dtInstItRes);//返回做任务id
                 responseEntity.setData(data);
         }
         return responseEntity;

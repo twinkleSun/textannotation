@@ -14,7 +14,7 @@
     </select>
 
     <select id="selectTask" parameterType="Integer" resultType="com.annotation.model.DoTask">
-        select * from dotask where userid = #{userid} and taskid = #{taskid} and contentid = #{contentid}
+         select * from dotask where userid = #{userid} and taskid = #{taskid} and contentid = #{contentid}
     </select>
 
 

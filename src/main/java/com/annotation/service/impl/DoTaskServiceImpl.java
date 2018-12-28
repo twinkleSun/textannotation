@@ -1,15 +1,12 @@
 package com.annotation.service.impl;
 
-import com.annotation.dao.LabelMapper;
-import com.annotation.dao.DocumentMapper;
-import com.annotation.dao.ContentMapper;
-import com.annotation.dao.TaskMapper;
-import com.annotation.dao.DoTaskMapper;
-import com.annotation.dao.DoTaskDetailMapper;
+import com.annotation.dao.*;
 import com.annotation.model.*;
 import com.annotation.service.IDoTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +32,18 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
     @Autowired
     DocumentMapper documentMapper;
+
+    @Autowired
+    DtInstanceMapper dtInstanceMapper;
+
+    @Autowired
+    DtdItemLabelMapper dtdItemLabelMapper;
+
+    @Autowired
+    DtdItemRelationMapper dtdItemRelationMapper;
+
+    @Autowired
+    InstanceMapper instanceMapper;
 
 
 
@@ -104,6 +113,121 @@ public class DoTaskServiceImpl implements IDoTaskService{
         return dotaskID;
     }
 
+
+    @Transactional
+    public int addInstanceItem(DtInstance dtInstance,int userId,int itemId,int labelId,String itemLabel){
+        dtInstance.setUserId(userId);
+
+        DtInstance isDtInstance = dtInstanceMapper.selectDtInstance(userId,dtInstance.getTaskId(),dtInstance.getInstanceId());
+        int dtInstId=-1;
+
+        if(isDtInstance==null){
+            //如果做任务表不存在则插入
+            int dtInstanceRes=dtInstanceMapper.insert(dtInstance);//插入做任务表
+            dtInstId = dtInstance.getDtInstid();
+            //插入做任务表失败返回-1
+            if(dtInstanceRes == -1){
+                return -1;
+            }
+        }else{
+            //已经存在就不用再插入了
+            dtInstId = isDtInstance.getDtInstid();
+        }
+
+
+        DtdItemLabel dtdItemLabel = new DtdItemLabel();
+
+
+        dtdItemLabel.setDtInstId(dtInstId);
+        dtdItemLabel.setItemId(itemId);
+        dtdItemLabel.setItemLabel(itemLabel);
+        dtdItemLabel.setLabelId(labelId);
+        int dtdItemLabelRes = dtdItemLabelMapper.insert(dtdItemLabel);
+
+        if(dtdItemLabelRes == -1){
+            return -2;
+        }
+
+        //更新任务表的状态
+        Task task = taskMapper.selectTaskById(dtInstance.getTaskId());
+        task.setTaskcompstatus("正在进行");
+        int updatetask = taskMapper.updateById(task);
+        if(updatetask==-1){
+            return -3;
+        }
+
+        //更新文档的状态
+
+        int updatedocument = documentMapper.updateDocStatusByInstanceId(dtInstance.getInstanceId(),"正在进行");
+        if(updatedocument==-1){
+            return -4;
+        }
+        //返回做任务ID
+
+        return dtInstId;
+
+    }
+
+
+
+    @Transactional
+    public int addListItem(DtInstance dtInstance,int userId,int aListItemId,int bListItemId){
+        dtInstance.setUserId(userId);
+
+        DtInstance dtInstanceR = dtInstanceMapper.selectDtInstance(userId,dtInstance.getTaskId(),dtInstance.getInstanceId());
+        int dtInstId=-1;
+
+        if(dtInstanceR==null){
+            //如果做任务表不存在则插入
+            int dtInstanceRes = dtInstanceMapper.insert(dtInstance);//插入做任务表
+            dtInstId = dtInstance.getDtInstid();
+            //插入做任务表失败返回-1
+            if(dtInstanceRes == -1){
+                return -1;
+            }
+        }else{
+            //已经存在就不用再插入了
+            dtInstId = dtInstanceR.getDtInstid();
+        }
+
+
+        DtdItemRelation dtdItemRelation = new DtdItemRelation();
+        DtdItemRelation dtdItemRelation1 =dtdItemRelationMapper.selectDtItemRelation(dtInstId,aListItemId,bListItemId);
+        if(dtdItemRelation1==null){
+            dtdItemRelation.setDtInstId(dtInstId);
+            dtdItemRelation.setaListitemId(aListItemId);
+            dtdItemRelation.setbListitemId(bListItemId);
+
+            int dtdItemRelationRes = dtdItemRelationMapper.insert(dtdItemRelation);
+
+            if(dtdItemRelationRes == -1){
+                return -2;
+            }
+        }else{
+            //todo:返回值问题
+        }
+
+
+
+        //更新任务表的状态
+        Task task = taskMapper.selectTaskById(dtInstance.getTaskId());
+        task.setTaskcompstatus("正在进行");
+        int updatetask = taskMapper.updateById(task);
+        if(updatetask==-1){
+            return -3;
+        }
+
+        //更新文档的状态
+
+        int updatedocument = documentMapper.updateDocStatusByInstanceId(dtInstance.getInstanceId(),"正在进行");
+        if(updatedocument==-1){
+            return -4;
+        }
+        //返回做任务ID
+
+        return dtInstId;
+
+    }
 }
 
 

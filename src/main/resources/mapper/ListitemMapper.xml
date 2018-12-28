@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.annotation.dao.ListitemMapper" >
+  <resultMap id="BaseResultMap" type="com.annotation.model.Listitem" >
+    <id column="liid" property="liid" jdbcType="INTEGER" />
+    <result column="litemcontent" property="litemcontent" jdbcType="VARCHAR" />
+    <result column="listindex" property="listindex" jdbcType="VARCHAR" />
+    <result column="litemindex" property="litemindex" jdbcType="VARCHAR" />
+    <result column="litemstatus" property="litemstatus" jdbcType="VARCHAR" />
+    <result column="litemcomptime" property="litemcomptime" jdbcType="VARCHAR" />
+    <result column="instanceid" property="instanceid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from listitem
+    where liid = #{liid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.annotation.model.Listitem" >
+    insert into listitem (liid, litemcontent, listindex, 
+      litemindex, litemstatus, litemcomptime, 
+      instanceid)
+    values (#{liid,jdbcType=INTEGER}, #{litemcontent,jdbcType=VARCHAR}, #{listindex,jdbcType=VARCHAR}, 
+      #{litemindex,jdbcType=VARCHAR}, #{litemstatus,jdbcType=VARCHAR}, #{litemcomptime,jdbcType=VARCHAR}, 
+      #{instanceid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.annotation.model.Listitem" >
+    update listitem
+    set litemcontent = #{litemcontent,jdbcType=VARCHAR},
+      listindex = #{listindex,jdbcType=VARCHAR},
+      litemindex = #{litemindex,jdbcType=VARCHAR},
+      litemstatus = #{litemstatus,jdbcType=VARCHAR},
+      litemcomptime = #{litemcomptime,jdbcType=VARCHAR},
+      instanceid = #{instanceid,jdbcType=INTEGER}
+    where liid = #{liid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select liid, litemcontent, listindex, litemindex, litemstatus, litemcomptime, instanceid
+    from listitem
+    where liid = #{liid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select liid, litemcontent, listindex, litemindex, litemstatus, litemcomptime, instanceid
+    from listitem
+  </select>
+</mapper>
