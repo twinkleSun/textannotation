@@ -39,4 +39,73 @@
     select insid, insindex, insstatus, inscomptime, documentid, labelid
     from instance
   </select>
+
+
+
+    <resultMap id="InstanceItemByDocId" type="com.annotation.model.entity.InstanceItemEntity">
+        <id column="insid" property="insid"></id>
+        <result column="insindex" property="insindex"></result>
+        <result column="insstatus" property="insstatus"></result>
+        <result column="inscomptime" property="inscomptime"></result>
+        <result column="documentid" property="documentid"></result>
+        <result column="labelid" property="labelid"></result>
+        <result column="labelname" property="labelname"></result>
+        <collection property="itemList" ofType="com.annotation.model.Item">
+            <id column="itid" property="itid"></id>
+            <result column="itemcontent" property="itemcontent"></result>
+            <result column="itemindex" property="itemindex"></result>
+            <result column="instanceid" property="instanceid"></result>
+            <result column="itemlabelid" property="labelid"></result>
+            <result column="itemlabelname" property="labelname"></result>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectInstanceItem" parameterType="Integer" resultMap="InstanceItemByDocId">
+     select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelid,
+      t.itid, t.itemcontent, t.itemindex, t.instanceid, t.labelid itemlabelid
+        from instance s,item t
+        where s.documentid=#{docId} AND s.insid=t.instanceid
+
+    </select>
+
+
+
+
+
+    <resultMap id="InstanceListitemByDocId" type="com.annotation.model.entity.InstanceListitemEntity">
+        <id column="insid" property="insid"></id>
+        <result column="insindex" property="insindex"></result>
+        <result column="insstatus" property="insstatus"></result>
+        <result column="inscomptime" property="inscomptime"></result>
+        <result column="documentid" property="documentid"></result>
+        <result column="labelid" property="labelid"></result>
+        <result column="labelname" property="labelname"></result>
+        <collection property="listitems" ofType="com.annotation.model.Listitem">
+            <id column="liid" property="liid"></id>
+            <result column="listindex" property="listindex"></result>
+            <result column="litemindex" property="litemindex"></result>
+            <result column="litemcontent" property="litemcontent"></result>
+            <result column="litemstatus" property="litemstatus"></result>
+            <result column="litemcomptime" property="litemcomptime"></result>
+
+        </collection>
+    </resultMap>
+
+
+    <select id="selectInstanceListitem" parameterType="Integer" resultMap="InstanceListitemByDocId">
+        select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelid,
+        t.liid, t.listindex, t.litemindex, t.litemstatus, t.litemcomptime,t.litemcontent
+        from instance s,listitem t
+        where s.documentid=#{docId} AND s.insid=t.instanceid
+
+    </select>
+
+
+
+
+
+
+
+
 </mapper>

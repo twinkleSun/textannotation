@@ -1,7 +1,7 @@
 package com.annotation.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.*;
+import com.annotation.model.entity.ResponseEntity;
 import com.annotation.service.IDoTaskService;
 import com.annotation.service.IUserService;
 import com.annotation.service.ITaskService;
@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,7 +44,7 @@ public class DoTaskController {
      */
     @RequestMapping(value = "addDoTask", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity addTask(HttpSession httpSession, DoTask dotask,int labelId,int conbegin,int conend) {
+    public ResponseEntity addTask(HttpSession httpSession, DoTask dotask, int labelId, int conbegin, int conend) {
 
         User user =(User)httpSession.getAttribute("currentUser");
         String userid = String.valueOf(user.getId());

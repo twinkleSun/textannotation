@@ -170,47 +170,49 @@ INSERT INTO `listitem` VALUES ('2', 'listitem测试内容','2','1','未完成','
 
 
 use textannotation;
-DROP TABLE IF EXISTS `domultitask`;
-CREATE TABLE `domultitask` (
-  `dmtid` int(11) NOT NULL AUTO_INCREMENT COMMENT '做任务ID',
-  `userid` int(11) DEFAULT NULL COMMENT '做任务用户ID',
-  `taskid` int(11) DEFAULT NULL COMMENT '做任务任务ID',
-  `instanceid` int(11) DEFAULT NULL COMMENT '做任务instanceID',
-  PRIMARY KEY (`dmtid`),
-  FOREIGN KEY (`userid`) REFERENCES `user` (`id`),
-  FOREIGN KEY (`taskid`) REFERENCES `task` (`tid`),
-  FOREIGN KEY (`instanceid`) REFERENCES `instance` (`insid`)
+DROP TABLE IF EXISTS `dt_instance`;
+CREATE TABLE `dt_instance` (
+  `dt_instid` int(11) NOT NULL AUTO_INCREMENT COMMENT '做任务ID',
+  `user_id` int(11) DEFAULT NULL COMMENT '做任务用户ID',
+  `task_id` int(11) DEFAULT NULL COMMENT '做任务任务ID',
+  `instance_id` int(11) DEFAULT NULL COMMENT '做任务instanceID',
+  PRIMARY KEY (`dt_instid`),
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  FOREIGN KEY (`task_id`) REFERENCES `task` (`tid`),
+  FOREIGN KEY (`instance_id`) REFERENCES `instance` (`insid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-INSERT INTO `domultitask` VALUES ('1', '1','1','1');
+INSERT INTO `dt_instance` VALUES ('1', '1','1','1');
+
+
 
 use textannotation;
-DROP TABLE IF EXISTS `doitemtaskdetail`;
-CREATE TABLE `doitemtaskdetail` (
-  `ditdid` int(11) NOT NULL AUTO_INCREMENT COMMENT '做任务详细描述ID',
-  `domultitaskid` int(11) DEFAULT NULL COMMENT '做任务ID',
-  `itemid` int(11) DEFAULT NULL COMMENT '做任务任务ID',
-  `labelid` int(11) DEFAULT NULL COMMENT '做任务item标签ID',
-  `itemrelation` VARCHAR(255) DEFAULT NULL COMMENT 'item关系分类',
-  PRIMARY KEY (`ditdid`),
-  FOREIGN KEY (`domultitaskid`) REFERENCES `domultitask` (`dmtid`),
-  FOREIGN KEY (`itemid`) REFERENCES `item` (`itid`),
-  FOREIGN KEY (`labelid`) REFERENCES `label` (`lid`)
+DROP TABLE IF EXISTS `dtd_item_label`;
+CREATE TABLE `dtd_item_label` (
+  `dtd_itlid` int(11) NOT NULL AUTO_INCREMENT COMMENT '做任务详细描述ID',
+  `dt_inst_id` int(11) DEFAULT NULL COMMENT '做任务ID',
+  `item_id` int(11) DEFAULT NULL COMMENT '做任务任务ID',
+  `label_id` int(11) DEFAULT NULL COMMENT '做任务item标签ID',
+  `item_label` VARCHAR(255) DEFAULT NULL COMMENT 'item关系分类',
+  PRIMARY KEY (`dtd_itlid`),
+  FOREIGN KEY (`dt_inst_id`) REFERENCES `dt_instance` (`dt_instid`),
+  FOREIGN KEY (`item_id`) REFERENCES `item` (`itid`),
+  FOREIGN KEY (`label_id`) REFERENCES `label` (`lid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-INSERT INTO `doitemtaskdetail` VALUES ('1', '1','1','1','2');
+INSERT INTO `dtd_item_label` VALUES ('1', '1','1','1','2');
 
 # 文本配对的item关系表
 use textannotation;
-DROP TABLE IF EXISTS `doitemrelationdetail`;
-CREATE TABLE `doitemrelationdetail` (
-  `dirdid` int(11) NOT NULL AUTO_INCREMENT COMMENT '做任务详细描述ID',
-  `domultitaskid` int(11) DEFAULT NULL COMMENT '做任务ID',
-  `alitemid` INT(11) NOT NULL  COMMENT 'listitemID',
-  `blitemid` INT(11) NOT NULL COMMENT 'listitemID',
-  PRIMARY KEY (`dirdid`),
-  FOREIGN KEY (`domultitaskid`) REFERENCES `domultitask` (`dmtid`),
-  FOREIGN KEY (`alitemid`) REFERENCES `listitem` (`liid`),
-  FOREIGN KEY (`blitemid`) REFERENCES `listitem` (`liid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `doitemrelationdetail` VALUES ('1','1','1', '2');
+DROP TABLE IF EXISTS `dtd_item_relation`;
+CREATE TABLE `dtd_item_relation` (
+  `dtd_itrid` int(11) NOT NULL AUTO_INCREMENT COMMENT '做任务详细描述ID',
+  `dt_inst_id` int(11) DEFAULT NULL COMMENT '做任务ID',
+  `a_listitem_id` INT(11) NOT NULL  COMMENT 'listitemID',
+  `b_listitem_id` INT(11) NOT NULL COMMENT 'listitemID',
+  PRIMARY KEY (`dtd_itrid`),
+  FOREIGN KEY (`dt_inst_id`) REFERENCES `dt_instance` (`dt_instid`),
+  FOREIGN KEY (`a_listitem_id`) REFERENCES `listitem` (`liid`),
+  FOREIGN KEY (`b_listitem_id`) REFERENCES `listitem` (`liid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+INSERT INTO `dtd_item_relation` VALUES ('1','1','1', '2');

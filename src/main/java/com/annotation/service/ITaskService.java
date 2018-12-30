@@ -1,7 +1,7 @@
 package com.annotation.service;
 
 import com.annotation.model.Task;
-import com.annotation.model.TaskInfoEntity;
+import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.model.User;
 import java.util.List;
 
@@ -49,6 +49,7 @@ public interface ITaskService {
     int countAllTasknum();
 
     TaskInfoEntity queryTaskInfo(int tid);
+
 
     String queryUserName(int tid);
 

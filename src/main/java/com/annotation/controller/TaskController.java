@@ -2,6 +2,8 @@ package com.annotation.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.*;
+import com.annotation.model.entity.ResponseEntity;
+import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,14 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by twinkleStar on 2018/12/9.
@@ -40,7 +40,7 @@ public class TaskController {
      */
     @RequestMapping(value = "addTask", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity addTask(HttpSession httpSession, Task task, int docid,String label,String userid) {
+    public ResponseEntity addTask(HttpSession httpSession, Task task, int docid, String label, String userid) {
 
         User user =(User)httpSession.getAttribute("currentUser");
         if(!userid.equals(null) && !userid.equals("")){

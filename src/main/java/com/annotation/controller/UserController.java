@@ -1,6 +1,6 @@
 package com.annotation.controller;
 
-import com.annotation.model.ResponseEntity;
+import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.User;
 import com.annotation.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

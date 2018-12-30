@@ -10,6 +10,7 @@ public class Item {
     private Integer instanceid;
 
     private Integer labelid;
+    private String labelname;
 
     public Integer getItid() {
         return itid;
@@ -49,5 +50,12 @@ public class Item {
 
     public void setLabelid(Integer labelid) {
         this.labelid = labelid;
+    }
+
+    public void setLabelname(String labelname) {
+        this.labelname = labelname;
+    }
+    public String getLabelname() {
+        return labelname;
     }
 }

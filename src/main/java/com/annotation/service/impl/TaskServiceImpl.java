@@ -5,6 +5,7 @@ import com.annotation.dao.TaskDocumentMapper;
 import com.annotation.dao.TaskLabelMapper;
 import com.annotation.dao.TaskMapper;
 import com.annotation.model.*;
+import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -164,7 +165,24 @@ public class TaskServiceImpl implements ITaskService{
     }
 
     public TaskInfoEntity queryTaskInfo(int tid){
-        TaskInfoEntity taskInfoEntity =taskMapper.selectTaskInfo(tid);
+        TaskInfoEntity taskInfoEntity=new TaskInfoEntity();
+        Task task =taskMapper.selectTaskById(tid);
+        taskInfoEntity =taskMapper.selectTaskInfo(tid);
+        if (task.getType().equals("信息抽取") || task.getType().equals("分类")){
+            taskInfoEntity =taskMapper.selectTaskInfo(tid);
+        }else if(task.getType().equals("文本关系类别标注") ){
+            taskInfoEntity =taskMapper.selectTaskInfo2(tid);
+
+            if(taskLabelMapper.selectAll()!=null){
+                TaskInfoEntity taskInfoEntity1=taskMapper.selectTaskInfo3(tid);
+                taskInfoEntity.setLabelList(taskInfoEntity1.getLabelList());
+            }
+        }else if(task.getType().equals("文本配对标注")){
+            taskInfoEntity =taskMapper.selectTaskInfo2(tid);
+        }else{
+            //todo：其他类型，待开发
+        }
+
         return taskInfoEntity;
     }
 

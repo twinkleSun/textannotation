@@ -223,12 +223,6 @@ function imgDelClick(obj) {
     var delLiNum =parseInt(delLiStr); //console.log(delLiNum);
     $("#"+li_ans_div[curLabelIndex][delLiNum]).html("");
 
-    //li_img_num[curLabelIndex]--;
-    // $("#"+label_ul_li_span[curLabelIndex][delLiNum]).css("color","black");
-   // $("#"+label_ans_li[curLabelIndex][delLiNum]).remove();
-    // console.log(label_ans_li[curLabelIndex][delLiNum]);
-
-
 };
 
 /**
@@ -238,14 +232,6 @@ function imgDelClick(obj) {
 function imgDeleteClick(obj) {
     $("#"+li_ans_div[curLabelIndex][0]).html("");
 };
-
-// $("#submit-nextPara").click(function(){
-//     curParaIndex++;
-//
-//     $("#span-index").html("第"+(curParaIndex+1)+"段");
-//     $("#p-para").html(paraContent[curParaIndex]);
-// });
-
 
 /**
  * 页脚1，2，3对应的点击事件

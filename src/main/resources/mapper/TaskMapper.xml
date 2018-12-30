@@ -65,7 +65,7 @@
         WHERE tid = #{tid}
     </update>
 
-    <resultMap id="selectTaskWholeInfo" type="com.annotation.model.TaskInfoEntity">
+    <resultMap id="selectTaskWholeInfo" type="com.annotation.model.entity.TaskInfoEntity">
         <id column="tid" property="tid"></id>
         <result column="title" property="title"></result>
         <result column="description" property="description"></result>
@@ -99,6 +99,54 @@
                 d.did,d.filename,d.filetype,d.filesize,d.docuploadtime,d.doccomptime,d.docstatus,
                 l.lid,l.labelname from task t,label l,document d,task_label tl,task_document td
                 where t.tid=#{tid} AND t.tid=tl.taskid AND tl.labelid=l.lid AND t.tid=td.taskid AND td.documentid= d.did
+
+    </select>
+
+    <resultMap id="selectTaskWholeInfo2" type="com.annotation.model.entity.TaskInfoEntity">
+        <id column="tid" property="tid"></id>
+        <result column="title" property="title"></result>
+        <result column="description" property="description"></result>
+        <result column="type" property="type"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="deadline" property="deadline"></result>
+        <result column="taskcomptime" property="taskcomptime"></result>
+        <result column="taskcompstatus" property="taskcompstatus"></result>
+        <result column="otherinfo" property="otherinfo"></result>
+        <result column="userid" property="userid"></result>
+        <collection property="documentList" ofType="com.annotation.model.Document">
+            <id column="did" property="did"></id>
+            <result column="filename" property="filename"></result>
+            <result column="filetype" property="filetype"></result>
+            <result column="filesize" property="filesize"></result>
+            <result column="docuploadtime" property="docuploadtime"></result>
+            <result column="doccomptime" property="doccomptime"></result>
+            <result column="docstatus" property="docstatus"></result>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectTaskInfo2" parameterType="Integer" resultMap="selectTaskWholeInfo2">
+        select t.tid,t.title,t.description,t.type,t.createtime,t.deadline,
+        t.taskcomptime,t.taskcompstatus,t.otherinfo,t.userid,
+        d.did,d.filename,d.filetype,d.filesize,d.docuploadtime,d.doccomptime,d.docstatus
+       from task t,document d,task_document td
+        where t.tid=#{tid} AND t.tid=td.taskid AND td.documentid= d.did
+
+    </select>
+
+    <resultMap id="selectTaskWholeInfo3" type="com.annotation.model.entity.TaskInfoEntity">
+        <id column="tid" property="tid"></id>
+
+        <collection property="labelList" ofType="com.annotation.model.Label">
+            <id column="lid" property="lid"></id>
+            <result column="labelname" property="labelname"></result>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectTaskInfo3" parameterType="Integer" resultMap="selectTaskWholeInfo3">
+             select t.tid,l.lid,l.labelname from task t,label l,task_label tl
+                where t.tid=#{tid} AND t.tid=tl.taskid AND tl.labelid=l.lid
 
     </select>
 

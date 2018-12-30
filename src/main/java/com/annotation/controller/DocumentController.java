@@ -2,10 +2,9 @@ package com.annotation.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.Document;
-import com.annotation.model.ResponseEntity;
+import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.User;
 import com.annotation.service.IDocumentService;
-import com.annotation.service.IUserService;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;

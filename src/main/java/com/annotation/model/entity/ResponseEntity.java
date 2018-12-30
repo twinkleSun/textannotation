@@ -1,4 +1,4 @@
-package com.annotation.model;
+package com.annotation.model.entity;
 
 /**
  * Created by twinkleStar on 2018/12/9.

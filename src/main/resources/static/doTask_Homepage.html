@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="./js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="./js/xadmin.js"></script>
-    <script type="text/javascript" src="js/core/doTaskIndex.js"></script>
+    <script type="text/javascript" src="js/core/doTask_Homepage.js"></script>
+    <!--<script type="text/javascript" src="./js/publishTask_xdmin.js"></script>-->
 
 </head>
 <body>
@@ -31,9 +32,14 @@
         </li>
     </ul>
     <ul class="layui-nav left">
-        <li class="layui-nav-item"><a data-url="./doTask_AllTaskList.html" data-id="2" data-title="全部任务"  class="site-demo-active"  href="javascript:void(0);">全部任务</a></li>
+        <li class="layui-nav-item"><a data-url="./doTask_AllTaskList.html" data-id="1" data-title="全部任务"  class="site-demo-active"  href="javascript:void(0);">全部任务</a></li>
         <li class="layui-nav-item"><a data-url="./test.html" data-id="22" data-title="任务列表2"  class="site-demo-active"  href="javascript:void(0);">测试用</a></li>
     </ul>
+
+    <!--<ul class="layui-nav left">-->
+        <!--<li class="layui-nav-item"><a onclick="test1()">全部任务</a></li>-->
+        <!--<li class="layui-nav-item"><a onclick="test2()">测试用</a></li>-->
+    <!--</ul>-->
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
             <a href="javascript:;"><div id="username"></div></a>
@@ -47,6 +53,23 @@
     </ul>
 </div>
 
+
+<!--<div class="page-content" id="test1">-->
+    <!--<div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">-->
+        <!--<ul class="layui-tab-title">-->
+            <!--<li class="home"><i class="layui-icon">&#xe68e;</i>返回任务列表</li>-->
+        <!--</ul>-->
+        <!--<div class="layui-tab-content">-->
+            <!--<div class="layui-tab-item layui-show">-->
+                <!--<iframe id="te1" src='doTask_AllTaskList.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+<!--</div>-->
+
+
+
 <div class="layui-tab layui-tab-card" lay-allowclose="true" lay-filter="home-tabs">
     <ul class="layui-tab-title">
 
@@ -59,6 +82,18 @@
     </div>
 </div>
 <script src="./lib/layui/layui.js" charset="utf-8"></script>
+
+<!--<script>-->
+    <!--function test1() {-->
+
+        <!--$("#te1").attr("src","doTask_AllTaskList.html");-->
+
+    <!--}-->
+    <!--function test2() {-->
+        <!--$("#te1").attr("src","test.html");-->
+    <!--}-->
+<!--</script>-->
+
 <script>
     layui.use('element', function(){
         var $ = layui.jquery
@@ -118,15 +153,19 @@
                     //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
                     if ($(this).attr("lay-id") == dataid.attr("data-id")) {
                         isData = true;
+
                     }
-                })
+                });
                 if (isData == false) {
                     //标志为false 新增一个tab项
                     active.tabAdd(json);
+
                 }
+                //active.tabAdd(json);
             }
             //最后不管是否新增tab，最后都转到要打开的选项页面上
             active.tabChange(dataid.attr("data-id"));
+            active.tabRefresh(dataid.attr("data-id"));
         });
 
 

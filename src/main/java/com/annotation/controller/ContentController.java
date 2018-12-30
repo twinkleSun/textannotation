@@ -2,7 +2,6 @@ package com.annotation.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.Content;
-import com.annotation.model.ResponseEntity;
 import com.annotation.service.IContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by twinkleStar on 2018/12/16.

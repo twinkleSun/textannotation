@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.annotation.dao.TaskLabelMapper">
-
+    <resultMap id="BaseResultMap" type="com.annotation.model.TaskLabel" >
+        <result column="taskid" property="taskid" jdbcType="INTEGER" />
+        <result column="labelid" property="labelid" jdbcType="INTEGER" />
+    </resultMap>
     <insert id="insertTaskLabel" useGeneratedKeys="true" keyProperty="id" parameterType="com.annotation.model.TaskLabel">
         insert into task_label (taskid,labelid) values (#{taskid},#{labelid})
     </insert>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select taskid, labelid
+        from task_label WHERE taskid=#{tid}
+    </select>
 
 </mapper>
