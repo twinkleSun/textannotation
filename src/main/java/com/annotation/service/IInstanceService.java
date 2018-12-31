@@ -10,7 +10,17 @@ import java.util.List;
  */
 public interface IInstanceService {
 
+    /**
+     * 查询instance+item
+     * @param docId
+     * @return
+     */
     List<InstanceItemEntity> queryInstanceItem(int docId);
 
+    /**
+     * 查询instance+listitem
+     * @param docId
+     * @return
+     */
     List<InstanceListitemEntity> queryInstanceListitem(int docId);
 }

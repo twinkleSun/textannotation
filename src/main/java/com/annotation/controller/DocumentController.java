@@ -142,8 +142,6 @@ public class DocumentController {
             MultipartFile file=multipartFiles[i];
 
 
-
-
             retuName=retuName+file.getOriginalFilename()+"#";
         }
         return retuName;
@@ -151,7 +149,7 @@ public class DocumentController {
     }
 
     /**
-     * 分页查询
+     * 分页查询---用户上传的文件列表
      * @param httpServletRequest
      * @param httpServletResponse
      * @param httpSession

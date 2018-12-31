@@ -184,8 +184,6 @@ CREATE TABLE `dt_instance` (
 
 INSERT INTO `dt_instance` VALUES ('1', '1','1','1');
 
-
-
 use textannotation;
 DROP TABLE IF EXISTS `dtd_item_label`;
 CREATE TABLE `dtd_item_label` (

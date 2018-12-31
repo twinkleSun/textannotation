@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ItemMapper {
+
     int deleteByPrimaryKey(Integer itid);
 
     int insert(Item record);

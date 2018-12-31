@@ -87,7 +87,6 @@ public class TaskInfoEntity {
         this.userid = userid;
     }
 
-
     public String getType() {
         return type;
     }
@@ -95,14 +94,12 @@ public class TaskInfoEntity {
         this.type = type == null ? null : type.trim();
     }
 
-
     public List<Label> getLabelList(){
         return labelList;
     }
     public void setLabelList(List<Label> labelList){
         this.labelList = labelList;
     }
-
 
     public List<Document> getDocumentList(){return documentList;}
     public void setDocumentList(List<Document> documentList){this.documentList=documentList;}

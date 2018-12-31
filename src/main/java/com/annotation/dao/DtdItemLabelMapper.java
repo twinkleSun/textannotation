@@ -18,4 +18,6 @@ public interface DtdItemLabelMapper {
     List<DtdItemLabel> selectAll();
 
     int updateByPrimaryKey(DtdItemLabel record);
+
+    //todo:还没处理，表有问题
 }

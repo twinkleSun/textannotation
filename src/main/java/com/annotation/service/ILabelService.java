@@ -1,7 +1,6 @@
 package com.annotation.service;
 
 import com.annotation.model.Label;
-
 import java.util.List;
 
 /**

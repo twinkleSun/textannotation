@@ -9,5 +9,10 @@ import java.util.List;
  */
 public interface IContentService {
 
+    /**
+     * 根据文件ID查询content内容
+     * @param docId
+     * @return
+     */
     public List<Content> selectContentByDocId(int docId);
 }

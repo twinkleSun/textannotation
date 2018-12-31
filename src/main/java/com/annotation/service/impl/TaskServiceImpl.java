@@ -143,8 +143,12 @@ public class TaskServiceImpl implements ITaskService{
         return tasks;
     }
 
-
-
+    /**
+     * 分页查询所有的任务
+     * @param page
+     * @param limit
+     * @return
+     */
     public List<Task> queryAllTask(int page,int limit){
         int startNum =(page-1)*limit;
         Map<String,Object> data =new HashMap();
@@ -155,6 +159,10 @@ public class TaskServiceImpl implements ITaskService{
     }
 
 
+    /**
+     * 获取所有任务的数量
+     * @return
+     */
     public int countAllTasknum(){
         Integer numInt = taskMapper.countAllTaskNum();
         if(numInt == null){
@@ -164,21 +172,41 @@ public class TaskServiceImpl implements ITaskService{
         }
     }
 
+    /**
+     * 根据任务ID获取任务详情
+     * 不同任务类型调用不同的接口
+     * @param tid
+     * @return
+     */
     public TaskInfoEntity queryTaskInfo(int tid){
-        TaskInfoEntity taskInfoEntity=new TaskInfoEntity();
-        Task task =taskMapper.selectTaskById(tid);
-        taskInfoEntity =taskMapper.selectTaskInfo(tid);
-        if (task.getType().equals("信息抽取") || task.getType().equals("分类")){
-            taskInfoEntity =taskMapper.selectTaskInfo(tid);
-        }else if(task.getType().equals("文本关系类别标注") ){
-            taskInfoEntity =taskMapper.selectTaskInfo2(tid);
+        TaskInfoEntity taskInfoEntity =new TaskInfoEntity();
 
-            if(taskLabelMapper.selectAll()!=null){
-                TaskInfoEntity taskInfoEntity1=taskMapper.selectTaskInfo3(tid);
+        //获取task基础信息，其实只要查询类型就可以了
+        Task task =taskMapper.selectTaskById(tid);
+
+        /**
+         * 信息抽取和分类
+         */
+        if (task.getType().equals("信息抽取") || task.getType().equals("分类")){
+            taskInfoEntity =taskMapper.selectTaskInfoWithDocLabel(tid);
+
+        /**
+         * 文本关系类别标注
+         */
+        }else if(task.getType().equals("文本关系类别标注") ){
+            taskInfoEntity =taskMapper.selectTaskInfoWithDoc(tid);
+
+            //如果该任务有标签，则查询并返回标签列表
+            if(taskLabelMapper.selectLabelsByTaskid(tid)!=null){
+                TaskInfoEntity taskInfoEntity1=taskMapper.selectTaskInfoWithLabel(tid);
                 taskInfoEntity.setLabelList(taskInfoEntity1.getLabelList());
             }
+
+        /**
+         * 文本配对标注
+         */
         }else if(task.getType().equals("文本配对标注")){
-            taskInfoEntity =taskMapper.selectTaskInfo2(tid);
+            taskInfoEntity =taskMapper.selectTaskInfoWithDoc(tid);
         }else{
             //todo：其他类型，待开发
         }
@@ -186,9 +214,13 @@ public class TaskServiceImpl implements ITaskService{
         return taskInfoEntity;
     }
 
+    /**
+     * 返回这个任务的发布者姓名
+     * @param tid
+     * @return
+     */
     public String queryUserName(int tid){
         String username=taskMapper.selectUserName(tid);
-
         return username;
     }
 

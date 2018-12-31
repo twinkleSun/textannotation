@@ -29,6 +29,7 @@ public class UserController {
     /**
      * 登陆，
      * 登陆成功后只返回用户ID和用户名
+     * todo:目前session可容纳的同时在线人数太少
      * @param request
      * @param httpResponse
      * @param username

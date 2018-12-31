@@ -14,7 +14,7 @@ $(function () {
             var username =data.data.userInfo.username;
 
             $("#username").append(username);
-            console.log(username);
+            //console.log(username);
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
         },

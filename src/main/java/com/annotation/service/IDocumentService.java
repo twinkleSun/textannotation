@@ -3,7 +3,6 @@ package com.annotation.service;
 import com.annotation.model.Document;
 import com.annotation.model.User;
 
-import java.io.IOException;
 import java.util.List;
 
 /**

@@ -7,10 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by twinkleStar on 2018/12/9.
  */
@@ -20,34 +16,22 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
     @Autowired
     TaskMapper taskMapper;
-
     @Autowired
     DoTaskMapper dotaskMapper;
-
     @Autowired
     DoTaskDetailMapper doTaskDetailMapperr;
-
     @Autowired
     ContentMapper contentMapper;
-
     @Autowired
     DocumentMapper documentMapper;
-
     @Autowired
     DtInstanceMapper dtInstanceMapper;
-
     @Autowired
     DtdItemLabelMapper dtdItemLabelMapper;
-
     @Autowired
     DtdItemRelationMapper dtdItemRelationMapper;
-
     @Autowired
     InstanceMapper instanceMapper;
-
-
-
-
 
     /**
      * 添加做任务表
@@ -113,7 +97,16 @@ public class DoTaskServiceImpl implements IDoTaskService{
         return dotaskID;
     }
 
-
+    /**
+     * 做任务----文本关系类型
+     * todo:有点问题，数据库表和逻辑不太对
+     * @param dtInstance
+     * @param userId
+     * @param itemId
+     * @param labelId
+     * @param itemLabel
+     * @return
+     */
     @Transactional
     public int addInstanceItem(DtInstance dtInstance,int userId,int itemId,int labelId,String itemLabel){
         dtInstance.setUserId(userId);
@@ -134,9 +127,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
             dtInstId = isDtInstance.getDtInstid();
         }
 
-
         DtdItemLabel dtdItemLabel = new DtdItemLabel();
-
 
         dtdItemLabel.setDtInstId(dtInstId);
         dtdItemLabel.setItemId(itemId);
@@ -157,19 +148,25 @@ public class DoTaskServiceImpl implements IDoTaskService{
         }
 
         //更新文档的状态
-
         int updatedocument = documentMapper.updateDocStatusByInstanceId(dtInstance.getInstanceId(),"正在进行");
         if(updatedocument==-1){
             return -4;
         }
         //返回做任务ID
-
         return dtInstId;
-
     }
 
-
-
+    /**
+     * 做任务---文本关系配对
+     * todo:更新状态的逻辑
+     * todo:关系已存在则不插入
+     * todo:了解数据库事务
+     * @param dtInstance
+     * @param userId
+     * @param aListItemId
+     * @param bListItemId
+     * @return
+     */
     @Transactional
     public int addListItem(DtInstance dtInstance,int userId,int aListItemId,int bListItemId){
         dtInstance.setUserId(userId);
@@ -180,34 +177,33 @@ public class DoTaskServiceImpl implements IDoTaskService{
         if(dtInstanceR==null){
             //如果做任务表不存在则插入
             int dtInstanceRes = dtInstanceMapper.insert(dtInstance);//插入做任务表
-            dtInstId = dtInstance.getDtInstid();
+
             //插入做任务表失败返回-1
             if(dtInstanceRes == -1){
                 return -1;
+            }else{
+                dtInstId = dtInstance.getDtInstid();
             }
         }else{
             //已经存在就不用再插入了
             dtInstId = dtInstanceR.getDtInstid();
         }
 
-
         DtdItemRelation dtdItemRelation = new DtdItemRelation();
+
+        //todo:为什么已经存在了还能插入进去
         DtdItemRelation dtdItemRelation1 =dtdItemRelationMapper.selectDtItemRelation(dtInstId,aListItemId,bListItemId);
         if(dtdItemRelation1==null){
             dtdItemRelation.setDtInstId(dtInstId);
             dtdItemRelation.setaListitemId(aListItemId);
             dtdItemRelation.setbListitemId(bListItemId);
-
             int dtdItemRelationRes = dtdItemRelationMapper.insert(dtdItemRelation);
-
             if(dtdItemRelationRes == -1){
                 return -2;
             }
         }else{
             //todo:返回值问题
         }
-
-
 
         //更新任务表的状态
         Task task = taskMapper.selectTaskById(dtInstance.getTaskId());
@@ -218,15 +214,12 @@ public class DoTaskServiceImpl implements IDoTaskService{
         }
 
         //更新文档的状态
-
         int updatedocument = documentMapper.updateDocStatusByInstanceId(dtInstance.getInstanceId(),"正在进行");
         if(updatedocument==-1){
             return -4;
         }
         //返回做任务ID
-
         return dtInstId;
-
     }
 }
 

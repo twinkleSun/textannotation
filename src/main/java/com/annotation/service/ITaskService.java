@@ -42,15 +42,32 @@ public interface ITaskService {
      */
     public List<Task> getAll();
 
-
+    /**
+     * 分页查询所有的任务
+     * @param page
+     * @param limit
+     * @return
+     */
     List<Task> queryAllTask(int page,int limit);
 
-
+    /**
+     * 查询所有任务的数量
+     * @return
+     */
     int countAllTasknum();
 
+    /**
+     * 根据ID查询任务详情
+     * @param tid
+     * @return
+     */
     TaskInfoEntity queryTaskInfo(int tid);
 
-
+    /**
+     * 根据任务ID查询发布者姓名
+     * @param tid
+     * @return
+     */
     String queryUserName(int tid);
 
 }

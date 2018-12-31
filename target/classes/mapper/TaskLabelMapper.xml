@@ -5,13 +5,13 @@
         <result column="taskid" property="taskid" jdbcType="INTEGER" />
         <result column="labelid" property="labelid" jdbcType="INTEGER" />
     </resultMap>
+
     <insert id="insertTaskLabel" useGeneratedKeys="true" keyProperty="id" parameterType="com.annotation.model.TaskLabel">
         insert into task_label (taskid,labelid) values (#{taskid},#{labelid})
     </insert>
 
-    <select id="selectAll" resultMap="BaseResultMap" >
-        select taskid, labelid
-        from task_label WHERE taskid=#{tid}
+    <select id="selectLabelsByTaskid" parameterType="Integer" resultMap="BaseResultMap" >
+        select taskid, labelid from task_label WHERE taskid=#{tid}
     </select>
 
 </mapper>

@@ -16,6 +16,7 @@ public class LabelServiceImpl implements ILabelService {
 
     @Autowired
     LabelMapper labelMapper;
+
     /**
      * 根据任务ID查询标签
      * @param taskid

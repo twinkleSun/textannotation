@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface InstanceMapper {
+
     int deleteByPrimaryKey(Integer insid);
 
     int insert(Instance record);
@@ -30,5 +31,11 @@ public interface InstanceMapper {
      */
     List<InstanceItemEntity> selectInstanceItem(Integer docId);
 
+    /**
+     * 根据文件id获取所有的instance和item
+     * 文本关系标注
+     * @param docId
+     * @return
+     */
     List<InstanceListitemEntity> selectInstanceListitem(Integer docId);
 }

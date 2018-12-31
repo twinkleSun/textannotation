@@ -9,7 +9,6 @@ import com.annotation.model.User;
 
 public interface IUserService {
 
-
     public User queryUserByUsername(String username);
 
     public User queryUserByUserId(int id);

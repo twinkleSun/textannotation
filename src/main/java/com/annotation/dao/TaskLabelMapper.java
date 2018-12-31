@@ -21,5 +21,5 @@ public interface TaskLabelMapper {
      */
     int insertTaskLabel(TaskLabel taskLabel);
 
-    List<TaskLabel> selectAll();
+    List<TaskLabel> selectLabelsByTaskid(int tid);
 }

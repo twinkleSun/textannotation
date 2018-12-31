@@ -35,5 +35,4 @@ public interface ContentMapper {
      */
     int selectContentDocumentId(Integer contentid);
 
-
 }

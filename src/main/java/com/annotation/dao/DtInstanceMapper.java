@@ -20,5 +20,12 @@ public interface DtInstanceMapper {
 
     int updateByPrimaryKey(DtInstance record);
 
+    /**
+     * 查询做任务时，这个表是否已经插入
+     * @param userId
+     * @param taskId
+     * @param instanceId
+     * @return
+     */
     DtInstance selectDtInstance(@Param("userId")int userId, @Param("taskId")int taskId, @Param("instanceId")int instanceId);
 }

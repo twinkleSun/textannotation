@@ -14,6 +14,8 @@ public interface IDoTaskService {
 
     /**
      * 添加做任务表
+     * 做任务----信息抽取+分类
+     * 分类的conbegin/conend直接传-1
      * @param dotask
      * @param userid
      * @param labelId
@@ -23,7 +25,24 @@ public interface IDoTaskService {
      */
     int addDoTask(DoTask dotask, String userid, int labelId, int conbegin,int conend);
 
+    /**
+     * 做任务---添加文本关系类型标注
+     * @param dtInstance
+     * @param userId
+     * @param itemId
+     * @param labelId
+     * @param itemLabel
+     * @return
+     */
     int addInstanceItem(DtInstance dtInstance,int userId,int itemId,int labelId,String itemLabel);
 
+    /**
+     * 做任务---文本配对关系
+     * @param dtInstance
+     * @param userId
+     * @param aListItemId
+     * @param bListItemId
+     * @return
+     */
    int addListItem(DtInstance dtInstance,int userId,int aListItemId,int bListItemId);
 }

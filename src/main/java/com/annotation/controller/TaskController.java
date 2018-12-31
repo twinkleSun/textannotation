@@ -98,6 +98,7 @@ public class TaskController {
         if(tasklist==null){
             rs.put("msg","查询失败");
             rs.put("code",-1);
+            rs.put("count",0);
         }else{
             rs.put("msg","success");
             rs.put("code",0);
@@ -108,6 +109,11 @@ public class TaskController {
         return rs;
     }
 
+    /**
+     * 获取所有的任务
+     * todo:不确定有没有用到，忘了？？
+     * @return
+     */
     @RequestMapping(value = "selectAll",method = RequestMethod.POST)
     @ResponseBody
     public List<Task> selectAll() {
@@ -115,6 +121,15 @@ public class TaskController {
         return tasks;
     }
 
+    /**
+     * 分页查询所有的任务
+     * @param request
+     * @param httpServletResponse
+     * @param httpSession
+     * @param page
+     * @param limit
+     * @return
+     */
     @RequestMapping(value = "getAllTask", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getAllTask(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int page, int limit) {
@@ -135,11 +150,19 @@ public class TaskController {
     }
 
 
+    /**
+     * 根据任务ID获取任务详情
+     * todo：目前有四种类型
+     * @param request
+     * @param httpServletResponse
+     * @param httpSession
+     * @param tid
+     * @return
+     */
     @RequestMapping(value = "getTaskInfo", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getTaskInfo(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int tid) {
         TaskInfoEntity taskInfoEntity = iTaskService.queryTaskInfo(tid);
-
         String username=iTaskService.queryUserName(tid);
         JSONObject jso =new JSONObject();
         if(taskInfoEntity==null){

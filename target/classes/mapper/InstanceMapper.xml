@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.annotation.dao.InstanceMapper" >
+
   <resultMap id="BaseResultMap" type="com.annotation.model.Instance" >
     <id column="insid" property="insid" jdbcType="INTEGER" />
     <result column="insindex" property="insindex" jdbcType="VARCHAR" />
@@ -9,10 +10,12 @@
     <result column="documentid" property="documentid" jdbcType="INTEGER" />
     <result column="labelid" property="labelid" jdbcType="INTEGER" />
   </resultMap>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from instance
     where insid = #{insid,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.annotation.model.Instance" >
     insert into instance (insid, insindex, insstatus, 
       inscomptime, documentid, labelid
@@ -21,6 +24,7 @@
       #{inscomptime,jdbcType=VARCHAR}, #{documentid,jdbcType=INTEGER}, #{labelid,jdbcType=INTEGER}
       )
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.annotation.model.Instance" >
     update instance
     set insindex = #{insindex,jdbcType=VARCHAR},
@@ -30,17 +34,17 @@
       labelid = #{labelid,jdbcType=INTEGER}
     where insid = #{insid,jdbcType=INTEGER}
   </update>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select insid, insindex, insstatus, inscomptime, documentid, labelid
     from instance
     where insid = #{insid,jdbcType=INTEGER}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
     select insid, insindex, insstatus, inscomptime, documentid, labelid
     from instance
   </select>
-
-
 
     <resultMap id="InstanceItemByDocId" type="com.annotation.model.entity.InstanceItemEntity">
         <id column="insid" property="insid"></id>
@@ -60,18 +64,12 @@
         </collection>
     </resultMap>
 
-
     <select id="selectInstanceItem" parameterType="Integer" resultMap="InstanceItemByDocId">
      select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelid,
       t.itid, t.itemcontent, t.itemindex, t.instanceid, t.labelid itemlabelid
         from instance s,item t
         where s.documentid=#{docId} AND s.insid=t.instanceid
-
     </select>
-
-
-
-
 
     <resultMap id="InstanceListitemByDocId" type="com.annotation.model.entity.InstanceListitemEntity">
         <id column="insid" property="insid"></id>
@@ -88,24 +86,14 @@
             <result column="litemcontent" property="litemcontent"></result>
             <result column="litemstatus" property="litemstatus"></result>
             <result column="litemcomptime" property="litemcomptime"></result>
-
         </collection>
     </resultMap>
-
 
     <select id="selectInstanceListitem" parameterType="Integer" resultMap="InstanceListitemByDocId">
         select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelid,
         t.liid, t.listindex, t.litemindex, t.litemstatus, t.litemcomptime,t.litemcontent
         from instance s,listitem t
         where s.documentid=#{docId} AND s.insid=t.instanceid
-
     </select>
-
-
-
-
-
-
-
 
 </mapper>

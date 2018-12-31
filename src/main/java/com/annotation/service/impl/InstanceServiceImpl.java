@@ -20,13 +20,23 @@ public class InstanceServiceImpl implements IInstanceService {
     @Autowired
     InstanceMapper instanceMapper;
 
-
-
+    /**
+     * 根据文件的ID查询instance+Item
+     * 文本关系类别
+     * @param docId
+     * @return
+     */
     public List<InstanceItemEntity> queryInstanceItem(int docId){
         List<InstanceItemEntity> instanceItemEntityList=instanceMapper.selectInstanceItem(docId);
         return instanceItemEntityList;
     }
 
+    /**
+     * 根据文件ID查询instance+listitem
+     * 文本配对关系
+     * @param docId
+     * @return
+     */
     public List<InstanceListitemEntity> queryInstanceListitem(int docId){
         List<InstanceListitemEntity> instanceListitemEntityList=instanceMapper.selectInstanceListitem(docId);
         return instanceListitemEntityList;

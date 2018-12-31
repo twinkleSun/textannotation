@@ -18,6 +18,11 @@ public class ContentServiceImpl implements IContentService {
     @Autowired
     ContentMapper contentMapper;
 
+    /**
+     * 根据文件ID查询content表的内容
+     * @param docId
+     * @return
+     */
     public List<Content> selectContentByDocId(int docId){
         List<Content> contentList =contentMapper.selectContentByDocumentId(docId);
         return contentList;

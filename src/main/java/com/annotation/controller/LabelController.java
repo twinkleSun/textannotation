@@ -45,7 +45,6 @@ public class LabelController {
             rs.put("status",-1);
             rs.put("msg","查询失败");
         }
-
         return rs;
     }
 }

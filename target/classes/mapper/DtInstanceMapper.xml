@@ -11,10 +11,10 @@
     delete from dt_instance
     where dt_instid = #{dtInstid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.annotation.model.DtInstance" >
-    insert into dt_instance (dt_instid, user_id, task_id, 
+  <insert id="insert" useGeneratedKeys="true" keyProperty="dtInstid" parameterType="com.annotation.model.DtInstance" >
+    insert into dt_instance (user_id, task_id,
       instance_id)
-    values (#{dtInstid,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, 
+    values (#{userId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER},
       #{instanceId,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.annotation.model.DtInstance" >
