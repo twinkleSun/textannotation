@@ -190,15 +190,13 @@ CREATE TABLE `dtd_item_label` (
   `dtd_itlid` int(11) NOT NULL AUTO_INCREMENT COMMENT '做任务详细描述ID',
   `dt_inst_id` int(11) DEFAULT NULL COMMENT '做任务ID',
   `item_id` int(11) DEFAULT NULL COMMENT '做任务任务ID',
-  `label_id` int(11) DEFAULT NULL COMMENT '做任务item标签ID',
   `item_label` VARCHAR(255) DEFAULT NULL COMMENT 'item关系分类',
   PRIMARY KEY (`dtd_itlid`),
   FOREIGN KEY (`dt_inst_id`) REFERENCES `dt_instance` (`dt_instid`),
   FOREIGN KEY (`item_id`) REFERENCES `item` (`itid`),
-  FOREIGN KEY (`label_id`) REFERENCES `label` (`lid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-INSERT INTO `dtd_item_label` VALUES ('1', '1','1','1','2');
+INSERT INTO `dtd_item_label` VALUES ('1', '1','1','2');
 
 # 文本配对的item关系表
 use textannotation;
