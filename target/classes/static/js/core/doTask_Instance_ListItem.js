@@ -85,12 +85,6 @@ $(function ($) {
         canvas2.width=box.find(".show").width();//canvas宽度等于div容器宽度
         canvas2.height=box.find(".show").height();
 
-        // $("#backOneStep").click(function(){
-        //     var context = canvas.getContext('2d');  //canvas追加2d画图
-        //     context.clearRect(0,0,box.find(".show").width(),box.find(".show").height());//整个画布清除
-        //
-        // });
-
     };
 
     /**
@@ -107,7 +101,6 @@ $(function ($) {
 
         $('#taskInfoPanel').collapse('hide');
     });
-
 
     /**
      * 后退一步，等于重新画页面

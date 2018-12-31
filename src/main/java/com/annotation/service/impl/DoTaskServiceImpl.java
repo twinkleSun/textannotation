@@ -159,7 +159,6 @@ public class DoTaskServiceImpl implements IDoTaskService{
     /**
      * 做任务---文本关系配对
      * todo:更新状态的逻辑
-     * todo:关系已存在则不插入
      * todo:了解数据库事务
      * @param dtInstance
      * @param userId
@@ -190,8 +189,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
         }
 
         DtdItemRelation dtdItemRelation = new DtdItemRelation();
-
-        //todo:为什么已经存在了还能插入进去
+        
         DtdItemRelation dtdItemRelation1 =dtdItemRelationMapper.selectDtItemRelation(dtInstId,aListItemId,bListItemId);
         if(dtdItemRelation1==null){
             dtdItemRelation.setDtInstId(dtInstId);
