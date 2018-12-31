@@ -27,11 +27,11 @@ public class DoTaskServiceImpl implements IDoTaskService{
     @Autowired
     DtInstanceMapper dtInstanceMapper;
     @Autowired
-    DtdItemLabelMapper dtdItemLabelMapper;
-    @Autowired
     DtdItemRelationMapper dtdItemRelationMapper;
     @Autowired
     InstanceMapper instanceMapper;
+    @Autowired
+    DtdItemLabelMapper dtdItemLabelMapper;
 
     /**
      * 添加做任务表
@@ -97,18 +97,19 @@ public class DoTaskServiceImpl implements IDoTaskService{
         return dotaskID;
     }
 
+
     /**
      * 做任务----文本关系类型
-     * todo:有点问题，数据库表和逻辑不太对
      * @param dtInstance
      * @param userId
-     * @param itemId
-     * @param labelId
-     * @param itemLabel
+     * @param itemId1
+     * @param itemLabel1
+     * @param itemId2
+     * @param itemLabel2
      * @return
      */
     @Transactional
-    public int addInstanceItem(DtInstance dtInstance,int userId,int itemId,int labelId,String itemLabel){
+    public int addInstanceItem(DtInstance dtInstance,int userId,int itemId1,String itemLabel1,int itemId2,String itemLabel2){
         dtInstance.setUserId(userId);
 
         DtInstance isDtInstance = dtInstanceMapper.selectDtInstance(userId,dtInstance.getTaskId(),dtInstance.getInstanceId());
@@ -127,17 +128,16 @@ public class DoTaskServiceImpl implements IDoTaskService{
             dtInstId = isDtInstance.getDtInstid();
         }
 
-        DtdItemLabel dtdItemLabel = new DtdItemLabel();
-
-        dtdItemLabel.setDtInstId(dtInstId);
-        dtdItemLabel.setItemId(itemId);
-        dtdItemLabel.setItemLabel(itemLabel);
-        dtdItemLabel.setLabelId(labelId);
-        int dtdItemLabelRes = dtdItemLabelMapper.insert(dtdItemLabel);
-
-        if(dtdItemLabelRes == -1){
+        int iRes1= insertOrUpdate(dtInstId,itemId1,itemLabel1);
+        if(iRes1==-2){
             return -2;
         }
+
+        int iRes2= insertOrUpdate(dtInstId,itemId2,itemLabel2);
+        if(iRes2==-2){
+            return -2;
+        }
+
 
         //更新任务表的状态
         Task task = taskMapper.selectTaskById(dtInstance.getTaskId());
@@ -189,7 +189,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
         }
 
         DtdItemRelation dtdItemRelation = new DtdItemRelation();
-        
+
         DtdItemRelation dtdItemRelation1 =dtdItemRelationMapper.selectDtItemRelation(dtInstId,aListItemId,bListItemId);
         if(dtdItemRelation1==null){
             dtdItemRelation.setDtInstId(dtInstId);
@@ -218,6 +218,34 @@ public class DoTaskServiceImpl implements IDoTaskService{
         }
         //返回做任务ID
         return dtInstId;
+    }
+
+    /**
+     * 插入dtdItemLabel表的操作
+     * @param dtInstId
+     * @param itemId
+     * @param itemLabel
+     * @return
+     */
+    public int insertOrUpdate(int dtInstId,int itemId,String itemLabel){
+        DtdItemLabel dtdItemLabel = new DtdItemLabel();
+        int dtdItemLabelRes;
+        DtdItemLabel dtdItemLabelTemp=dtdItemLabelMapper.selectByDtInstIdAndItemId(dtInstId,itemId);
+        if(dtdItemLabelTemp==null){
+            dtdItemLabel.setDtInstId(dtInstId);
+            dtdItemLabel.setItemId(itemId);
+            dtdItemLabel.setItemLabel(itemLabel);
+            dtdItemLabelRes = dtdItemLabelMapper.insert(dtdItemLabel);
+            if(dtdItemLabelRes == -1){
+                return -2;
+            }
+        }else {
+            dtdItemLabelRes = dtdItemLabelMapper.updateItemLabelByPrimaryKey(dtdItemLabelTemp.getDtdItlid(), itemLabel);
+            if (dtdItemLabelRes == -1) {
+                return -2;
+            }
+        }
+        return 0;
     }
 }
 

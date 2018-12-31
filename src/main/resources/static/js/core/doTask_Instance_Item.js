@@ -23,9 +23,6 @@ var docId;//从documentList中获取
 
 var ul_li_instanceIndex=new Array;
 
-
-
-
 $(function () {
 
     /**
@@ -41,7 +38,6 @@ $(function () {
      */
     ajaxTaskInfo(taskId);
 
-
     /**
      * 点击我要做任务显示的面板，
      * 同时将任务详细信息折叠面板设为hide
@@ -49,15 +45,37 @@ $(function () {
     $("#input-dotask").click(function(){
         $("#div-instance-item").show();
 
-
         $('#taskInfoPanel').collapse('hide');
 
     });
 
 
+    $("#submit-item").click(function(){
+        var item_label_0=$("#input-item-0").val();
+        var item_label_1=$("#input-item-1").val();
+
+        var doTaskData={
+            dtInstid:"",
+            userId:"",
+            taskId :taskId,
+            instanceId:instanceItem[curInstanceIndex].insid,
+            itemId1:instanceItem[curInstanceIndex].itemList[0].itid,
+            item_label1:item_label_0,
+            itemId2:instanceItem[curInstanceIndex].itemList[1].itid,
+            item_label2:item_label_1
+        };  console.log(doTaskData);
+
+        console.log(doTaskData);
+
+        ajaxdoTaskInfo(doTaskData);
+
+
+    });
+
+
+
 
 });
-
 
 
 /**
@@ -177,16 +195,10 @@ function ajaxDocInstanceItem(docId) {
                 var li_html="";
                 if(i==0){
                     li_html=' <li class="active" id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
-                        '第' +
-                        (i+1) +
-                        '部分' +
-                        '</a></li>';
+                        '第' + (i+1) + '部分' + '</a></li>';
                 }else{
                     li_html=' <li  id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
-                        '第' +
-                        (i+1) +
-                        '部分' +
-                        '</a></li>';
+                        '第' + (i+1) + '部分' + '</a></li>';
                 }
                 ul_html=ul_html+li_html;
                 ul_li_instanceIndex[i]="li-"+i;
@@ -222,7 +234,7 @@ function curInstanceId(obj) {
 function ajaxdoTaskInfo(doTaskData) {
 
     $.ajax({
-        url: "dotask/addDoTask",
+        url: "dotask/addInstanceItem",
         type: "post",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -230,11 +242,8 @@ function ajaxdoTaskInfo(doTaskData) {
         data:doTaskData,
         success: function (data) {
             console.log(data);
-            if(data.status=="0"){
-                ajaxTag=ajaxTag+0;
-            }else{
-                ajaxTag=-1;
-            }
+
+
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 

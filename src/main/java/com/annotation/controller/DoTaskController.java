@@ -80,26 +80,27 @@ public class DoTaskController {
         return responseEntity;
     }
 
+
     /**
-     * 文本关系类型标注
-     * todo:这个labelid待定
+     * 做任务---文本关系类型标注
      * @param httpSession
      * @param dtInstance
-     * @param itemId
-     * @param labelId
-     * @param item_label
+     * @param itemId1
+     * @param item_label1
+     * @param itemId2
+     * @param item_label2
      * @return
      */
     @RequestMapping(value = "addInstanceItem", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity addInstanceItem(HttpSession httpSession, DtInstance dtInstance, int itemId, int labelId, String item_label) {
+    public ResponseEntity addInstanceItem(HttpSession httpSession, DtInstance dtInstance, int itemId1,String item_label1,int itemId2,String item_label2) {
 
         User user =(User)httpSession.getAttribute("currentUser");
 
         //User user =(User)iUserService.queryUserByUsername("test");
         // userid = user.getId();
 
-        int dtInstItemRes =iDoTaskService.addInstanceItem(dtInstance,user.getId(),itemId,labelId,item_label);//创建做任务表的结果
+        int dtInstItemRes =iDoTaskService.addInstanceItem(dtInstance,user.getId(),itemId1,item_label1,itemId2,item_label2);//创建做任务表的结果
 
         ResponseEntity responseEntity = new ResponseEntity();
 

@@ -192,6 +192,8 @@ $(function ($) {
                 ajaxdoTaskInfo(doTaskData,fRes);
                 if(fRes==-1){
                     alert("提交失败");
+                }else{
+                    alert("提交成功");
                 }
             }
         }

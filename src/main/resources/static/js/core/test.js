@@ -10,7 +10,6 @@ $(function () {
         taskId :1,
         instanceId:1,
         itemId:2,
-        labelId:1,
         item_label:"ceshiyong"
     };
 

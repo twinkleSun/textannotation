@@ -25,16 +25,18 @@ public interface IDoTaskService {
      */
     int addDoTask(DoTask dotask, String userid, int labelId, int conbegin,int conend);
 
+
     /**
      * 做任务---添加文本关系类型标注
      * @param dtInstance
      * @param userId
-     * @param itemId
-     * @param labelId
-     * @param itemLabel
+     * @param itemId1
+     * @param itemLabel1
+     * @param itemId2
+     * @param itemLabel2
      * @return
      */
-    int addInstanceItem(DtInstance dtInstance,int userId,int itemId,int labelId,String itemLabel);
+    int addInstanceItem(DtInstance dtInstance,int userId,int itemId1,String itemLabel1,int itemId2,String itemLabel2);
 
     /**
      * 做任务---文本配对关系
@@ -45,4 +47,14 @@ public interface IDoTaskService {
      * @return
      */
    int addListItem(DtInstance dtInstance,int userId,int aListItemId,int bListItemId);
+
+    /**
+     * 做任务--插入dtdItemLabel表的操作，因为要插入两次，所以单独写出来
+     * todo:不同service之间可以互相调用吗？
+     * @param dtInstId
+     * @param itemId
+     * @param itemLabel
+     * @return
+     */
+   int insertOrUpdate(int dtInstId,int itemId,String itemLabel);
 }

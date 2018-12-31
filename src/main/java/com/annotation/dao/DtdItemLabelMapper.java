@@ -2,8 +2,8 @@ package com.annotation.dao;
 
 import com.annotation.model.DtdItemLabel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Mapper
@@ -19,5 +19,7 @@ public interface DtdItemLabelMapper {
 
     int updateByPrimaryKey(DtdItemLabel record);
 
-    //todo:还没处理，表有问题
+    DtdItemLabel selectByDtInstIdAndItemId(@Param("dtInstId")Integer dtInstId, @Param("itemId")Integer itemId);
+
+    int updateItemLabelByPrimaryKey(@Param("dtdItlid")Integer dtdItlid, @Param("itemLabel")String itemLabel);
 }

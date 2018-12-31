@@ -6,7 +6,6 @@
     <id column="dtd_itlid" property="dtdItlid" jdbcType="INTEGER" />
     <result column="dt_inst_id" property="dtInstId" jdbcType="INTEGER" />
     <result column="item_id" property="itemId" jdbcType="INTEGER" />
-    <result column="label_id" property="labelId" jdbcType="INTEGER" />
     <result column="item_label" property="itemLabel" jdbcType="VARCHAR" />
   </resultMap>
 
@@ -17,29 +16,39 @@
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="dtdItlid" parameterType="com.annotation.model.DtdItemLabel" >
     insert into dtd_item_label (dtd_itlid, dt_inst_id, item_id, 
-      label_id, item_label)
+       item_label)
     values (#{dtdItlid,jdbcType=INTEGER}, #{dtInstId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, 
-      #{labelId,jdbcType=INTEGER}, #{itemLabel,jdbcType=VARCHAR})
+     #{itemLabel,jdbcType=VARCHAR})
   </insert>
 
   <update id="updateByPrimaryKey" parameterType="com.annotation.model.DtdItemLabel" >
     update dtd_item_label
     set dt_inst_id = #{dtInstId,jdbcType=INTEGER},
       item_id = #{itemId,jdbcType=INTEGER},
-      label_id = #{labelId,jdbcType=INTEGER},
       item_label = #{itemLabel,jdbcType=VARCHAR}
     where dtd_itlid = #{dtdItlid,jdbcType=INTEGER}
   </update>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select dtd_itlid, dt_inst_id, item_id, label_id, item_label
+    select dtd_itlid, dt_inst_id, item_id, item_label
     from dtd_item_label
     where dtd_itlid = #{dtdItlid,jdbcType=INTEGER}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap" >
-    select dtd_itlid, dt_inst_id, item_id, label_id, item_label
+    select dtd_itlid, dt_inst_id, item_id, item_label
     from dtd_item_label
   </select>
 
+
+  <select id="selectByDtInstIdAndItemId" parameterType="Integer" resultMap="BaseResultMap" >
+    select dtd_itlid, dt_inst_id, item_id, item_label
+    from dtd_item_label WHERE dt_inst_id=#{dtInstId} AND item_id=#{itemId}
+  </select>
+
+    <update id="updateItemLabelByPrimaryKey" parameterType="com.annotation.model.DtdItemLabel" >
+        update dtd_item_label
+        set item_label = #{itemLabel,jdbcType=VARCHAR}
+        where dtd_itlid = #{dtdItlid,jdbcType=INTEGER}
+    </update>
 </mapper>
