@@ -110,7 +110,6 @@ CREATE TABLE `insta_label` (
   `lebelid` int(11) NOT NULL COMMENT '标签ID',
   `lebelindex` int(11) NOT NULL COMMENT '标签类别：item1或item2',
   `taskid` int(11) NOT NULL COMMENT '任务ID',
-  PRIMARY KEY (`lebelid`),
   FOREIGN KEY (`lebelid`) REFERENCES `label` (`lid`),
   FOREIGN KEY (`taskid`) REFERENCES `task` (`tid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
