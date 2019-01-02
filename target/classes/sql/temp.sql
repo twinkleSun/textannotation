@@ -103,16 +103,3 @@ CREATE TABLE `dtd_item_relation` (
   FOREIGN KEY (`b_listitem_id`) REFERENCES `listitem` (`liid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 INSERT INTO `dtd_item_relation` VALUES ('1','1','1', '2');
-
-
-use textannotation;
-DROP TABLE IF EXISTS `insta_label`;
-CREATE TABLE `insta_label` (
-  `lebelid` int(11) NOT NULL COMMENT '标签ID',
-  `lebelindex` int(11) NOT NULL COMMENT '标签类别：item1或item2',
-  `taskid` int(11) NOT NULL COMMENT '任务ID',
-  FOREIGN KEY (`lebelid`) REFERENCES `label` (`lid`),
-  FOREIGN KEY (`taskid`) REFERENCES `task` (`tid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `insta_label` VALUES ('1','1','1');
-INSERT INTO `insta_label` VALUES ('2','2','1');
