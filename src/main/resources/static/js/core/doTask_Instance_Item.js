@@ -243,13 +243,27 @@ function ajaxdoTaskInfo(doTaskData) {
         success: function (data) {
             console.log(data);
 
-
+            alert("提交成功！");
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
 
         },
     });
+
+
+};
+
+function testLabel(obj) {
+    if($("#"+obj).attr("flag")==0){
+        console.log(obj);
+        $("#"+obj).attr("flag","1");
+        $("#"+obj).addClass("label-warning").removeClass("label-info");
+    }else if($("#"+obj).attr("flag")==1){
+        console.log(obj);
+        $("#"+obj).attr("flag","0");
+        $("#"+obj).addClass("label-info").removeClass("label-warning");
+    }
 
 
 };

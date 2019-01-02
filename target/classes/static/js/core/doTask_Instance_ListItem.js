@@ -96,10 +96,13 @@ $(function ($) {
      * 点击我要做任务显示的面板，
      * 同时将任务详细信息折叠面板设为hide
      */
-    $("#input-dotask").click(function(){
-        $("#div-doTask").show();
+    $("#btn-dotask").click(function(){
 
+        $("#op-dotask").hide();
+        $("#op-button").show();
         $('#taskInfoPanel').collapse('hide');
+
+
     });
 
     /**
@@ -190,14 +193,14 @@ $(function ($) {
                 };console.log(doTaskData);
 
                 ajaxdoTaskInfo(doTaskData,fRes);
-                if(fRes==-1){
-                    alert("提交失败");
-                }else{
-                    alert("提交成功");
-                }
+
             }
         }
-
+        if(fRes==-1){
+            alert("提交失败");
+        }else{
+            alert("提交成功");
+        }
         tempNum[curInstanceIndex]=0;
         lineLR[curInstanceIndex]=new Array;
 
@@ -372,11 +375,11 @@ function paintDoTask(listItem) {
          * 分别写入左右两边
          */
         if(listItem[i].listindex=="1"){
-            var lt= '<li class="showitem" id="left-'+i+'" onclick="drawLeft(this.id)">'
+            var lt= '<li class="showitem" id="left-'+listItem[i].liid+'" onclick="drawLeft(this.id)">'
                 +listItem[i].litemcontent+'</li>';
             left_Html=left_Html+lt;
         }else if(listItem[i].listindex=="2"){
-            var rt='<li class="showitem" id="right-'+i+'" onclick="drawRight(this.id)">'
+            var rt='<li class="showitem" id="right-'+listItem[i].liid+'" onclick="drawRight(this.id)">'
                 +listItem[i].litemcontent+'</li>';
             right_Html=right_Html+rt;
         }
@@ -418,6 +421,17 @@ function drawLeft(obj) {
     curLeftId=obj;
     x1=$("#"+obj).attr("left");
     x2=$("#"+obj).attr("top");
+
+    var listLen=listItem.length;
+    for(var i=0;i<listLen;i++){
+
+        if(listItem[i].listindex==1){
+            var tempList= "left-"+listItem[i].liid;
+            console.log(tempList);
+            $("#"+tempList).css("background-color","#5bc0de");
+        }
+
+    }
     $("#"+obj).css("background-color","#F96");
 
 
@@ -462,7 +476,6 @@ function drawRight(obj) {
          * todo:查看正在进行中的任务
          * @type {Array}
          */
-
 
     }
 
@@ -549,7 +562,7 @@ function ajaxdoTaskInfo(doTaskData,fRes) {
         data:doTaskData,
         success: function (data) {
             if(data.status!=0){
-                fRes=-1;
+                fRes=fRes-1;
             }
             //console.log(data);
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {

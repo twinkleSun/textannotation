@@ -166,10 +166,11 @@ function imgOkClick(obj) {
      * 可以根据用户选中的颜色标记文本
      * @type {string}
      */
-    var testcolor="#"+$("#"+label_color[curLabelIndex]).val();//console.log(testcolor);
+    // var testcolor="#"+$("#"+label_color[curLabelIndex]).val();//console.log(testcolor);
     var span = document.createElement("span");
     span.style.fontSize = "20px";
-    span.style.color=testcolor;
+    // span.style.color=testcolor;
+    span.style.color="red";
     span.id="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum);
     span.appendChild(document.createTextNode(txt));
     // console.log(document.createTextNode(txt));
@@ -406,16 +407,16 @@ function labelHtml(labelList){
             +'<div id="label-ans-div-'+i+'" class="panel-collapse collapse">'
                 +'<div class="panel-body">'
                     +'<ul class="list-group" id="label-ans-ul-'+i+'">'
-                            +'<li class="list-group-item">'
-                            +'<div class="row">'
-                            + '<div class="col-lg-6"> '
-                            +'<span class="text-input">请输入你想要标注的RGB值</span>'
-                            + '</div>'
-                            +'<div class="col-lg-6">'
-                            +'#<input type="text" class="text-input" id="label-color-'+i+'" value=""> '
-                            + '</div> '
-                            + '</div> '
-                            +'</li>'
+                            // +'<li class="list-group-item">'
+                            // +'<div class="row">'
+                            // + '<div class="col-lg-6"> '
+                            // +'<span class="text-input">请输入你想要标注的RGB值</span>'
+                            // + '</div>'
+                            // +'<div class="col-lg-6">'
+                            // +'#<input type="text" class="text-input" id="label-color-'+i+'" value=""> '
+                            // + '</div> '
+                            // + '</div> '
+                            // +'</li>'
                         +'<li class="list-group-item" id="label-ans-li-'+i+'-0">'
                             +'<div class="row">'
                                 +'<div class="col-lg-10" id="li-ans-div-'+i+'-0">'
