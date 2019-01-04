@@ -3,6 +3,7 @@ package com.annotation.model.entity;
 import com.annotation.model.Listitem;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by twinkleStar on 2018/12/29.
@@ -14,9 +15,9 @@ public class InstanceListitemEntity {
     private String insstatus;
     private String inscomptime;
     private Integer documentid;
-    private Integer labelid;
-    private String labelname;
+
     private List<Listitem> listitems;
+    private List<Map<String,Object>> alreadyDone;
 
     public Integer getInsid() {
         return insid;
@@ -53,24 +54,18 @@ public class InstanceListitemEntity {
         this.documentid = documentid;
     }
 
-    public Integer getLabelid() {
-        return labelid;
-    }
-    public void setLabelid(Integer labelid) {
-        this.labelid = labelid;
-    }
-
-    public void setLabelname(String labelname) {
-        this.labelname = labelname;
-    }
-    public String getLabelname() {
-        return labelname;
-    }
-
     public List<Listitem> getListitems(){
         return listitems;
     }
     public void setListitems(List<Listitem> listitems){
         this.listitems = listitems;
     }
+
+    public List<Map<String,Object>> getAlreadyDone(){
+        return alreadyDone;
+    }
+    public void setAlreadyDone(List<Map<String,Object>> alreadyDone){
+        this.alreadyDone = alreadyDone;
+    }
+
 }

@@ -207,7 +207,7 @@ public class TaskServiceImpl implements ITaskService{
         /**
          * 文本配对标注
          */
-        }else if(task.getType().equals("文本配对标注")){
+        }else if(task.getType().contains("文本配对标注")){
             taskInfoEntity =taskMapper.selectTaskInfoWithDoc(tid);
         }else{
             //todo：其他类型，待开发

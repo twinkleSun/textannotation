@@ -26,17 +26,18 @@ public interface IDoTaskService {
     int addDoTask(DoTask dotask, String userid, int labelId, int conbegin,int conend);
 
 
+
     /**
      * 做任务---添加文本关系类型标注
      * @param dtInstance
      * @param userId
      * @param itemId1
-     * @param itemLabel1
+     * @param item1Labels
      * @param itemId2
-     * @param itemLabel2
+     * @param item2Labels
      * @return
      */
-    int addInstanceItem(DtInstance dtInstance,int userId,int itemId1,String itemLabel1,int itemId2,String itemLabel2);
+    int addInstanceItem(DtInstance dtInstance,int userId,int itemId1,int[] item1Labels,int itemId2,int[] item2Labels,int[] instanceLabels);
 
     /**
      * 做任务---文本配对关系
@@ -46,15 +47,43 @@ public interface IDoTaskService {
      * @param bListItemId
      * @return
      */
-   int addListItem(DtInstance dtInstance,int userId,int aListItemId,int bListItemId);
+   String addListItem(DtInstance dtInstance,int userId,int[] aListItemId,int[] bListItemId,String taskType);
 
     /**
      * 做任务--插入dtdItemLabel表的操作，因为要插入两次，所以单独写出来
      * todo:不同service之间可以互相调用吗？
      * @param dtInstId
-     * @param itemId
-     * @param itemLabel
+     * @param labeltype
+     * @param itemLabels
      * @return
      */
-   int insertOrUpdate(int dtInstId,int itemId,String itemLabel);
+   int insertLabels(int dtInstId,String labeltype,int[] itemLabels);
+
+    /**
+     * 文本配对--一对一
+     * @param dtInstId
+     * @param aListitemId
+     * @param bListitemId
+     * @return
+     */
+   String insertOneToOneRelations(int dtInstId,int[] aListitemId,int[] bListitemId);
+
+    /**
+     * 文本配对--一对多
+     * @param dtInstId
+     * @param aListitemId
+     * @param bListitemId
+     * @return
+     */
+    String insertOneToManyRelations(int dtInstId,int[] aListitemId,int[] bListitemId);
+
+
+    /**
+     * 文本配对--多对多
+     * @param dtInstId
+     * @param aListitemId
+     * @param bListitemId
+     * @return
+     */
+    String insertManyToManyRelations(int dtInstId,int[] aListitemId,int[] bListitemId);
 }

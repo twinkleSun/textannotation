@@ -15,12 +15,12 @@ public interface IInstanceService {
      * @param docId
      * @return
      */
-    List<InstanceItemEntity> queryInstanceItem(int docId);
+    List<InstanceItemEntity> queryInstanceItem(int docId,int userId);
 
     /**
      * 查询instance+listitem
      * @param docId
      * @return
      */
-    List<InstanceListitemEntity> queryInstanceListitem(int docId);
+    List<InstanceListitemEntity> queryInstanceListitem(int docId,int userid);
 }

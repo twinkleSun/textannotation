@@ -126,7 +126,7 @@
                             window.location.href="./doTask_Info_Extraction.html?taskid="+taskid;
                         }else if(taskType=="文本关系类别标注"){
                             window.location.href="./doTask_Instance_Item.html?taskid="+taskid;
-                        }else if(taskType=="文本配对标注"){
+                        }else if(taskType.indexOf("文本配对标注")!=-1){
                             window.location.href="./doTask_Instance_ListItem.html?taskid="+taskid;
                         }
 

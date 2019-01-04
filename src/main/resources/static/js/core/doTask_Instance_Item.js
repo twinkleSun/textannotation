@@ -54,21 +54,35 @@ $(function () {
         var item_label_0=$("#input-item-0").val();
         var item_label_1=$("#input-item-1").val();
 
+        // var doTaskData={
+        //     dtInstid:"",
+        //     userId:"",
+        //     taskId :taskId,
+        //     instanceId:instanceItem[curInstanceIndex].insid,
+        //     itemId1:instanceItem[curInstanceIndex].itemList[0].itid,
+        //     item_label1:item_label_0,
+        //     itemId2:instanceItem[curInstanceIndex].itemList[1].itid,
+        //     item_label2:item_label_1
+        // };  console.log(doTaskData);
+
+        var item1Labels=[20,21,22];
+        var item2Labels=[20,21,22];
+        var instanceLabels=[28,21,22];
+
         var doTaskData={
             dtInstid:"",
             userId:"",
             taskId :taskId,
             instanceId:instanceItem[curInstanceIndex].insid,
             itemId1:instanceItem[curInstanceIndex].itemList[0].itid,
-            item_label1:item_label_0,
+            item1Labels:item1Labels,
             itemId2:instanceItem[curInstanceIndex].itemList[1].itid,
-            item_label2:item_label_1
+            item2Labels:item2Labels,
+            instanceLabels:instanceLabels
+
         };  console.log(doTaskData);
 
-        console.log(doTaskData);
-
         ajaxdoTaskInfo(doTaskData);
-
 
     });
 
@@ -166,7 +180,8 @@ function ajaxTaskInfo(taskId) {
  */
 function ajaxDocInstanceItem(docId) {
     var docid={
-        docId: docId
+        docId: docId,
+        userid:""
     };
     $.ajax({
         url: "instance/getInstanceItem",

@@ -23,4 +23,19 @@
         INNER JOIN label l on tl.labelid = l.lid WHERE t.tid=#{taskid}
     </select>
 
+    <select id="selectInstanceLabelByDocId" parameterType="Integer" resultType="com.annotation.model.Label">
+        SELECT l.lid,l.labelname FROM label l,task_label tl,task_document td
+        WHERE td.documentid=#{docId} AND td.taskid=tl.taskid AND l.lid=tl.labelid
+    </select>
+
+    <select id="selectItem1LabelByDocId" parameterType="Integer" resultType="com.annotation.model.Label">
+        SELECT l.lid,l.labelname FROM label l,insta_label tl,task_document td
+        WHERE td.documentid=#{docId} AND td.taskid=tl.taskid AND l.lid=tl.lebelid AND tl.lebelindex="1"
+    </select>
+
+    <select id="selectItem2LabelByDocId" parameterType="Integer" resultType="com.annotation.model.Label">
+        SELECT l.lid,l.labelname FROM label l,insta_label tl,task_document td
+        WHERE td.documentid=#{docId} AND td.taskid=tl.taskid AND l.lid=tl.lebelid AND  tl.lebelindex="2"
+    </select>
+
 </mapper>

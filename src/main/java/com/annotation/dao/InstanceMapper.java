@@ -4,6 +4,7 @@ import com.annotation.model.Instance;
 import com.annotation.model.entity.InstanceItemEntity;
 import com.annotation.model.entity.InstanceListitemEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,6 +23,14 @@ public interface InstanceMapper {
 
     int updateByPrimaryKey(Instance record);
 
+    /**
+     * 根据文件id获取所有的instance和item
+     * 包括已经做好的
+     * @param docId
+     * @param userId
+     * @return
+     */
+    List<InstanceItemEntity> selectInstanceItem(@Param("docId")Integer docId, @Param("userId")Integer userId);
 
     /**
      * 根据文件id获取所有的instance和item
@@ -29,13 +38,5 @@ public interface InstanceMapper {
      * @param docId
      * @return
      */
-    List<InstanceItemEntity> selectInstanceItem(Integer docId);
-
-    /**
-     * 根据文件id获取所有的instance和item
-     * 文本关系标注
-     * @param docId
-     * @return
-     */
-    List<InstanceListitemEntity> selectInstanceListitem(Integer docId);
+    List<InstanceListitemEntity> selectInstanceListitem(@Param("docId")Integer docId, @Param("userId")Integer userId);
 }

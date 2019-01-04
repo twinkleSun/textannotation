@@ -43,4 +43,26 @@
   <select id="selectDtItemRelation" parameterType="Integer" resultMap="BaseResultMap">
     select * from dtd_item_relation where dt_inst_id = #{dtInstId} and a_listitem_id = #{aListItemId} and b_listitem_id = #{bListItemId}
   </select>
+
+
+
+  <insert id="insertRelationListByOneToOne">
+    insert into dtd_item_relation (dt_inst_id, a_listitem_id,b_listitem_id)
+    SELECT #{dtInstId}, #{aListItemId}, #{bListItemId} FROM DUAL
+    WHERE NOT EXISTS (SELECT dtd_itrid FROM dtd_item_relation WHERE dt_inst_id = #{dtInstId} and
+    a_listitem_id = #{aListItemId} OR b_listitem_id = #{bListItemId})
+  </insert>
+
+
+  <insert id="insertRelationListByOneToMany">
+    insert into dtd_item_relation (dt_inst_id, a_listitem_id,b_listitem_id)
+    SELECT #{dtInstId}, #{aListItemId}, #{bListItemId} FROM DUAL
+    WHERE NOT EXISTS (SELECT dtd_itrid FROM dtd_item_relation WHERE dt_inst_id = #{dtInstId} and
+     b_listitem_id = #{bListItemId})
+  </insert>
+
+  <insert id="insertRelationListByManyToMany">
+    insert into dtd_item_relation (dt_inst_id, a_listitem_id,b_listitem_id)
+     values (#{dtInstId}, #{aListItemId},#{bListItemId})
+  </insert>
 </mapper>

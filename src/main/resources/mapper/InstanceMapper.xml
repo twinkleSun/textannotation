@@ -8,7 +8,7 @@
     <result column="insstatus" property="insstatus" jdbcType="VARCHAR" />
     <result column="inscomptime" property="inscomptime" jdbcType="VARCHAR" />
     <result column="documentid" property="documentid" jdbcType="INTEGER" />
-    <result column="labelid" property="labelid" jdbcType="INTEGER" />
+    <result column="labelnum" property="labelnum" jdbcType="INTEGER" />
   </resultMap>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -18,10 +18,10 @@
 
   <insert id="insert" parameterType="com.annotation.model.Instance" >
     insert into instance (insid, insindex, insstatus, 
-      inscomptime, documentid, labelid
+      inscomptime, documentid, labelnum
       )
     values (#{insid,jdbcType=INTEGER}, #{insindex,jdbcType=VARCHAR}, #{insstatus,jdbcType=VARCHAR}, 
-      #{inscomptime,jdbcType=VARCHAR}, #{documentid,jdbcType=INTEGER}, #{labelid,jdbcType=INTEGER}
+      #{inscomptime,jdbcType=VARCHAR}, #{documentid,jdbcType=INTEGER}, #{labelnum,jdbcType=INTEGER}
       )
   </insert>
 
@@ -31,18 +31,18 @@
       insstatus = #{insstatus,jdbcType=VARCHAR},
       inscomptime = #{inscomptime,jdbcType=VARCHAR},
       documentid = #{documentid,jdbcType=INTEGER},
-      labelid = #{labelid,jdbcType=INTEGER}
+      labelnum = #{labelnum,jdbcType=INTEGER}
     where insid = #{insid,jdbcType=INTEGER}
   </update>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select insid, insindex, insstatus, inscomptime, documentid, labelid
+    select insid, insindex, insstatus, inscomptime, documentid, labelnum
     from instance
     where insid = #{insid,jdbcType=INTEGER}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap" >
-    select insid, insindex, insstatus, inscomptime, documentid, labelid
+    select insid, insindex, insstatus, inscomptime, documentid, labelnum
     from instance
   </select>
 
@@ -52,23 +52,30 @@
         <result column="insstatus" property="insstatus"></result>
         <result column="inscomptime" property="inscomptime"></result>
         <result column="documentid" property="documentid"></result>
-        <result column="labelid" property="labelid"></result>
-        <result column="labelname" property="labelname"></result>
+        <result column="labelnum" property="labelnum"></result>
         <collection property="itemList" ofType="com.annotation.model.Item">
             <id column="itid" property="itid"></id>
             <result column="itemcontent" property="itemcontent"></result>
             <result column="itemindex" property="itemindex"></result>
             <result column="instanceid" property="instanceid"></result>
-            <result column="itemlabelid" property="labelid"></result>
-            <result column="itemlabelname" property="labelname"></result>
+            <result column="itemlabelnum" property="labelnum"></result>
+        </collection>
+        <collection property="alreadyDone" ofType="Map">
+            <result column="instanceid" property="instanceid" jdbcType="INTEGER" />
+            <result column="label_id" property="labelId" jdbcType="INTEGER" />
+            <result column="labeltype" property="labeltype" jdbcType="VARCHAR" />
         </collection>
     </resultMap>
 
     <select id="selectInstanceItem" parameterType="Integer" resultMap="InstanceItemByDocId">
-     select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelid,
-      t.itid, t.itemcontent, t.itemindex, t.instanceid, t.labelid itemlabelid
-        from instance s,item t
-        where s.documentid=#{docId} AND s.insid=t.instanceid
+        select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelnum,
+            t.itid, t.itemcontent, t.itemindex, t.instanceid, t.labelnum itemlabelnum,
+            dil.labeltype, dil.label_id,dt.instance_id
+            from instance s left join dt_instance dt on s.insid=dt.instance_id
+            left join dtd_item_label dil on dt.dt_instid =dil.dt_inst_id
+            left join item t on s.insid=t.instanceid
+            and dt.user_id=#{userId}
+            where s.documentid=#{docId}
     </select>
 
     <resultMap id="InstanceListitemByDocId" type="com.annotation.model.entity.InstanceListitemEntity">
@@ -77,8 +84,6 @@
         <result column="insstatus" property="insstatus"></result>
         <result column="inscomptime" property="inscomptime"></result>
         <result column="documentid" property="documentid"></result>
-        <result column="labelid" property="labelid"></result>
-        <result column="labelname" property="labelname"></result>
         <collection property="listitems" ofType="com.annotation.model.Listitem">
             <id column="liid" property="liid"></id>
             <result column="listindex" property="listindex"></result>
@@ -87,13 +92,30 @@
             <result column="litemstatus" property="litemstatus"></result>
             <result column="litemcomptime" property="litemcomptime"></result>
         </collection>
+        <collection property="alreadyDone" ofType="Map">
+            <result column="a_listitem_id" property="a_listitem_id" jdbcType="INTEGER" />
+            <result column="b_listitem_id" property="b_listitem_id" jdbcType="INTEGER" />
+        </collection>
     </resultMap>
 
     <select id="selectInstanceListitem" parameterType="Integer" resultMap="InstanceListitemByDocId">
-        select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelid,
-        t.liid, t.listindex, t.litemindex, t.litemstatus, t.litemcomptime,t.litemcontent
-        from instance s,listitem t
-        where s.documentid=#{docId} AND s.insid=t.instanceid
+       select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid,
+        t.liid, t.listindex, t.litemindex, t.litemstatus, t.litemcomptime,t.litemcontent,
+         dir.dt_inst_id,dir.a_listitem_id, dir.b_listitem_id
+        from instance s
+        left join dt_instance dt on s.insid=dt.instance_id
+        left join listitem t on s.insid=t.instanceid
+        left join dtd_item_relation dir on dt.dt_instid =dir.dt_inst_id
+        and dt.user_id=#{userId}
+        where s.documentid=#{docId}
+
     </select>
+
+
+
+
+
+
+
 
 </mapper>

@@ -3,9 +3,14 @@ package com.annotation.service.impl;
 import com.annotation.dao.*;
 import com.annotation.model.*;
 import com.annotation.service.IDoTaskService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by twinkleStar on 2018/12/9.
@@ -103,13 +108,13 @@ public class DoTaskServiceImpl implements IDoTaskService{
      * @param dtInstance
      * @param userId
      * @param itemId1
-     * @param itemLabel1
+     * @param item1Labels
      * @param itemId2
-     * @param itemLabel2
+     * @param item2Labels
      * @return
      */
     @Transactional
-    public int addInstanceItem(DtInstance dtInstance,int userId,int itemId1,String itemLabel1,int itemId2,String itemLabel2){
+    public int addInstanceItem(DtInstance dtInstance,int userId,int itemId1,int[] item1Labels,int itemId2,int[] item2Labels,int[] instanceLabels){
         dtInstance.setUserId(userId);
 
         DtInstance isDtInstance = dtInstanceMapper.selectDtInstance(userId,dtInstance.getTaskId(),dtInstance.getInstanceId());
@@ -128,16 +133,20 @@ public class DoTaskServiceImpl implements IDoTaskService{
             dtInstId = isDtInstance.getDtInstid();
         }
 
-        int iRes1= insertOrUpdate(dtInstId,itemId1,itemLabel1);
-        if(iRes1==-2){
+        int iRes0= insertLabels(dtInstId,"instance",instanceLabels);
+        if(iRes0==-2){
             return -2;
         }
 
-        int iRes2= insertOrUpdate(dtInstId,itemId2,itemLabel2);
-        if(iRes2==-2){
+        iRes0= insertLabels(dtInstId,"item1",item1Labels);
+        if(iRes0==-2){
             return -2;
         }
 
+        iRes0= insertLabels(dtInstId,"item2",item2Labels);
+        if(iRes0==-2){
+            return -2;
+        }
 
         //更新任务表的状态
         Task task = taskMapper.selectTaskById(dtInstance.getTaskId());
@@ -167,7 +176,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
      * @return
      */
     @Transactional
-    public int addListItem(DtInstance dtInstance,int userId,int aListItemId,int bListItemId){
+    public String addListItem(DtInstance dtInstance,int userId,int[] aListItemId,int[] bListItemId,String taskType){
         dtInstance.setUserId(userId);
 
         DtInstance dtInstanceR = dtInstanceMapper.selectDtInstance(userId,dtInstance.getTaskId(),dtInstance.getInstanceId());
@@ -179,7 +188,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
             //插入做任务表失败返回-1
             if(dtInstanceRes == -1){
-                return -1;
+                return "-1";
             }else{
                 dtInstId = dtInstance.getDtInstid();
             }
@@ -188,64 +197,116 @@ public class DoTaskServiceImpl implements IDoTaskService{
             dtInstId = dtInstanceR.getDtInstid();
         }
 
-        DtdItemRelation dtdItemRelation = new DtdItemRelation();
-
-        DtdItemRelation dtdItemRelation1 =dtdItemRelationMapper.selectDtItemRelation(dtInstId,aListItemId,bListItemId);
-        if(dtdItemRelation1==null){
-            dtdItemRelation.setDtInstId(dtInstId);
-            dtdItemRelation.setaListitemId(aListItemId);
-            dtdItemRelation.setbListitemId(bListItemId);
-            int dtdItemRelationRes = dtdItemRelationMapper.insert(dtdItemRelation);
-            if(dtdItemRelationRes == -1){
-                return -2;
+        if(taskType.equals("文本配对标注#一对一")){
+            String iRes=insertOneToOneRelations(dtInstId,aListItemId,bListItemId);
+            if(!iRes.equals("0")){
+                return iRes;
             }
-        }else{
-            //todo:返回值问题
+        }else if(taskType.equals("文本配对标注#一对多")){
+            String iRes=insertOneToManyRelations(dtInstId,aListItemId,bListItemId);
+            if(!iRes.equals("0")){
+                return iRes;
+            }
+        }else if(taskType.equals("文本配对标注#多对多")){
+            String iRes=insertManyToManyRelations(dtInstId,aListItemId,bListItemId);
+            if(!iRes.equals("0")){
+                return iRes;
+            }
         }
+
+//        DtdItemRelation dtdItemRelation1 =dtdItemRelationMapper.selectDtItemRelation(dtInstId,aListItemId,bListItemId);
+//        if(dtdItemRelation1==null){
+//            dtdItemRelation.setDtInstId(dtInstId);
+//            dtdItemRelation.setaListitemId(aListItemId);
+//            dtdItemRelation.setbListitemId(bListItemId);
+//            int dtdItemRelationRes = dtdItemRelationMapper.insert(dtdItemRelation);
+//            if(dtdItemRelationRes == -1){
+//                return -2;
+//            }
+//        }else{
+//            //todo:返回值问题
+//        }
 
         //更新任务表的状态
         Task task = taskMapper.selectTaskById(dtInstance.getTaskId());
         task.setTaskcompstatus("正在进行");
         int updatetask = taskMapper.updateById(task);
         if(updatetask==-1){
-            return -3;
+            return "-3";
         }
 
         //更新文档的状态
         int updatedocument = documentMapper.updateDocStatusByInstanceId(dtInstance.getInstanceId(),"正在进行");
         if(updatedocument==-1){
-            return -4;
+            return "-4";
         }
         //返回做任务ID
-        return dtInstId;
+        return dtInstId+"";
     }
 
     /**
      * 插入dtdItemLabel表的操作
+     * 重复则不添加，数据库语句实现
      * @param dtInstId
-     * @param itemId
-     * @param itemLabel
+     * @param labeltype
+     * @param itemLabels
      * @return
      */
-    public int insertOrUpdate(int dtInstId,int itemId,String itemLabel){
-        DtdItemLabel dtdItemLabel = new DtdItemLabel();
-        int dtdItemLabelRes;
-        DtdItemLabel dtdItemLabelTemp=dtdItemLabelMapper.selectByDtInstIdAndItemId(dtInstId,itemId);
-        if(dtdItemLabelTemp==null){
-            dtdItemLabel.setDtInstId(dtInstId);
-            dtdItemLabel.setItemId(itemId);
-            dtdItemLabel.setItemLabel(itemLabel);
-            dtdItemLabelRes = dtdItemLabelMapper.insert(dtdItemLabel);
-            if(dtdItemLabelRes == -1){
-                return -2;
-            }
-        }else {
-            dtdItemLabelRes = dtdItemLabelMapper.updateItemLabelByPrimaryKey(dtdItemLabelTemp.getDtdItlid(), itemLabel);
-            if (dtdItemLabelRes == -1) {
-                return -2;
+    public int insertLabels(int dtInstId,String labeltype,int[] itemLabels){
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("itemLabels", ArrayUtils.toObject(itemLabels));
+//        map.put("dtInstId", dtInstId);
+//        map.put("labeltype", labeltype);
+
+        int res=dtdItemLabelMapper.insertLabelList(dtInstId,labeltype,itemLabels);
+
+        return res;
+    }
+
+
+
+    public String insertOneToOneRelations(int dtInstId,int[] aListitemId,int[] bListitemId){
+
+        StringBuffer sb=new StringBuffer();
+
+        sb.append(0);
+        for(int i=0;i<aListitemId.length;i++){
+            int dtdItemRelationRes = dtdItemRelationMapper.insertRelationListByOneToOne(dtInstId,aListitemId[i],bListitemId[i]);
+            if(dtdItemRelationRes != 1){
+                sb=sb.append(i+"#");
             }
         }
-        return 0;
+        return sb.toString();
+    }
+
+
+    public String insertOneToManyRelations(int dtInstId,int[] aListitemId,int[] bListitemId){
+
+        StringBuffer sb=new StringBuffer();
+
+        sb.append(0);
+        for(int i=0;i<aListitemId.length;i++){
+            int dtdItemRelationRes = dtdItemRelationMapper.insertRelationListByOneToMany(dtInstId,aListitemId[i],bListitemId[i]);
+            if(dtdItemRelationRes != 1){
+                sb=sb.append(i+"#");
+            }
+        }
+        return sb.toString();
+    }
+
+
+    public String insertManyToManyRelations(int dtInstId,int[] aListitemId,int[] bListitemId){
+
+        StringBuffer sb=new StringBuffer();
+
+        sb.append(0);
+        for(int i=0;i<aListitemId.length;i++){
+            int dtdItemRelationRes = dtdItemRelationMapper.insertRelationListByManyToMany(dtInstId,aListitemId[i],bListitemId[i]);
+            if(dtdItemRelationRes != 1){
+                sb=sb.append(i+"#");
+            }
+        }
+        return sb.toString();
     }
 }
 

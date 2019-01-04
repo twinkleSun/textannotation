@@ -1,54 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.annotation.dao.DtdItemLabelMapper" >
+    <resultMap id="BaseResultMap" type="com.annotation.model.DtdItemLabel" >
+        <result column="dt_inst_id" property="dtInstId" jdbcType="INTEGER" />
+        <result column="labeltype" property="labeltype" jdbcType="VARCHAR" />
+        <result column="label_id" property="labelId" jdbcType="INTEGER" />
+    </resultMap>
 
-  <resultMap id="BaseResultMap" type="com.annotation.model.DtdItemLabel" >
-    <id column="dtd_itlid" property="dtdItlid" jdbcType="INTEGER" />
-    <result column="dt_inst_id" property="dtInstId" jdbcType="INTEGER" />
-    <result column="item_id" property="itemId" jdbcType="INTEGER" />
-    <result column="item_label" property="itemLabel" jdbcType="VARCHAR" />
-  </resultMap>
+    <insert id="insert" parameterType="com.annotation.model.DtdItemLabel" >
+    insert into dtd_item_label (dt_inst_id, labeltype, label_id)
+    values (#{dtInstId,jdbcType=INTEGER}, #{labeltype,jdbcType=VARCHAR}, #{labelId,jdbcType=INTEGER}
+    )
+    </insert>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from dtd_item_label
-    where dtd_itlid = #{dtdItlid,jdbcType=INTEGER}
-  </delete>
-
-  <insert id="insert" useGeneratedKeys="true" keyProperty="dtdItlid" parameterType="com.annotation.model.DtdItemLabel" >
-    insert into dtd_item_label (dtd_itlid, dt_inst_id, item_id, 
-       item_label)
-    values (#{dtdItlid,jdbcType=INTEGER}, #{dtInstId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, 
-     #{itemLabel,jdbcType=VARCHAR})
-  </insert>
-
-  <update id="updateByPrimaryKey" parameterType="com.annotation.model.DtdItemLabel" >
-    update dtd_item_label
-    set dt_inst_id = #{dtInstId,jdbcType=INTEGER},
-      item_id = #{itemId,jdbcType=INTEGER},
-      item_label = #{itemLabel,jdbcType=VARCHAR}
-    where dtd_itlid = #{dtdItlid,jdbcType=INTEGER}
-  </update>
-
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select dtd_itlid, dt_inst_id, item_id, item_label
+    <select id="selectAll" resultMap="BaseResultMap" >
+    select dt_inst_id, labeltype, label_id
     from dtd_item_label
-    where dtd_itlid = #{dtdItlid,jdbcType=INTEGER}
-  </select>
+    </select>
 
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select dtd_itlid, dt_inst_id, item_id, item_label
-    from dtd_item_label
-  </select>
+    <select id="selectByAllAttr" resultMap="BaseResultMap" >
+        select dt_inst_id, labeltype, label_id from dtd_item_label
+          where dt_inst_id=#{dtInstId} AND labeltype=#{labeltype} AND label_id=#{labelid}
+    </select>
 
+    <insert id="insertLabelList">
+        insert into dtd_item_label (dt_inst_id, labeltype, label_id) values
+        <foreach collection="itemLabels" index="index" item="item" separator=",">
+            ( #{dtInstId}, #{labeltype},#{item} )
+        </foreach>
+        ON DUPLICATE KEY UPDATE labeltype = values(labeltype)
+    </insert>
 
-  <select id="selectByDtInstIdAndItemId" parameterType="Integer" resultMap="BaseResultMap" >
-    select dtd_itlid, dt_inst_id, item_id, item_label
-    from dtd_item_label WHERE dt_inst_id=#{dtInstId} AND item_id=#{itemId}
-  </select>
-
-    <update id="updateItemLabelByPrimaryKey" parameterType="com.annotation.model.DtdItemLabel" >
-        update dtd_item_label
-        set item_label = #{itemLabel,jdbcType=VARCHAR}
-        where dtd_itlid = #{dtdItlid,jdbcType=INTEGER}
-    </update>
 </mapper>

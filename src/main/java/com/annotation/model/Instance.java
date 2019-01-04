@@ -11,7 +11,7 @@ public class Instance {
 
     private Integer documentid;
 
-    private Integer labelid;
+    private Integer labelnum;
 
     public Integer getInsid() {
         return insid;
@@ -53,11 +53,11 @@ public class Instance {
         this.documentid = documentid;
     }
 
-    public Integer getLabelid() {
-        return labelid;
+    public Integer getLabelnum() {
+        return labelnum;
     }
 
-    public void setLabelid(Integer labelid) {
-        this.labelid = labelid;
+    public void setLabelnum(Integer labelnum) {
+        this.labelnum = labelnum;
     }
 }

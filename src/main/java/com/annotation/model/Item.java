@@ -9,8 +9,7 @@ public class Item {
 
     private Integer instanceid;
 
-    private Integer labelid;
-    private String labelname;
+    private Integer labelnum;
 
     public Integer getItid() {
         return itid;
@@ -44,18 +43,11 @@ public class Item {
         this.instanceid = instanceid;
     }
 
-    public Integer getLabelid() {
-        return labelid;
+    public Integer getLabelnum() {
+        return labelnum;
     }
 
-    public void setLabelid(Integer labelid) {
-        this.labelid = labelid;
-    }
-
-    public void setLabelname(String labelname) {
-        this.labelname = labelname;
-    }
-    public String getLabelname() {
-        return labelname;
+    public void setLabelnum(Integer labelnum) {
+        this.labelnum = labelnum;
     }
 }

@@ -80,29 +80,29 @@ public class DoTaskController {
         return responseEntity;
     }
 
-
     /**
      * 做任务---文本关系类型标注
      * @param httpSession
      * @param dtInstance
      * @param itemId1
-     * @param item_label1
+     * @param item1Labels
      * @param itemId2
-     * @param item_label2
+     * @param item2Labels
      * @return
      */
     @RequestMapping(value = "addInstanceItem", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity addInstanceItem(HttpSession httpSession, DtInstance dtInstance, int itemId1,String item_label1,int itemId2,String item_label2) {
+    public ResponseEntity addInstanceItem(HttpSession httpSession, DtInstance dtInstance, int itemId1,int[] item1Labels,int itemId2,int[] item2Labels,int[] instanceLabels) {
 
         User user =(User)httpSession.getAttribute("currentUser");
 
         //User user =(User)iUserService.queryUserByUsername("test");
         // userid = user.getId();
 
-        int dtInstItemRes =iDoTaskService.addInstanceItem(dtInstance,user.getId(),itemId1,item_label1,itemId2,item_label2);//创建做任务表的结果
+        int dtInstItemRes =iDoTaskService.addInstanceItem(dtInstance,user.getId(),itemId1,item1Labels,itemId2,item2Labels,instanceLabels);//创建做任务表的结果
 
         ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setStatus(dtInstItemRes);
 
         switch (dtInstItemRes){
             case -1:
@@ -141,38 +141,48 @@ public class DoTaskController {
      */
     @RequestMapping(value = "addListItem", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject addListItem(HttpSession httpSession, DtInstance dtInstance, int aListitemId, int bListitemId) {
+    public JSONObject addListItem(HttpSession httpSession, DtInstance dtInstance, int[] aListitemId, int[] bListitemId,String taskType) {
 
         User user =(User)httpSession.getAttribute("currentUser");
 
         //User user =(User)iUserService.queryUserByUsername("test");
         // userid = user.getId();
 
-        int dtInstItRes =iDoTaskService.addListItem(dtInstance,user.getId(),aListitemId,bListitemId);
+        String dtInstItRes =iDoTaskService.addListItem(dtInstance,user.getId(),aListitemId,bListitemId,taskType);
         JSONObject jso =new JSONObject();
 
-        switch (dtInstItRes){
-            case -1:
-                jso.put("msg","添加做任务表失败，请检查");
-                jso.put("code",-1);
-                break;
-            case -2:
-                jso.put("msg","添加做任务详细信息失败");
-                jso.put("code",-1);
-                break;
-            case -3:
-                jso.put("msg","更新任务状态失败");
-                jso.put("code",-1);
-                break;
-            case -4:
-                jso.put("msg","更新文档状态失败");
-                jso.put("code",-1);
-                break;
-            default:
-                jso.put("msg","添加做任务表成功");
-                jso.put("code",0);
-                jso.put("dtInstid",dtInstItRes);
+
+
+        if(dtInstItRes.contains("0")){
+            jso.put("msg","部分添加失败");
+            jso.put("code",-1);
+            jso.put("faildata",dtInstItRes.substring(1));
+//            String tmpStr=dtInstItRes.substring(1);
+//            String[] tmpArr=tmpStr.split("#");
+
+        }else{
+            switch (dtInstItRes){
+                case "-1":
+                    jso.put("msg","添加做任务表失败，请检查");
+                    jso.put("code",-1);
+                    break;
+                case "-3":
+                    jso.put("msg","更新任务状态失败");
+                    jso.put("code",-1);
+                    break;
+                case "-4":
+                    jso.put("msg","更新文档状态失败");
+                    jso.put("code",-1);
+                    break;
+                default:
+                    jso.put("msg","添加做任务表成功");
+                    jso.put("code",0);
+                    jso.put("dtInstid",dtInstItRes);
+            }
         }
+
+
+
         return jso;
     }
 }

@@ -5,21 +5,25 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
 public interface DtdItemLabelMapper {
-    int deleteByPrimaryKey(Integer dtdItlid);
 
     int insert(DtdItemLabel record);
 
-    DtdItemLabel selectByPrimaryKey(Integer dtdItlid);
-
     List<DtdItemLabel> selectAll();
 
-    int updateByPrimaryKey(DtdItemLabel record);
+    /**
+     * 批量插入labelid
+     * 做任务表
+     * @param dtInstId
+     * @param labeltype
+     * @param itemLabels
+     * @return
+     */
+    int insertLabelList(@Param("dtInstId")Integer dtInstId, @Param("labeltype")String labeltype, @Param("itemLabels")int[] itemLabels);
 
-    DtdItemLabel selectByDtInstIdAndItemId(@Param("dtInstId")Integer dtInstId, @Param("itemId")Integer itemId);
 
-    int updateItemLabelByPrimaryKey(@Param("dtdItlid")Integer dtdItlid, @Param("itemLabel")String itemLabel);
 }

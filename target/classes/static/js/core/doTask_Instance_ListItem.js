@@ -11,6 +11,7 @@ var documentList=new Array;//文件列表
 var instanceItem;//文件内容
 var instanceLength//instance长度
 var listItem= new Array;//instance里面listitem的内容
+var taskType;
 
 /**
  * 当前的值
@@ -179,23 +180,32 @@ $(function ($) {
          */
 
         var fRes=0;
+
+        var aListitemId=new Array;
+        var bListitemId=new Array;
         for(var i=0;i<tempN;i++){
             for (var property in tempArr[i]){
-                drawLeftBack(property); //console.log(property);
+                drawLeftBack(property); console.log("property="+property);
+                console.log(tempArr[i][property]);
+
                 drawRightBack(tempArr[i][property]);
+                aListitemId[i]=listItem[property.substring(5)-1].liid;
+                bListitemId[i]=listItem[tempArr[i][property].substring(6)-1].liid;
 
-                var doTaskData={
-                    dtInstid:"",
-                    taskId :taskId,
-                    instanceId:instanceItem[curInstanceIndex].insid,
-                    aListitemId:listItem[property.substring(5)].liid,
-                    bListitemId:listItem[tempArr[i][property].substring(6)].liid
-                };console.log(doTaskData);
-
-                ajaxdoTaskInfo(doTaskData,fRes);
 
             }
         }
+
+        var doTaskData={
+            dtInstid:"",
+            taskId :taskId,
+            instanceId:instanceItem[curInstanceIndex].insid,
+            aListitemId:aListitemId,
+            bListitemId:bListitemId,
+            taskType:taskType
+        };console.log(doTaskData);
+
+        ajaxdoTaskInfo(doTaskData,fRes);
         if(fRes==-1){
             alert("提交失败");
         }else{
@@ -214,7 +224,7 @@ $(function ($) {
  */
 function ajaxTaskInfo(taskId) {
     var taskid={
-        tid:taskId
+        tid:taskId,
     };
 
     $.ajax({
@@ -282,7 +292,8 @@ function ajaxTaskInfo(taskId) {
  */
 function ajaxDocInstanceItem(docId) {
     var docid={
-        docId: docId
+        docId: docId,
+        userid:""
     };
     $.ajax({
         url: "instance/getInstanceListitem",

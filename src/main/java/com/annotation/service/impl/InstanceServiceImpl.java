@@ -26,8 +26,8 @@ public class InstanceServiceImpl implements IInstanceService {
      * @param docId
      * @return
      */
-    public List<InstanceItemEntity> queryInstanceItem(int docId){
-        List<InstanceItemEntity> instanceItemEntityList=instanceMapper.selectInstanceItem(docId);
+    public List<InstanceItemEntity> queryInstanceItem(int docId ,int userid){
+        List<InstanceItemEntity> instanceItemEntityList=instanceMapper.selectInstanceItem(docId,userid);
         return instanceItemEntityList;
     }
 
@@ -37,8 +37,8 @@ public class InstanceServiceImpl implements IInstanceService {
      * @param docId
      * @return
      */
-    public List<InstanceListitemEntity> queryInstanceListitem(int docId){
-        List<InstanceListitemEntity> instanceListitemEntityList=instanceMapper.selectInstanceListitem(docId);
+    public List<InstanceListitemEntity> queryInstanceListitem(int docId,int userid){
+        List<InstanceListitemEntity> instanceListitemEntityList=instanceMapper.selectInstanceListitem(docId,userid);
         return instanceListitemEntityList;
     }
 }

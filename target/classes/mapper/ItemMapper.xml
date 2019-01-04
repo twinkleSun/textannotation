@@ -7,7 +7,7 @@
     <result column="itemcontent" property="itemcontent" jdbcType="VARCHAR" />
     <result column="itemindex" property="itemindex" jdbcType="VARCHAR" />
     <result column="instanceid" property="instanceid" jdbcType="INTEGER" />
-    <result column="labelid" property="labelid" jdbcType="INTEGER" />
+    <result column="labelnum" property="labelnum" jdbcType="INTEGER" />
   </resultMap>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -17,9 +17,9 @@
 
   <insert id="insert" parameterType="com.annotation.model.Item" >
     insert into item (itid, itemcontent, itemindex, 
-      instanceid, labelid)
+      instanceid, labelnum)
     values (#{itid,jdbcType=INTEGER}, #{itemcontent,jdbcType=VARCHAR}, #{itemindex,jdbcType=VARCHAR}, 
-      #{instanceid,jdbcType=INTEGER}, #{labelid,jdbcType=INTEGER})
+      #{instanceid,jdbcType=INTEGER}, #{labelnum,jdbcType=INTEGER})
   </insert>
 
   <update id="updateByPrimaryKey" parameterType="com.annotation.model.Item" >
@@ -27,18 +27,18 @@
     set itemcontent = #{itemcontent,jdbcType=VARCHAR},
       itemindex = #{itemindex,jdbcType=VARCHAR},
       instanceid = #{instanceid,jdbcType=INTEGER},
-      labelid = #{labelid,jdbcType=INTEGER}
+      labelnum = #{labelid,jdbcType=INTEGER}
     where itid = #{itid,jdbcType=INTEGER}
   </update>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select itid, itemcontent, itemindex, instanceid, labelid
+    select itid, itemcontent, itemindex, instanceid, labelnum
     from item
     where itid = #{itid,jdbcType=INTEGER}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap" >
-    select itid, itemcontent, itemindex, instanceid, labelid
+    select itid, itemcontent, itemindex, instanceid, labelnum
     from item
   </select>
 

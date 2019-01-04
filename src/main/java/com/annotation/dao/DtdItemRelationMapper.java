@@ -29,4 +29,37 @@ public interface DtdItemRelationMapper {
      * @return
      */
     DtdItemRelation selectDtItemRelation(@Param("dtInstId")int dtInstId, @Param("aListItemId")int aListItemId, @Param("bListItemId")int bListItemId);
+
+
+    /**
+     * 单个记录判定重复后再插入
+     * 一对一
+     * @param dtInstId
+     * @param aListItemId
+     * @param bListItemId
+     * @return
+     */
+    int insertRelationListByOneToOne(@Param("dtInstId")int dtInstId, @Param("aListItemId")int aListItemId, @Param("bListItemId")int bListItemId);
+
+    /**
+     * 单个记录判定重复后再插入
+     * 一对多
+     * @param dtInstId
+     * @param aListItemId
+     * @param bListItemId
+     * @return
+     */
+    int insertRelationListByOneToMany(@Param("dtInstId")int dtInstId, @Param("aListItemId")int aListItemId, @Param("bListItemId")int bListItemId);
+
+    /**
+     * 单个记录判定重复后再插入
+     * 多对多
+     * @param dtInstId
+     * @param aListItemId
+     * @param bListItemId
+     * @return
+     */
+    int insertRelationListByManyToMany(@Param("dtInstId")int dtInstId, @Param("aListItemId")int aListItemId, @Param("bListItemId")int bListItemId);
+
+
 }
