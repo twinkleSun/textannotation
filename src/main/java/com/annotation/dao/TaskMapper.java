@@ -5,8 +5,10 @@ import com.annotation.model.entity.TaskInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by twinkleStar on 2018/12/9.
@@ -106,5 +108,11 @@ public interface TaskMapper {
      */
     String selectUserName(Integer tid);
 
+
+ /**
+     * 设置数据库自增长为1
+     * @return
+     */
+    int alterTaskTable();
 
 }

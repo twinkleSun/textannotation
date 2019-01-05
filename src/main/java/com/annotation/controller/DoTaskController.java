@@ -30,6 +30,9 @@ public class DoTaskController {
     @Autowired
     IUserService iUserService;
 
+    @Autowired
+    ITaskService iTaskService;
+
     /**
      * 创建任务
      * @param httpSession

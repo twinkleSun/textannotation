@@ -41,6 +41,48 @@ public class DocumentServiceImpl implements IDocumentService {
         String[] contentArr = docContent.split("#");
 
         //先检查有没有内容长度太长的，有的话直接返回不插入
+        /*for(int i=0;i<contentArr.length;i++){
+            if(contentArr[i].length()>20000){
+                return -2;
+            }
+        }*/
+
+        //开始插入文件相关信息
+        document.setUserid(user.getId());
+        int docInsertRes = documentMapper.insertDocument(document);//插入结果
+        //插入文件失败
+        if(docInsertRes == -1){
+            return docInsertRes;
+        }else{
+            //插入文件成功
+            int docId=document.getDid();//插入成功的文件ID
+            //文件内容，用#分隔了
+            int addContentRes =addContent(docId,contentArr);
+            //文件内容插入失败
+            if(addContentRes == -3){
+                //todo:有内容插入失败的情况，要删除已经插入的文件以及文件内容
+                return -3;
+            }else{
+                return docId;
+            }
+        }
+
+    }
+
+    /**
+     * 插入文件
+     * @param document 文件相关信息
+     * @param user 用户相关信息
+     * @param docContent 文件内容
+     * @return
+     */
+    public int addDocuments(Document document,User user,String docContent){
+
+        //读取的文件内容由#分隔
+        //检查每段内容大小
+        String[] contentArr = docContent.split("#");
+
+        //先检查有没有内容长度太长的，有的话直接返回不插入
         for(int i=0;i<contentArr.length;i++){
             if(contentArr[i].length()>20000){
                 return -2;
@@ -123,6 +165,16 @@ public class DocumentServiceImpl implements IDocumentService {
             return numInt.intValue();
         }
     }
+
+    /**
+     * 设置数据库自增长为1
+     * @return
+     */
+    public int alterDocumentTable(){
+        int num = documentMapper.alterDocumentTable();
+        return num;
+    }
+
 
 //    public  String readContent(String path) throws IOException {
 //

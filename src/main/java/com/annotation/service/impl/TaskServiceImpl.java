@@ -40,8 +40,7 @@ public class TaskServiceImpl implements ITaskService{
      * @param labels
      * @return
      */
-    @Transactional
-    public int addTask(Task task,User user,int docid,String labels){
+    public int addTask(Task task, User user, List<Integer> docids, String labels){
 
         task.setUserid(user.getId());
         int taskRes=taskMapper.insertTask(task);//插入任务
@@ -52,22 +51,21 @@ public class TaskServiceImpl implements ITaskService{
         }
 
         //任务表插入成功，继续插入关系表
-        TaskDocument taskDocument =new TaskDocument();
-        taskDocument.setDocumentid(docid);
-        taskDocument.setTaskid(task.getTid());
-        int task_docRes = taskAssociateDocumentMapper.insertTaskDocument(taskDocument);//插入关系表
-
-        //插入任务-文件 关系表，失败返回-2
-        if(task_docRes == -1){
-            //todo:删除已经插入的任务表
-            return -2;
+        for(int i=0;i<docids.size();i++){
+            TaskDocument taskDocument =new TaskDocument();
+            taskDocument.setDocumentid(docids.get(i));
+            taskDocument.setTaskid(task.getTid());
+            int task_docRes = taskAssociateDocumentMapper.insertTaskDocument(taskDocument);//插入关系表
+            //插入任务-文件 关系表，失败返回-2
+            if(task_docRes == -1){
+                //todo:删除已经插入的任务表
+                return -2;
+            }
         }
 
         //继续插入标签表
         String[] labelArr=labels.split("#");
         for(int i=0;i<labelArr.length;i++){
-            Label label=new Label();
-            label.setLabelname(labelArr[i]);
 
             //查询该标签是否已经存在
             Label selectLabel =labelMapper.selectLabel(labelArr[i]);
@@ -75,6 +73,9 @@ public class TaskServiceImpl implements ITaskService{
             int labelId;
             //查询成功，则返回标签ID进行下一步插入
             if(selectLabel == null){
+                //标签不存在再新建标签
+                Label label=new Label();
+                label.setLabelname(labelArr[i]);
                 int labelRes=labelMapper.insertLabel(label);
                 labelId =label.getLid();
 
@@ -224,6 +225,16 @@ public class TaskServiceImpl implements ITaskService{
     public String queryUserName(int tid){
         String username=taskMapper.selectUserName(tid);
         return username;
+    }
+	
+	
+	    /**
+     * 设置数据库自增长为1
+     * @return
+     */
+    public int alterTaskTable(){
+        int num = taskMapper.alterTaskTable();
+        return num;
     }
 
 }

@@ -105,12 +105,19 @@ $(function(){
         var mformData = new FormData();
         var mfileup = document.getElementById("mf").files;
         for(var i=0;i<mfileup.length;i++){
-            mformData.append("files[]", $("#mf")[0].files[i]);
+            mformData.append("files", $("#mf")[0].files[i]);
         }
 
+        mformData.append("title","test");
+        mformData.append("description","test");
+        mformData.append("type","test");
+        mformData.append("userid","");
+        mformData.append("taskcompstatus","test");
+        mformData.append("otherinfo","test");
+        mformData.append("label","test");
         $.ajax({
             type: 'POST',
-            url: "/file/addmultifile",
+            url: "/task/addTask",
             data: mformData,
             contentType: false,
             processData: false,//这个很有必要，不然不行

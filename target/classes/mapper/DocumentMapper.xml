@@ -45,5 +45,9 @@
   <update id="updateDocStatusByInstanceId">
     UPDATE document SET docstatus = #{docStatus} where did=(select documentid from instance where insid=(select instance_id from dt_instance where dt_instid=#{instId}))
   </update>
+  
+   <update id="alterDocumentTable">
+        ALTER TABLE Document AUTO_INCREMENT =1
+  </update>
 
 </mapper>

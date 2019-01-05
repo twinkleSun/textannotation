@@ -5,10 +5,12 @@ import com.annotation.model.Document;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.User;
 import com.annotation.service.IDocumentService;
+import com.annotation.util.FileUtil;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -77,7 +79,7 @@ public class DocumentController {
                 docContent = sb.toString();
             }else{
                 responseEntity.setStatus(-1);
-                responseEntity.setMsg("文件类型不符合要求");
+                responseEntity.setMsg(filename+"文件类型不符合要求");
                 return responseEntity;
             }
         }catch (Exception e){
@@ -105,27 +107,29 @@ public class DocumentController {
         document.setDocstatus("未完成");
 
         //添加文件
+        //防止自增的ID不连续
+        iDocumentService.alterDocumentTable();
         int docRes =iDocumentService.addDocument(document,user,docContent);
 
         switch (docRes){
             case -1:
                 responseEntity.setStatus(-1);
-                responseEntity.setMsg("添加文件失败，请检查");
+                responseEntity.setMsg(filename+"添加文件失败，请检查");
                 break;
             case -2:
                 responseEntity.setStatus(-1);
-                responseEntity.setMsg("文件分段内容长度太长，请重新用#分段");
+                responseEntity.setMsg(filename+"文件分段内容长度太长，请重新用#分段");
                 break;
             case -3:
                 responseEntity.setStatus(-1);
-                responseEntity.setMsg("文件内容插入失败");
+                responseEntity.setMsg(filename+"文件内容插入失败");
                 break;
             default:
-                    responseEntity.setStatus(0);
-                    responseEntity.setMsg("文件上传成功");
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("docId", docRes);//返回文件id，方便后续添加任务
-                    responseEntity.setData(data);
+                responseEntity.setStatus(0);
+                responseEntity.setMsg(filename+"文件上传成功");
+                Map<String, Object> data = new HashMap<>();
+                data.put("docId", docRes);//返回文件id，方便后续添加任务
+                responseEntity.setData(data);
         }
 
         return responseEntity;
@@ -133,6 +137,7 @@ public class DocumentController {
     }
 
     //todo:多文件上传，还没处理
+    @Transactional
     @RequestMapping(value = "addmultifile", method = RequestMethod.POST)
     @ResponseBody
     public String addMultiFile(HttpServletRequest request,HttpSession httpSession,
@@ -179,6 +184,49 @@ public class DocumentController {
         }
 
         return rs;
+    }
+
+    /**
+     * 返回文件内容，文件预览
+     * @param file
+     * @return
+     */
+    @RequestMapping(value = "getDoccontent", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity getDoccontent(@RequestParam( value="files",required=false) MultipartFile file) throws IllegalStateException, IOException{
+
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        String filename =file.getOriginalFilename();//文件名称
+        int filetype = FileUtil.checkfiletype(filename);
+        if(filetype==-1){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(filename+"文件类型不符合要求");
+            return responseEntity;
+        }
+
+        int content = FileUtil.checkfilecontent(file);
+        if(content==-4){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(filename +"单个文件大小超过限制");
+            return responseEntity;
+        }else if(content==-2){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(filename +"文件中有的item为空");
+            return responseEntity;
+        }else if(content==-3){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(filename+"文件中有的item超过字数限制,文件分段内容长度太长，请重新用#分段");
+            return responseEntity;
+        }
+
+        String docContent = FileUtil.parsefilecontent(file);
+        responseEntity.setStatus(0);
+        responseEntity.setMsg(filename+"文件内容解析成功");
+        Map<String, Object> data = new HashMap<>();
+        data.put("docContent", docContent);//返回文件id，方便后续添加任务
+        responseEntity.setData(data);
+        return responseEntity;
     }
 
 }

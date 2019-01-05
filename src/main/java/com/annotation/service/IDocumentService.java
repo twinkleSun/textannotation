@@ -3,6 +3,7 @@ package com.annotation.service;
 import com.annotation.model.Document;
 import com.annotation.model.User;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,5 +43,11 @@ public interface IDocumentService {
      * @return
      */
     public int addContent(int docId,String[] contentArr);
+
+    /**
+     * 设置数据库自增长为1
+     * @return
+     */
+    public int alterDocumentTable();
 
 }

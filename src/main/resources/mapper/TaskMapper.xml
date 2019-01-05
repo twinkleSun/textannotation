@@ -136,5 +136,10 @@
     <select id="selectUserName" parameterType="Integer" resultType="String">
         select username from `user` u,task t WHERE t.tid=#{tid} AND t.userid=u.id
     </select>
+    
+    
+    <update id="alterTaskTable">
+        ALTER TABLE Task AUTO_INCREMENT =1
+    </update>
 
 </mapper>

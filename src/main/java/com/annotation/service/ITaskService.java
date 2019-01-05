@@ -3,6 +3,8 @@ package com.annotation.service;
 import com.annotation.model.Task;
 import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.model.User;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 /**
@@ -18,7 +20,7 @@ public interface ITaskService {
      * @param labels
      * @return
      */
-     int addTask(Task task, User user,int docId,String labels);
+    int addTask(Task task, User user, List<Integer> docId, String labels);
 
     /**
      * 分页查询
@@ -70,4 +72,10 @@ public interface ITaskService {
      */
     String queryUserName(int tid);
 
+
+/**
+     * 设置数据库自增长为1
+     * @return
+     */
+     int alterTaskTable();
 }
