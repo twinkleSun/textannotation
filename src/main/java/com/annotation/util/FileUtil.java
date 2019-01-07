@@ -1,5 +1,6 @@
 package com.annotation.util;
 
+import com.annotation.model.entity.ResponseEntity;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -66,7 +67,7 @@ public class FileUtil {
         String docContent = parsefilecontent(file);
         long filesize = file.getSize();
         if(filesize>=1048576){
-             return -4;
+             return -2;
         }
         //读取的文件内容由#分隔
         //检查每段内容大小
@@ -75,10 +76,10 @@ public class FileUtil {
         //-3文件中有的文本超过字数限制
         for (int i = 0; i < contentArr.length; i++) {
             if (contentArr[i].length() <= 0) {
-                return -2;
+                return -3;
             }
             if (contentArr[i].length() > 20000) {
-                return -3;
+                return -4;
             }
         }
         return 0;
@@ -87,23 +88,27 @@ public class FileUtil {
     //两个文本的条件判断
     public static int checktwoitem(MultipartFile multipartFile)throws IOException {
         String docContent = parsefilecontent(multipartFile);
+        long filesize = multipartFile.getSize();
+        if(filesize>=1048576){
+            return -2;
+        }
         //读取的文件内容由#分隔
         //检查每段内容大小
         String[] contentArr = docContent.split("#");
         for (int i = 0; i < contentArr.length; i++) {
             String[] itemArr = contentArr[i].split("-------");
-            //-2每个instance中的item的个数不正确
-            //-3文件中有的item为空
-            //-4文件中有的文本超过字数限制
+            //-3每个instance中的item的个数不正确
+            //-4文件中有的item为空
+            //-5文件中有的文本超过字数限制
             if(itemArr.length!=2){
-                return -2;
+                return -3;
             }else{
                 for(int j=0;j<itemArr.length;j++){
-                    if (itemArr[i].length() <= 0) {
-                        return -3;
-                    }
-                    if (itemArr[i].length() > 20000) {
+                    if (itemArr[j].length() <= 0) {
                         return -4;
+                    }
+                    if (itemArr[j].length() > 20000) {
+                        return -5;
                     }
                 }
             }
@@ -115,29 +120,63 @@ public class FileUtil {
     public static int checkmatchcategory(MultipartFile multipartFile)throws IOException {
         String docContent = parsefilecontent(multipartFile);
         //读取的文件内容由#分隔
+        long filesize = multipartFile.getSize();
+        if(filesize>=1048576){
+            return -2;
+        }
         //检查每段内容大小
         String[] contentArr = docContent.split("#");
         for (int i = 0; i < contentArr.length; i++) {
             String[] listArr = contentArr[i].split("-------");
-            //-2每个instance中的list的个数不正确
-            //-3文件中有的item为空
-            //-4文件中有的文本超过字数限制
+            //-3每个instance中的list的个数不正确
+            //-4文件中有的item为空
+            //-5文件中有的文本超过字数限制
             if(listArr.length!=2){
-                return -2;
+                return -3;
             }else{
                 for(int j=0;j<listArr.length;j++){
                     String[] itemArr = listArr[i].split("&&&&&&&");
                     for(int k=0;k<itemArr.length;k++) {
-                        if (itemArr[i].length() <= 0) {
-                            return -3;
-                        }
-                        if (itemArr[i].length() > 20000) {
+                        if (itemArr[k].length() <= 0) {
                             return -4;
+                        }
+                        if (itemArr[k].length() > 20000) {
+                            return -5;
                         }
                     }
                 }
             }
         }
         return 0;
+    }
+
+    public static ResponseEntity checkfile(MultipartFile[] files){
+        ResponseEntity responseEntity = new ResponseEntity();
+        //遍历处理文件
+        responseEntity.setStatus(0);
+        //首先检查上传的文件是否为空
+        if(files.length==0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("没有上传文件，请重新上传！");
+            return responseEntity;
+        }
+        //检查文件类型是否符合要求
+        for (MultipartFile file:files) {
+            try {
+                String filename =file.getOriginalFilename();//文件名称
+                int res= checkfiletype(filename);
+                if(res==-1){
+                    responseEntity.setStatus(-2);
+                    if(responseEntity.getMsg()==null) {
+                        responseEntity.setMsg(filename + "文件类型不符合要求");
+                    }else{
+                        responseEntity.setMsg(filename + "+"+responseEntity.getMsg());
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return responseEntity;
     }
 }

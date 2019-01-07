@@ -17,11 +17,11 @@
     where liid = #{liid,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.annotation.model.Listitem" >
-    insert into listitem (liid, litemcontent, listindex, 
+  <insert id="insert" useGeneratedKeys="true" keyProperty="liid" parameterType="com.annotation.model.Listitem" >
+    insert into listitem ( litemcontent, listindex,
       litemindex, litemstatus, litemcomptime, 
       instanceid)
-    values (#{liid,jdbcType=INTEGER}, #{litemcontent,jdbcType=VARCHAR}, #{listindex,jdbcType=VARCHAR}, 
+    values ( #{litemcontent,jdbcType=VARCHAR}, #{listindex,jdbcType=VARCHAR},
       #{litemindex,jdbcType=VARCHAR}, #{litemstatus,jdbcType=VARCHAR}, #{litemcomptime,jdbcType=VARCHAR}, 
       #{instanceid,jdbcType=INTEGER})
   </insert>

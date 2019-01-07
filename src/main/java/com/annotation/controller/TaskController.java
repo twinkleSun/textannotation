@@ -1,5 +1,7 @@
 package com.annotation.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.*;
 import com.annotation.model.entity.ResponseEntity;
@@ -43,140 +45,6 @@ public class TaskController {
     @Autowired
     IDocumentService iDocumentService;
 
-    private List<Integer> docids = new ArrayList<Integer>();
-
-    @Transactional
-    @RequestMapping(value = "addmultifile", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity addMultiFile(List<MultipartFile> files) throws IllegalStateException, IOException {
-
-        boolean filetype = true;
-        List<String> fielist = new ArrayList<String>();
-        //获取上传的文件数组
-        //List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("files");
-        ResponseEntity responseEntity = new ResponseEntity();
-        //List<ResponseEntity> list = new ArrayList<ResponseEntity>();
-        //遍历处理文件
-
-        //首先检查文件类型是否符合要求
-        for (MultipartFile file:files) {
-            try {
-                String filename =file.getOriginalFilename();//文件名称
-                int res= FileUtil.checkfiletype(filename);
-                if(res==-1){
-                    responseEntity.setStatus(-5);
-                    if(responseEntity.getMsg()==null) {
-                        responseEntity.setMsg(filename + "文件类型不符合要求");
-                    }else{
-                        responseEntity.setMsg(filename + "+"+responseEntity.getMsg());
-                    }
-                    filetype = false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if(filetype==false){
-            return responseEntity;
-        }
-
-        //然后检查文件内容是否符合要求
-        for (MultipartFile file : files) {
-                try {
-                    String filename = file.getOriginalFilename();//文件名称
-                    int content = FileUtil.checkfilecontent(file);
-                    if(content==-4){
-                        responseEntity.setStatus(-10);
-                        responseEntity.setMsg(filename +"单个文件大小超过限制");
-                        return responseEntity;
-                    }else if(content==-2){
-                        responseEntity.setStatus(-6);
-                        responseEntity.setMsg(filename +"文件中有的item为空");
-                        return responseEntity;
-                    }else if(content==-3){
-                        responseEntity.setStatus(-7);
-                        responseEntity.setMsg(filename+"文件中有的item超过字数限制,文件分段内容长度太长，请重新用#分段");
-                        return responseEntity;
-                    }
-                } catch (Exception e) {
-                    //ResponseEntity  responseEntity2 = handleException(e,file);
-                    e.printStackTrace();
-                    //return responseEntity2;
-                }
-            }
-
-        //最后插入document和content
-        if(filetype==true) {
-             //User user =(User)httpSession.getAttribute("currentUser");
-//                    if(!userid.equals(null) && !userid.equals("")){
-//                    user.setId(Integer.parseInt(userid));
-
-            User user =(User)iUserService.queryUserByUsername("巴卫君");
-
-            for (MultipartFile file : files) {
-                try {
-                    String filename =file.getOriginalFilename();//文件名称
-                    String docContent=FileUtil.parsefilecontent(file);
-                    String docType="";//文件类型
-
-                    if (filename.endsWith(".doc")) {
-                        docType=".doc";
-                    } else if (filename.endsWith("docx")) {
-                        docType=".docx";
-                    } else if(filename.endsWith(".txt")){
-                        docType=".txt";
-                    }
-
-                    Document document = new Document();
-                    document.setFilename(filename);
-                    document.setFiletype(docType);
-                    document.setFilesize((int)file.getSize());
-
-                    //todo:建文件服务器后设置路径
-                    document.setAbsolutepath("");
-                    document.setRelativepath("");
-
-                    //设置时间
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-                    document.setDocuploadtime(df.format(new Date()));
-                    document.setDoccomptime("");
-                    document.setDocstatus("未完成");
-
-                    //添加文件
-                    //防止自增的ID不连续
-                    iDocumentService.alterDocumentTable();
-                    int docRes =iDocumentService.addDocument(document,user,docContent);
-
-                    switch (docRes){
-                        case -1:
-                            responseEntity.setStatus(-8);
-                            responseEntity.setMsg(filename+"添加文件失败，请检查");
-                            //插入数据库有错误时整体回滚
-                            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                            break;
-                        case -3:
-                            responseEntity.setStatus(-9);
-                            responseEntity.setMsg(filename+"文件内容插入失败");
-                            //插入数据库有错误时整体回滚
-                            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                            break;
-                        default:
-                            responseEntity.setStatus(0);
-                            responseEntity.setMsg(filename+"文件上传成功");
-                            Map<String, Object> data = new HashMap<>();
-                            docids.add(docRes);
-                            data.put("docIds", docids);//返回文件id，方便后续添加任务
-                            responseEntity.setData(data);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return responseEntity;
-    }
-
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleException(Exception ex,MultipartFile file) {
         ResponseEntity responseEntity = new ResponseEntity();
@@ -189,8 +57,10 @@ public class TaskController {
         return responseEntity;
     }
     /**
-     * 创建任务
+     * 创建信息抽取和分类的任务
      * @param httpSession
+     * @param request
+     * @param multipartFiles
      * @param task
      * @param label
      * @param userid
@@ -199,65 +69,39 @@ public class TaskController {
     @Transactional
     @RequestMapping(value = "addTask", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity addTask(HttpServletRequest request,HttpSession httpSession, Task task,String label,String userid)throws IllegalStateException, IOException {
+    public ResponseEntity addTask(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String label,String userid)throws IllegalStateException, IOException {
 
-
-
-        User user =(User)httpSession.getAttribute("currentUser");
+        //User user =(User)httpSession.getAttribute("currentUser");
 //        if(!userid.equals(null) && !userid.equals("")){
 //            user.setId(Integer.parseInt(userid));
 //        }
         ResponseEntity responseEntity = new ResponseEntity();
-
-//        User user =(User)iUserService.queryUserByUsername("test");
+        List<Integer> docids = new ArrayList<Integer>();
+        User user =(User)iUserService.queryUserByUsername("test");
 
         //获取上传的文件数组
-        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("files");
-        ResponseEntity fileResponseEntity = addMultiFile(files);
+        ResponseEntity fileResponseEntity = iDocumentService.addMultiFile(multipartFiles,user);
         int num = fileResponseEntity.getStatus();
-        if(num==-5){
+        if(num<0){
             responseEntity.setStatus(-1);
             responseEntity.setMsg(fileResponseEntity.getMsg());
             //插入数据库有错误时整体回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return responseEntity;
-        }else if(num==-6){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg(fileResponseEntity.getMsg());
-            //插入数据库有错误时整体回滚
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return responseEntity;
-        }else if(num==-7){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg(fileResponseEntity.getMsg());
-            //插入数据库有错误时整体回滚
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return responseEntity;
-        }else if(num==-8){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg(fileResponseEntity.getMsg());
-            //插入数据库有错误时整体回滚
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return responseEntity;
-        }else if(num==-9){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg(fileResponseEntity.getMsg());
-            //插入数据库有错误时整体回滚
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return responseEntity;
-        }else if(num==-10){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg(fileResponseEntity.getMsg());
-            //插入数据库有错误时整体回滚
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return responseEntity;
+        }else{
+            //获取到上传文件的ID
+            HashMap<String,List<Integer>> hashmap = (HashMap)fileResponseEntity.getData();
+            List<Integer> list = hashmap.get("docIds");
+            for(int i=0;i<list.size();i++){
+                docids.add(list.get(i));
+                //System.out.println("----------"+list.get(i));
+            }
         }
 
 
         //防止自增的ID不连续
         iTaskService.alterTaskTable();
         int taskRes =iTaskService.addTask(task,user,docids,label);//创建任务的结果
-
 
         switch (taskRes){
             case -1:
@@ -296,6 +140,147 @@ public class TaskController {
 
         return responseEntity;
     }
+
+    /**
+     * 创建两个item的任务
+     * @param httpSession
+     * @param request
+     * @param multipartFiles
+     * @param task
+     * @param label
+     * @param labelstr1
+     * @param labelstr2
+     * @param labelnum
+     * @param labelitem1
+     * @param labelitem2
+     * @param userid
+     * @return
+     */
+    @Transactional
+    @RequestMapping(value = "addTaskTwoitems", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity addTaskTwoitems(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String label,String labelstr1,String labelstr2,int labelnum,int labelitem1,int labelitem2,String userid)throws IllegalStateException, IOException {
+
+        //User user =(User)httpSession.getAttribute("currentUser");
+//        if(!userid.equals(null) && !userid.equals("")){
+//            user.setId(Integer.parseInt(userid));
+//        }
+        ResponseEntity responseEntity = new ResponseEntity();
+        List<Integer> docids = new ArrayList<Integer>();
+        User user =(User)iUserService.queryUserByUsername("test");
+
+        //获取上传的文件数组
+        ResponseEntity fileResponseEntity = iDocumentService.addMultiFileTwoItems(multipartFiles,user,labelnum,labelitem1,labelitem2);
+        int num = fileResponseEntity.getStatus();
+        if(num<0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(fileResponseEntity.getMsg());
+            //插入数据库有错误时整体回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return responseEntity;
+        }else{
+            //获取到上传文件的ID
+            HashMap<String,List<Integer>> hashmap = (HashMap)fileResponseEntity.getData();
+            List<Integer> list = hashmap.get("docIds");
+            for(int i=0;i<list.size();i++){
+                docids.add(list.get(i));
+                //System.out.println("----------"+list.get(i));
+            }
+        }
+
+        //防止自增的ID不连续
+        iTaskService.alterTaskTable();
+        ResponseEntity taskRes = new ResponseEntity();
+        taskRes =iTaskService.addTaskTwoitems(task,user,docids,label,labelstr1,labelstr2);//创建任务的结果
+        int resnum = taskRes.getStatus();
+        if(resnum<0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(fileResponseEntity.getMsg());
+            //插入数据库有错误时整体回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return responseEntity;
+        }else{
+            responseEntity.setStatus(0);
+            responseEntity.setMsg("创建任务成功");
+            Map<String, Object> data = new HashMap<>();
+            StringBuffer fileids = new StringBuffer();
+            data.put("taskid", taskRes.getData());//返回文件id，方便后续添加任务
+            data.put("docIds",docids);
+            responseEntity.setData(data);
+        }
+
+        return responseEntity;
+    }
+
+
+    /**
+     * 创建文本配对的任务
+     * @param httpSession
+     * @param request
+     * @param multipartFiles
+     * @param task
+     * @param userid
+     * @return
+     */
+    @Transactional
+    @RequestMapping(value = "addTaskTMatchCategory", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity addTaskMatchCategory(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String userid)throws IllegalStateException, IOException {
+
+        //User user =(User)httpSession.getAttribute("currentUser");
+//        if(!userid.equals(null) && !userid.equals("")){
+//            user.setId(Integer.parseInt(userid));
+//        }
+        ResponseEntity responseEntity = new ResponseEntity();
+        List<Integer> docids = new ArrayList<Integer>();
+        User user =(User)iUserService.queryUserByUsername("test");
+
+        //获取上传的文件数组
+        ResponseEntity fileResponseEntity = iDocumentService.addMultiFileMatchCategory(multipartFiles,user);
+        int num = fileResponseEntity.getStatus();
+        if(num<0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(fileResponseEntity.getMsg());
+            //插入数据库有错误时整体回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return responseEntity;
+        }else{
+            //获取到上传文件的ID
+            HashMap<String,List<Integer>> hashmap = (HashMap)fileResponseEntity.getData();
+            List<Integer> list = hashmap.get("docIds");
+            for(int i=0;i<list.size();i++){
+                docids.add(list.get(i));
+                //System.out.println("----------"+list.get(i));
+            }
+        }
+
+        //防止自增的ID不连续
+        iTaskService.alterTaskTable();
+        ResponseEntity taskRes = new ResponseEntity();
+        taskRes =iTaskService.addTaskMatchCategory(task,user,docids);//创建任务的结果
+        int resnum = taskRes.getStatus();
+        if(resnum<0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(fileResponseEntity.getMsg());
+            //插入数据库有错误时整体回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return responseEntity;
+        }else{
+            responseEntity.setStatus(0);
+            responseEntity.setMsg("创建任务成功");
+            Map<String, Object> data = new HashMap<>();
+            StringBuffer fileids = new StringBuffer();
+            data.put("taskid", taskRes.getData());//返回文件id，方便后续添加任务
+            data.put("docIds",docids);
+            responseEntity.setData(data);
+        }
+
+        return responseEntity;
+    }
+
+
+
+
 
     /**
      * 分页查询
