@@ -1,6 +1,7 @@
 package com.annotation.service.impl;
 
 import com.annotation.dao.InstanceMapper;
+import com.annotation.model.Instance;
 import com.annotation.model.entity.InstanceItemEntity;
 import com.annotation.model.entity.InstanceListitemEntity;
 import com.annotation.service.IInstanceService;

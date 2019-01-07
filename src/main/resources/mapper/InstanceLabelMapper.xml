@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annotation.dao.InstanceLabelMapper">
+
+    <insert id="insertInstanceLabel" useGeneratedKeys="true"  parameterType="com.annotation.model.InstaLabel">
+        insert into insta_label (lebelid, lebelindex, taskid)
+        values
+          (#{lebelid}, #{lebelindex},  #{taskid})
+    </insert>
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.annotation.service;
 
+import com.annotation.model.Instance;
 import com.annotation.model.entity.InstanceItemEntity;
 import com.annotation.model.entity.InstanceListitemEntity;
 
@@ -23,4 +24,5 @@ public interface IInstanceService {
      * @return
      */
     List<InstanceListitemEntity> queryInstanceListitem(int docId,int userid);
+
 }

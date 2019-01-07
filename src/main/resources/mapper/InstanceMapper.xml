@@ -16,11 +16,11 @@
     where insid = #{insid,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.annotation.model.Instance" >
-    insert into instance (insid, insindex, insstatus, 
+  <insert id="insert"  useGeneratedKeys="true" keyProperty="insid" parameterType="com.annotation.model.Instance" >
+    insert into instance ( insindex, insstatus,
       inscomptime, documentid, labelnum
       )
-    values (#{insid,jdbcType=INTEGER}, #{insindex,jdbcType=VARCHAR}, #{insstatus,jdbcType=VARCHAR}, 
+    values (#{insindex,jdbcType=VARCHAR}, #{insstatus,jdbcType=VARCHAR},
       #{inscomptime,jdbcType=VARCHAR}, #{documentid,jdbcType=INTEGER}, #{labelnum,jdbcType=INTEGER}
       )
   </insert>
@@ -112,7 +112,9 @@
     </select>
 
 
-
+    <update id="alterInstanceTable">
+        ALTER TABLE instance AUTO_INCREMENT =1
+    </update>
 
 
 

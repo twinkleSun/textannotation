@@ -39,4 +39,10 @@ public interface InstanceMapper {
      * @return
      */
     List<InstanceListitemEntity> selectInstanceListitem(@Param("docId")Integer docId, @Param("userId")Integer userId);
+
+    /**
+     * 设置数据库自增长为1
+     * @return
+     */
+    int alterInstanceTable();
 }
