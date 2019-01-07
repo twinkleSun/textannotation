@@ -16,7 +16,7 @@ var taskType;
 /**
  * 当前的值
  */
-var curInstanceIndex;//当前的instanceIndex
+var curInstanceIndex=0;//当前的instanceIndex
 var x1;//左边
 var x2;
 var y1;//右边
@@ -40,8 +40,18 @@ var ul_li_instanceIndex=new Array;
 /**
  * 存储的值
  */
-var lineLR=new Array;
+var lineLR=new Array;//页面上已经绘制的线
 var tempNum=new Array;
+
+var lineLRInit=new Array;//页面上已经绘制的线
+var tempNumInit=new Array;
+
+/**
+ * 左右分开存储
+ */
+
+var alreadyDone=new Array;
+
 
 $(function ($) {
 
@@ -124,7 +134,7 @@ $(function ($) {
         /**
          * 临时存储连线的点和几条线
          */
-        var tempArr = jQuery.extend(true, {}, lineLR[curInstanceIndex]); //console.log(tet);
+        var tempArr = jQuery.extend(true, {}, lineLR[curInstanceIndex]); console.log(lineLR);
         var tempN=tempNum[curInstanceIndex]-1;
 
         /**
@@ -175,9 +185,7 @@ $(function ($) {
         tempNum[curInstanceIndex]=0;
         lineLR[curInstanceIndex]=new Array;
 
-        /**
-         * 重新画图
-         */
+
 
         var fRes=0;
 
@@ -185,13 +193,20 @@ $(function ($) {
         var bListitemId=new Array;
         for(var i=0;i<tempN;i++){
             for (var property in tempArr[i]){
-                drawLeftBack(property); console.log("property="+property);
-                console.log(tempArr[i][property]);
+                //drawLeftBack(property); console.log("property="+property);
+                //console.log(tempArr[i][property]);
 
-                drawRightBack(tempArr[i][property]);
-                aListitemId[i]=listItem[property.substring(5)-1].liid;
-                bListitemId[i]=listItem[tempArr[i][property].substring(6)-1].liid;
+                //drawRightBack(tempArr[i][property]);
 
+                //console.log(property.substring(5));
+                //console.log(listItem);
+                // aListitemId[i]=listItem[property.substring(5)-1].liid;
+                aListitemId[i]=property.substring(5);
+                //console.log(aListitemId);
+                //console.log(tempArr[i][property].substring(6));
+                bListitemId[i]=tempArr[i][property].substring(6);
+                // bListitemId[i]=listItem[tempArr[i][property].substring(6)-1].liid;
+                //console.log(bListitemId);
 
             }
         }
@@ -206,11 +221,11 @@ $(function ($) {
         };console.log(doTaskData);
 
         ajaxdoTaskInfo(doTaskData,fRes);
-        if(fRes==-1){
-            alert("提交失败");
-        }else{
-            alert("提交成功");
-        }
+        // if(fRes==-1){
+        //     alert("提交失败");
+        // }else{
+        //     alert("提交成功");
+        // }
         tempNum[curInstanceIndex]=0;
         lineLR[curInstanceIndex]=new Array;
 
@@ -307,22 +322,30 @@ function ajaxDocInstanceItem(docId) {
 
             instanceItem=data.instanceItem; //console.log(instanceItem);
             instanceLength=instanceItem.length;
-            listItem=instanceItem[0].listitems;
-            lineLR[0] = new Array;
-            tempNum[0]=0;
+            listItem=instanceItem[curInstanceIndex].listitems;
+            alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
+            console.log(alreadyDone);
+
+            //curInstanceIndex=0;
+
+            lineLR[curInstanceIndex] = new Array;
+            tempNum[curInstanceIndex]=0;
+
+            tempNumInit[curInstanceIndex]=0;
+            lineLRInit[curInstanceIndex]=new Array;
             /**
              * 将第一部分内容写入dotask面板
              */
-            paintDoTask(listItem);
+            paintDoTask(listItem,alreadyDone);
 
-            curInstanceIndex=0;
+
             /**
              * 左边ul导航点击定位
              */
             var ul_html="";
             for(var i=0;i<instanceLength;i++){
                 var li_html="";
-                if(i==0){
+                if(i==curInstanceIndex){
                     li_html=' <li class="active" id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
                         '第'+(i+1)+'部分'+'</a></li>';
                 }else{
@@ -332,7 +355,7 @@ function ajaxDocInstanceItem(docId) {
                 ul_html=ul_html+li_html;
                 ul_li_instanceIndex[i]="li-"+i;
             }
-            $("#ul-nav").append(ul_html);
+            $("#ul-nav").html(ul_html);
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -364,15 +387,23 @@ function curInstanceId(obj) {
     lineLR[curInstanceIndex] = new Array;
 
     tempNum[curInstanceIndex]=0;
+
+    lineLRInit[curInstanceIndex] = new Array;
+
+    tempNumInit[curInstanceIndex]=0;
     listItem=instanceItem[curInstanceIndex].listitems;
-    paintDoTask(listItem);
+    alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
+    console.log(alreadyDone);
+    paintDoTask(listItem,alreadyDone);
 }
 
 /**
  * 根据curInstanceIndex输出右边连线的面板
  * @param listItem
  */
-function paintDoTask(listItem) {
+function paintDoTask(listItem,alreadyDone) {
+
+    console.log(alreadyDone);
     var left_Html="";
     var right_Html="";
     for(var i=0;i<listItem.length;i++){
@@ -381,6 +412,7 @@ function paintDoTask(listItem) {
          * @type {number}
          */
         listItem[i].flag=0;
+
 
         /**
          * 分别写入左右两边
@@ -422,6 +454,28 @@ function paintDoTask(listItem) {
             // regainCanvas: true
         });
     }
+
+    /**
+     * 将已经做了的任务绘制在图上
+     */
+
+
+    for(var i=0;i<alreadyDone.length;i++){
+        var letfId="left-"+alreadyDone[i].a_listitem_id;
+        drawLeftInit(letfId);
+        console.log("letfId="+letfId);
+        var rightId="right-"+alreadyDone[i].b_listitem_id;
+        drawRightInit(rightId);
+        console.log("rightId="+rightId);
+
+
+        lineLRInit[curInstanceIndex][tempNum[curInstanceIndex]]={};
+        lineLRInit[curInstanceIndex][tempNum[curInstanceIndex]][letfId]=rightId;
+        tempNumInit[curInstanceIndex]++;
+        // lineLR[curInstanceIndex][tempNum[curInstanceIndex]][alreadyDone[i].a_listitem_id]=alreadyDone[i].b_listitem_id;
+        // tempNum[curInstanceIndex]++;
+    }
+
 }
 
 /**
@@ -459,8 +513,13 @@ function drawRight(obj) {
     var tempObj={};
     tempObj[curLeftId]=curRightId;
 
-    if(JSON.stringify(lineLR[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
-        console.log("已经划过了");
+    console.log(lineLR[curInstanceIndex]);
+    console.log(tempObj);
+
+    if(JSON.stringify(lineLRInit[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
+        alert("这条线已提交，请不要重复绘制");
+    }else if(JSON.stringify(lineLR[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
+        alert("这条线已绘制，请不要重复绘制");
     }else {
         y1=$("#"+obj).attr("left");
         y2=$("#"+obj).attr("top");
@@ -480,6 +539,7 @@ function drawRight(obj) {
         lineLR[curInstanceIndex][tempNum[curInstanceIndex]]={};
         lineLR[curInstanceIndex][tempNum[curInstanceIndex]][curLeftId]=curRightId;
         tempNum[curInstanceIndex]++;
+        console.log("-------");
         console.log(lineLR[curInstanceIndex]);
 
         /**
@@ -506,6 +566,34 @@ function drawLeftBack(obj) {
     x2=$("#"+obj).attr("top");
 }
 
+
+function drawLeftInit(obj){
+    curLeftId=obj;
+    x1=$("#"+obj).attr("left");
+    x2=$("#"+obj).attr("top");
+}
+
+
+function drawRightInit(obj){
+    curRightId=obj;
+
+
+    y1 = $("#" + obj).attr("left");
+    y2 = $("#" + obj).attr("top");
+
+    var linewidth = 2, linestyle = "#5bc0de";//连线绘制--线宽，线色
+    var canvas = document.getElementById('canvas-back');
+    var context = canvas.getContext('2d');
+    context.lineWidth = linewidth;
+    context.strokeStyle = linestyle;
+
+    context.beginPath();
+    context.moveTo(x1, x2);
+    context.lineTo(y1, y2);
+    context.stroke();
+    context.restore();
+
+}
 /**
  * 点击右边做任务面板的事件
  * @param obj
@@ -519,13 +607,13 @@ function drawRightBack(obj) {
     if(JSON.stringify(lineLR[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
         console.log("已经划过了");
     }else {
-        y1=$("#"+obj).attr("left");
-        y2=$("#"+obj).attr("top");
+        y1 = $("#" + obj).attr("left");
+        y2 = $("#" + obj).attr("top");
 
         var linewidth = 2, linestyle = "#5bc0de";//连线绘制--线宽，线色
         var canvas = document.getElementById('canvas-back');
         var context = canvas.getContext('2d');
-        context.lineWidth=linewidth;
+        context.lineWidth = linewidth;
         context.strokeStyle = linestyle;
 
         context.beginPath();
@@ -534,8 +622,8 @@ function drawRightBack(obj) {
         context.stroke();
         context.restore();
 
-        lineLR[curInstanceIndex][tempNum[curInstanceIndex]]={};
-        lineLR[curInstanceIndex][tempNum[curInstanceIndex]][curLeftId]=curRightId;
+        lineLR[curInstanceIndex][tempNum[curInstanceIndex]] = {};
+        lineLR[curInstanceIndex][tempNum[curInstanceIndex]][curLeftId] = curRightId;
         tempNum[curInstanceIndex]++;
         console.log(lineLR[curInstanceIndex]);
 
@@ -545,12 +633,14 @@ function drawRightBack(obj) {
          * @type {Array}
          */
 
-
     }
+
 
     $("#"+curLeftId).css("background-color","#5bc0de");
 
 };
+
+
 
 
 // var keys=[];
@@ -572,9 +662,7 @@ function ajaxdoTaskInfo(doTaskData,fRes) {
         dataType: "json",
         data:doTaskData,
         success: function (data) {
-            if(data.status!=0){
-                fRes=fRes-1;
-            }
+            ajaxDocInstanceItem(docId);
             //console.log(data);
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 

@@ -71,9 +71,10 @@
         select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelnum,
             t.itid, t.itemcontent, t.itemindex, t.instanceid, t.labelnum itemlabelnum,
             dil.labeltype, dil.label_id,dt.instance_id
-            from instance s left join dt_instance dt on s.insid=dt.instance_id
-            left join dtd_item_label dil on dt.dt_instid =dil.dt_inst_id
+            from instance s
+            left join dt_instance dt on s.insid=dt.instance_id
             left join item t on s.insid=t.instanceid
+            left join dtd_item_label dil on dt.dt_instid =dil.dt_inst_id
             and dt.user_id=#{userId}
             where s.documentid=#{docId}
     </select>

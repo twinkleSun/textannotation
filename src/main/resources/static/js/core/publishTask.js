@@ -7,6 +7,8 @@
 
 var taskValue=0;
 var taskType = "";//文件的类型
+
+var taskType4 = "";//文件的类型
 var tagNum=new Array;//0,1,2,3四种的数量
 var tagContent;
 var tagInstanceContent;//标签内容，#分隔，比如"a#b#c"
@@ -46,7 +48,7 @@ $(function(){
             // /**
             //  *获取任务类型
             //  */
-            // taskType=data.elem[data.elem.selectedIndex].text;//console.log(taskType);
+             taskType4=data.elem[data.elem.selectedIndex].text;//console.log(taskType);
             // taskValue=data.value; //console.log(taskValue);
             //
             // selectChangeOp(taskValue);
@@ -113,17 +115,17 @@ $(function(){
                 '<label class="layui-form-label">Instance：</label>'+
                 '</div>'+
                 '<div class="layui-col-md1">'+
-                '<input type="number" class="layui-input">'+
+                '<input type="number" class="layui-input" id="instanceNum">'+
                 '</div>'+
                 '<div class="layui-col-md2">'+
                 '<label class="layui-form-label">item1标签：</label>'+
                 '</div>'+
                 '<div class="layui-col-md1">'+
-                '<input type="number" class="layui-input">'+
+                '<input type="number" class="layui-input" id="item1Num">'+
                 '</div><div class="layui-col-md2">'+
                 '<label class="layui-form-label">item2标签：</label>'+
                 '</div><div class="layui-col-md1">'+
-                '<input type="number" class="layui-input">'+
+                '<input type="number" class="layui-input" id="item2Num">'+
                 '</div>'+
                 '</div>'+
                 '<br>'+
@@ -315,7 +317,7 @@ $(function(){
         var mformData = new FormData();
         var mfileup = document.getElementById("mf").files;
         for(var i=0;i<mfileup.length;i++){
-            mformData.append("files", $("#mf")[0].files[i]);
+            mformData.append("files[]", $("#mf")[0].files[i]);
         }
         var deadtime =$("#date").val();
         var currenttime =getNowFormatDate();
@@ -323,35 +325,75 @@ $(function(){
 
         mformData.append("title",$("#title").val());
         mformData.append("description",$("#description").val());
-        mformData.append("type",taskType);
+        //mformData.append("type",taskType);
         mformData.append("userid","");
         mformData.append("taskcompstatus",taskstatusStr);
         mformData.append("otherinfo",$("#otherinfo").val());
-
+        mformData.append("createtime",currenttime);
+        mformData.append("deadline",currenttime);
         // var tagStr0 ="";
         // var tagStr1 ="";
         // var tagStr2 ="";
         // var tagStr3 ="";
         if(taskValue=="1" || taskValue=="2"){
-            mformData.append("label",tagContent);
-            console.log(mformData.get("title"));
+
+            mformData.append("type",taskType);
+            var tagStr="";
+            for(var i=0;i<tagNum[0]-1;i++){
+                tagStr=tagStr+tagContent[i]+"#";
+            }
+            tagStr=tagStr+tagContent[tagNum[0]-1];
+            console.log(tagStr);
+            mformData.append("label",tagStr);
+            console.log(mformData.get("label"));
+            ajaxType12(mformData);
 
         }else if(taskValue=="3"){
-            console.log(tagInstanceContent);
-            console.log(tagItem1Content);
-            console.log(tagItem2Content);
 
+            var tagStr="";
+            for(var i=0;i<tagNum[1]-1;i++){
+                tagStr=tagStr+tagInstanceContent[i]+"#";
+            }
+            tagStr=tagStr+tagInstanceContent[tagNum[1]-1];
+
+            var tagStr1="";
+            for(var i=0;i<tagNum[2]-1;i++){
+                tagStr1=tagStr1+tagItem1Content[i]+"#";
+            }
+            tagStr1=tagStr1+tagItem1Content[tagNum[2]-1];
+
+            var tagStr2="";
+            for(var i=0;i<tagNum[3]-1;i++){
+                tagStr2=tagStr2+tagItem2Content[i]+"#";
+            }
+            tagStr2=tagStr2+tagItem2Content[tagNum[3]-1];
+
+            mformData.append("type",taskType);
+            mformData.append("label",tagStr);
+            mformData.append("labelstr1",tagStr1);
+            mformData.append("labelstr2",tagStr2);
+            mformData.append("labelnum",$("#instanceNum").val());
+            mformData.append("labelitem1",$("#item1Num").val());
+            mformData.append("labelitem2",$("#item2Num").val());
+
+            console.log(tagStr);
+            console.log(tagStr1);
+            console.log(tagStr2);
+
+            ajaxType3(mformData);
+
+        }else if(taskValue=="4"){
+
+            mformData.append("type",taskType+"#"+taskType4);
+            ajaxType4(mformData);
         }
 
 
 
         //标签封装成"a#b#c"格式
 
-        // for(var i=0;i<tagNum-1;i++){
-        //     tagStr=tagStr+tagContent[i]+"#";
-        // }
-        // tagStr=tagStr+tagContent[tagNum-1];
-        // //console.log(tagStr);
+
+        //console.log(tagStr);
 
 
         // var taskfile = {
@@ -370,61 +412,7 @@ $(function(){
         // };
         //console.log(taskfile);
 
-        // $.ajax({
-        //     url: "/task/addTask",
-        //     type: "post",
-        //     traditional: true,
-        //     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        //     dataType: "json",
-        //     data: taskfile,
-        //     success: function (data) {
-        //         //TODO:提交成功后转向其他页面
-        //
-        //         // layui.use('layer',function(){
-        //         //     var layer=layui.layer;
-        //         //     layer.open({
-        //         //         type:2,
-        //         //         content:'myTask.html'
-        //         //     })
-        //         // });
-        //
-        //         layui.use('layer',function(){
-        //             var layer=layui.layer;
-        //             layui.use('layer',function(){
-        //                 var layer=layui.layer;
-        //                 layer.open({
-        //                     type:1,
-        //                     content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
-        //                     '<br>你可以选择<a href="myTaskIndex.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
-        //                     '或前去<a href="doTaskIndex.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
-        //                     '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
-        //                 })
-        //             });
-        //             // layer.open({
-        //             //     type: 1,
-        //             //     title: "发布成功",
-        //             //     closeBtn: false,
-        //             //     area: ['500px', '300px'],
-        //             //     shade: 0.8,
-        //             //     id: 'LAY_layuipro',
-        //             //     moveType: 1 ,//拖拽模式，0或者1,
-        //             //     content: '<div style="padding:50px;line-height:40px; background-color: #4476A7;font-size: 20px;">任务发布成功!<br>你可以选择进入<a href="index_myTask.html" target="_top" style="color: cornflowerblue;">任务列表</a>或者前去做任务，也可以继续发布任务</div>',
-        //             //     success: function (layero) {
-        //             //
-        //             //     }
-        //             // })
-        //
-        //         });
-        //         // alert("提交成功,任务ID为"+data.data.taskid);
-        //         console.log(data.data.taskid);
-        //
-        //     }, error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //         console.log(XMLHttpRequest.status);
-        //         console.log(XMLHttpRequest.readyState);
-        //         console.log(textStatus);
-        //
-        //     },
-        // });
+
 
     });
 
@@ -699,5 +687,179 @@ function seedetail(obj) {
 
 
 };
+
+function ajaxType12(mformData) {
+
+    $.ajax({
+        type: 'POST',
+        url: "/task/addTask",
+        data: mformData,
+        contentType: false,
+        processData: false,//这个很有必要，不然不行
+        dataType: "text",
+        mimeType: "multipart/form-data",
+        success: function (data) {
+
+            console.log(data);
+            layui.use('layer',function(){
+                var layer=layui.layer;
+                layui.use('layer',function(){
+                    var layer=layui.layer;
+                    layer.open({
+                        type:1,
+                        content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
+                        '<br>你可以选择<a href="myTaskIndex.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                        '或前去<a href="doTaskIndex.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                        '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                    })
+                });
+
+
+            });
+
+        },error: function (XMLHttpRequest, textStatus, errorThrown) {
+            // console.log(XMLHttpRequest.status);
+            // console.log(XMLHttpRequest.readyState);
+            // console.log(textStatus);
+            alert("上传失败!");
+        },
+
+    });
+    // $.ajax({
+    //     url: "/task/addTask",
+    //     type: "post",
+    //     traditional: true,
+    //     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+    //     dataType: "json",
+    //     data: ajaxData12,
+    //     success: function (data) {
+    //         //TODO:提交成功后转向其他页面
+    //
+    //         // layui.use('layer',function(){
+    //         //     var layer=layui.layer;
+    //         //     layer.open({
+    //         //         type:2,
+    //         //         content:'myTask.html'
+    //         //     })
+    //         // });
+    //         console.log(data);
+    //         layui.use('layer',function(){
+    //             var layer=layui.layer;
+    //             layui.use('layer',function(){
+    //                 var layer=layui.layer;
+    //                 layer.open({
+    //                     type:1,
+    //                     content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
+    //                     '<br>你可以选择<a href="myTaskIndex.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+    //                     '或前去<a href="doTaskIndex.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+    //                     '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+    //                 })
+    //             });
+    //             // layer.open({
+    //             //     type: 1,
+    //             //     title: "发布成功",
+    //             //     closeBtn: false,
+    //             //     area: ['500px', '300px'],
+    //             //     shade: 0.8,
+    //             //     id: 'LAY_layuipro',
+    //             //     moveType: 1 ,//拖拽模式，0或者1,
+    //             //     content: '<div style="padding:50px;line-height:40px; background-color: #4476A7;font-size: 20px;">任务发布成功!<br>你可以选择进入<a href="index_myTask.html" target="_top" style="color: cornflowerblue;">任务列表</a>或者前去做任务，也可以继续发布任务</div>',
+    //             //     success: function (layero) {
+    //             //
+    //             //     }
+    //             // })
+    //
+    //         });
+    //         // alert("提交成功,任务ID为"+data.data.taskid);
+    //         console.log(data.data.taskid);
+    //
+    //     }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //         console.log(XMLHttpRequest.status);
+    //         console.log(XMLHttpRequest.readyState);
+    //         console.log(textStatus);
+    //
+    //     },
+    // });
+};
+
+function ajaxType3(mformData){
+
+
+
+    $.ajax({
+        type: 'POST',
+        url: "/task/addTaskTwoitems",
+        data: mformData,
+        contentType: false,
+        processData: false,//这个很有必要，不然不行
+        dataType: "text",
+        mimeType: "multipart/form-data",
+        success: function (data) {
+
+            console.log(data);
+            layui.use('layer',function(){
+                var layer=layui.layer;
+                layui.use('layer',function(){
+                    var layer=layui.layer;
+                    layer.open({
+                        type:1,
+                        content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
+                        '<br>你可以选择<a href="myTaskIndex.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                        '或前去<a href="doTaskIndex.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                        '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                    })
+                });
+
+            });
+
+        },error: function (XMLHttpRequest, textStatus, errorThrown) {
+            // console.log(XMLHttpRequest.status);
+            // console.log(XMLHttpRequest.readyState);
+            // console.log(textStatus);
+            alert("上传失败!");
+        },
+
+    });
+
+};
+
+function ajaxType4(mformData) {
+
+    $.ajax({
+        type: 'POST',
+        url: "/task/addTaskTMatchCategory",
+        data: mformData,
+        contentType: false,
+        processData: false,//这个很有必要，不然不行
+        dataType: "text",
+        mimeType: "multipart/form-data",
+        success: function (data) {
+
+            console.log(data);
+            layui.use('layer',function(){
+                var layer=layui.layer;
+                layui.use('layer',function(){
+                    var layer=layui.layer;
+                    layer.open({
+                        type:1,
+                        content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
+                        '<br>你可以选择<a href="myTaskIndex.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                        '或前去<a href="doTaskIndex.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                        '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                    })
+                });
+
+            });
+
+        },error: function (XMLHttpRequest, textStatus, errorThrown) {
+            // console.log(XMLHttpRequest.status);
+            // console.log(XMLHttpRequest.readyState);
+            // console.log(textStatus);
+            alert("上传失败!");
+        },
+
+    });
+
+}
 
 

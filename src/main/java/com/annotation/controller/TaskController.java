@@ -71,13 +71,13 @@ public class TaskController {
     @ResponseBody
     public ResponseEntity addTask(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String label,String userid)throws IllegalStateException, IOException {
 
-        //User user =(User)httpSession.getAttribute("currentUser");
+        User user =(User)httpSession.getAttribute("currentUser");
 //        if(!userid.equals(null) && !userid.equals("")){
 //            user.setId(Integer.parseInt(userid));
 //        }
         ResponseEntity responseEntity = new ResponseEntity();
         List<Integer> docids = new ArrayList<Integer>();
-        User user =(User)iUserService.queryUserByUsername("test");
+        //User user =(User)iUserService.queryUserByUsername("test");
 
         //获取上传的文件数组
         ResponseEntity fileResponseEntity = iDocumentService.addMultiFile(multipartFiles,user);
@@ -161,13 +161,13 @@ public class TaskController {
     @ResponseBody
     public ResponseEntity addTaskTwoitems(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String label,String labelstr1,String labelstr2,int labelnum,int labelitem1,int labelitem2,String userid)throws IllegalStateException, IOException {
 
-        //User user =(User)httpSession.getAttribute("currentUser");
+        User user =(User)httpSession.getAttribute("currentUser");
 //        if(!userid.equals(null) && !userid.equals("")){
 //            user.setId(Integer.parseInt(userid));
 //        }
         ResponseEntity responseEntity = new ResponseEntity();
         List<Integer> docids = new ArrayList<Integer>();
-        User user =(User)iUserService.queryUserByUsername("test");
+        //User user =(User)iUserService.queryUserByUsername("test");
 
         //获取上传的文件数组
         ResponseEntity fileResponseEntity = iDocumentService.addMultiFileTwoItems(multipartFiles,user,labelnum,labelitem1,labelitem2);
@@ -227,13 +227,13 @@ public class TaskController {
     @ResponseBody
     public ResponseEntity addTaskMatchCategory(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String userid)throws IllegalStateException, IOException {
 
-        //User user =(User)httpSession.getAttribute("currentUser");
+        User user =(User)httpSession.getAttribute("currentUser");
 //        if(!userid.equals(null) && !userid.equals("")){
 //            user.setId(Integer.parseInt(userid));
 //        }
         ResponseEntity responseEntity = new ResponseEntity();
         List<Integer> docids = new ArrayList<Integer>();
-        User user =(User)iUserService.queryUserByUsername("test");
+        //User user =(User)iUserService.queryUserByUsername("test");
 
         //获取上传的文件数组
         ResponseEntity fileResponseEntity = iDocumentService.addMultiFileMatchCategory(multipartFiles,user);
