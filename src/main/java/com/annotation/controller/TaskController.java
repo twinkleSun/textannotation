@@ -192,7 +192,6 @@ public class TaskController {
      * 创建任务
      * @param httpSession
      * @param task
-     * @param docid
      * @param label
      * @param userid
      * @return

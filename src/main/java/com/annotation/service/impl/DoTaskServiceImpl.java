@@ -133,19 +133,27 @@ public class DoTaskServiceImpl implements IDoTaskService{
             dtInstId = isDtInstance.getDtInstid();
         }
 
-        int iRes0= insertLabels(dtInstId,"instance",instanceLabels);
-        if(iRes0==-2){
-            return -2;
+        if(instanceLabels!=null){
+            int iRes0= insertLabels(dtInstId,"instance",instanceLabels);
+            if(iRes0==-2){
+                return -2;
+            }
         }
 
-        iRes0= insertLabels(dtInstId,"item1",item1Labels);
-        if(iRes0==-2){
-            return -2;
+
+        if(item1Labels!=null){
+            int iRes0= insertLabels(dtInstId,"item1",item1Labels);
+            if(iRes0==-2){
+                return -2;
+            }
         }
 
-        iRes0= insertLabels(dtInstId,"item2",item2Labels);
-        if(iRes0==-2){
-            return -2;
+
+        if(item2Labels!=null){
+            int iRes0= insertLabels(dtInstId,"item2",item2Labels);
+            if(iRes0==-2){
+                return -2;
+            }
         }
 
         //更新任务表的状态

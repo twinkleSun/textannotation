@@ -23,4 +23,26 @@ public interface UserMapper {
      * @return
      */
     User selectUserByUserId(Integer id);
+
+    /**
+     * 新建用户
+     * @param record
+     * @return
+     */
+    int insert(User record);
+
+    /**
+     * 修改用户信息
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKey(User record);
+
+
+    /**
+     * 根据邮箱查找用户是否已经存在
+     * @param email
+     * @return
+     */
+    User selectUserByEmail(String email);
 }

@@ -121,4 +121,70 @@ public class UserController {
         return responseEntity;
     }
 
+
+    /**
+     * 新用户注册
+     * @param request
+     * @param httpServletResponse
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "register",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity userRegister(HttpServletRequest request, HttpServletResponse httpServletResponse,
+                                      User user){
+
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        User userInfo=iUserService.queryUserByEmail(user.getEmail());
+        if(userInfo ==null){
+            int res =iUserService.insertNewUser(user);
+            if(res==1){
+                responseEntity.setStatus(0);
+                responseEntity.setMsg("注册成功，请重新登陆");
+            }else{
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("注册失败，请检查");
+            }
+        }else{
+            responseEntity.setStatus(-2);
+            responseEntity.setMsg("该邮箱已经被注册！");
+        }
+
+
+        return responseEntity;
+    }
+
+
+    /**
+     * 更新用户信息
+     * @param request
+     * @param httpServletResponse
+     * @param httpSession
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "updateUser",method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity updateUser(HttpServletRequest request, HttpServletResponse httpServletResponse,
+                                      HttpSession httpSession, User user){
+        User userInfo =(User)httpSession.getAttribute("currentUser");
+
+        user.setId(userInfo.getId());
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        int res=iUserService.updateUserInfo(user);
+        if(res==1){
+            User returnUser=iUserService.queryUserByUserId(userInfo.getId());
+            responseEntity.setData(returnUser);
+            responseEntity.setStatus(0);
+            responseEntity.setMsg("修改成功");
+        }else{
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("修改失败，请检查");
+        }
+
+        return responseEntity;
+    }
+
 }

@@ -61,7 +61,7 @@
             <result column="itemlabelnum" property="labelnum"></result>
         </collection>
         <collection property="alreadyDone" ofType="Map">
-            <result column="instanceid" property="instanceid" jdbcType="INTEGER" />
+            <!--<result column="instanceid" property="instanceid" jdbcType="INTEGER" />-->
             <result column="label_id" property="labelId" jdbcType="INTEGER" />
             <result column="labeltype" property="labeltype" jdbcType="VARCHAR" />
         </collection>

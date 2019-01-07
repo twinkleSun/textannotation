@@ -10,140 +10,159 @@
     <link rel="stylesheet" href="./lib/layui/css/layui.css">
     <link rel="stylesheet" type="text/css" href="./css/tag.css" />
     <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
+    <style>
+        /*bootstrap-tagsinput 样式*/
+        .bootstrap-tagsinput {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            display: inline-block;
+            padding: 5px 6px;
+            color: #555;
+            vertical-align: middle;
+            border-radius: 4px;
+            width: 100%;
+            line-height: 22px;
+            cursor: text;
+        }
+
+        .bootstrap-tagsinput input {
+            border: none;
+            box-shadow: none;
+            outline: none;
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
+            width: auto !important;
+            max-width: inherit;
+        }
+
+        .bootstrap-tagsinput input:focus {
+            border: none;
+            box-shadow: none;
+        }
+
+        .bootstrap-tagsinput .tag {
+            margin-right: 2px;
+            color: white;
+            font-size: 100%;
+        }
+
+        .bootstrap-tagsinput .tag [data-role="remove"] {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .bootstrap-tagsinput .tag [data-role="remove"]:after {
+            content: "x";
+            padding: 0px 2px;
+        }
+
+        .bootstrap-tagsinput .tag [data-role="remove"]:hover {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
+            rgba(0, 0, 0, 0.05);
+        }
+
+        .bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+            box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        }
+    </style>
 
 </head>
 <body>
-<div class="layui-collapse" lay-accordion="">
-    <div class="layui-colla-item">
-        <h2 class="layui-colla-title">任务相关信息</h2>
-        <div class="layui-colla-content layui-show">
 
-            <!--todo:上方设置可折叠文本相关信息的面板-->
+<h1><span class="label label-success">成功标签</span></h1>
+<!--<div class="layui-collapse" lay-accordion="">-->
+    <!--<div class="layui-colla-item">-->
+        <!--<h2 class="layui-colla-title">任务相关信息</h2>-->
+        <!--<div class="layui-colla-content layui-show">-->
 
-                <div class="layui-row">
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">任务标题</label>
-                    </div>
-                    <div class="layui-col-md11">
-                        <p id="tasktitle" class="layui-text">任务标题前端测试文本</p>
-                    </div>
-                </div>
-                <br>
-                <div class="layui-row">
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">任务描述</label>
-                    </div>
-                    <div class="layui-col-md11">
-                        <p id="taskdesciption" class="layui-text">任务描述前端测试文本</p>
-                    </div>
-                </div>
-                <br>
-                <div class="layui-row">
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">其他备注</label>
-                    </div>
-                    <div class="layui-col-md11">
-                        <p id="taskotherinfo" class="layui-text">其他备注前端测试文本</p>
-                    </div>
-                </div>
-                <br>
+            <!--&lt;!&ndash;todo:上方设置可折叠文本相关信息的面板&ndash;&gt;-->
 
-        </div>
-    </div>
-</div>
-
-<br>
-
-<div class="layui-row">
-
-
-    <!--todo:这里是下方的做任务面板，分为左右两个部分，左边文档，右边标签标注-->
-    <!--todo:左边-->
-    <div class="layui-col-md6">
-        <!--<div class="layui-card">-->
-            <fieldset class="layui-elem-field" style="max-height: 500px;overflow:auto">
-
-            <p id="test" class="layui-form-text" style="font-size: 18px;letter-spacing: 4px;text-indent: 20px;"> 经审理查明，2015年8月12日12时50分许，被告人袁某某驾驶皖KH0766号重型自卸货车，沿着省道216线由北向南行驶至淮滨县王店乡北庙村向阳路口男200米处时，由于观察不周、操作不当，与庞某甲驾驶两轮电动车发生碰撞，造成庞某甲当场死亡的事故。经淮滨县公安局交警大队认定：袁某某负此次事故的全部责任。
-
-                事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。 上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：
-
-                1．书证：受案登记表、立案决定书、接处警记录表、被告人袁某某户籍证明、前科证明、谅解书、协议书、到案经过、驾驶人信息查询结果、机动车信息查询结果单、机动车行驶证复印件、被告人袁某某的驾驶证复印件、被害人庞某甲的户籍证明及其注销证明、道路交通事故认定书及送达回执；
-
-                2．道路交通事故现场图以及照片、道路交通事故现场勘查笔录；
-
-                3．鉴定意见：（淮）公（法医）鉴（尸检）字（2015）039号淮滨县公安局物证鉴定室庞某甲尸检报告；
-
-                4．证人程磊、庞某某证言；
-
-                5．被告人袁某某供述等证据证实。 以上证据，经当庭质证、认证，确实、充分，足以认定。
-                事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。 上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：
-                    </p>
-
-            </fieldset>
-        <!--</div>-->
-    </div>
-    <!--todo:右边-->
-    <div class="layui-col-md6">
-        <div class="layui-row grid-demo" id="labellist-div-panel">
-
-            <div class="layui-row">
-                <div class="layui-col-md3">
-                    <label class="layui-form-label-col">你选择的标签是：</label>
-                </div>
-                <div class="layui-col-md6">
-                    <label class="layui-form-label-col" id="label-selected"></label>
-                </div>
-                <div class="layui-col-md3">
-                    <input type="button" class="layui-btn layui-btn-normal" id="label_button" value="提交这个label">
-                </div>
-            </div>
-            <br>
-
-        </div>
-    </div>
-</div>
-
-</div>
-
-<!--<div style="padding: 20px; background-color: #F2F2F2;">-->
-    <!--<div class="layui-row layui-col-space15">-->
-        <!--<div class="layui-col-md6">-->
-            <!--<div class="layui-card">-->
-                <!--<div class="layui-card-header">卡片面板</div>-->
-                <!--<div class="layui-card-body" style="max-height: 100px;overflow:auto">-->
-                    <!--卡片式面板面板通常用于非白色背景色的主体内<br>-->
-                    <!--从而映衬出边框投影   1．书证：受案登记表、立案决定书、接处警记录表、被告人袁某某户籍证明、前科证明、谅解书、协议书、到案经过、驾驶人信息查询结果、机动车信息查询结果单、机动车行驶证复印件、被告人袁某某的驾驶证复印件、被害人庞某甲的户籍证明及其注销证明、道路交通事故认定书及送达回执；-->
-
-                    <!--2．道路交通事故现场图以及照片、道路交通事故现场勘查笔录；-->
-
-                    <!--3．鉴定意见：（淮）公（法医）鉴（尸检）字（2015）039号淮滨县公安局物证鉴定室庞某甲尸检报告；-->
-
-                    <!--4．证人程磊、庞某某证言；-->
-
-                    <!--5．被告人袁某某供述等证据证实。 以上证据，经当庭质证、认证，确实、充分，足以认定。-->
-                    <!--事故发生后，被告人袁某某在现场等候处-->
+                <!--<div class="layui-row">-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">任务标题</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md11">-->
+                        <!--<p id="tasktitle" class="layui-text">任务标题前端测试文本</p>-->
+                    <!--</div>-->
                 <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="layui-col-md6">-->
-            <!--<div class="layui-card">-->
-                <!--<div class="layui-card-header">卡片面板</div>-->
-                <!--<div class="layui-card-body">-->
-                    <!--结合 layui 的栅格系统<br>-->
-                    <!--轻松实现响应式布局-->
+                <!--<br>-->
+                <!--<div class="layui-row">-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">任务描述</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md11">-->
+                        <!--<p id="taskdesciption" class="layui-text">任务描述前端测试文本</p>-->
+                    <!--</div>-->
                 <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="layui-col-md12">-->
-            <!--<div class="layui-card">-->
-                <!--<div class="layui-card-header">标题</div>-->
-                <!--<div class="layui-card-body">-->
-                    <!--内容-->
+                <!--<br>-->
+                <!--<div class="layui-row">-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">其他备注</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md11">-->
+                        <!--<p id="taskotherinfo" class="layui-text">其他备注前端测试文本</p>-->
+                    <!--</div>-->
                 <!--</div>-->
-            <!--</div>-->
+                <!--<br>-->
+
         <!--</div>-->
     <!--</div>-->
 <!--</div>-->
+
+<br>
+
+<!--<div class="layui-row">-->
+
+
+    <!--<div class="layui-col-md6">-->
+        <!--&lt;!&ndash;<div class="layui-card">&ndash;&gt;-->
+            <!--<fieldset class="layui-elem-field" style="max-height: 500px;overflow:auto">-->
+
+            <!--<p id="test" class="layui-form-text" style="font-size: 18px;letter-spacing: 4px;text-indent: 20px;"> 经审理查明，2015年8月12日12时50分许，被告人袁某某驾驶皖KH0766号重型自卸货车，沿着省道216线由北向南行驶至淮滨县王店乡北庙村向阳路口男200米处时，由于观察不周、操作不当，与庞某甲驾驶两轮电动车发生碰撞，造成庞某甲当场死亡的事故。经淮滨县公安局交警大队认定：袁某某负此次事故的全部责任。-->
+
+                <!--事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。 上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：-->
+
+                <!--1．书证：受案登记表、立案决定书、接处警记录表、被告人袁某某户籍证明、前科证明、谅解书、协议书、到案经过、驾驶人信息查询结果、机动车信息查询结果单、机动车行驶证复印件、被告人袁某某的驾驶证复印件、被害人庞某甲的户籍证明及其注销证明、道路交通事故认定书及送达回执；-->
+
+                <!--2．道路交通事故现场图以及照片、道路交通事故现场勘查笔录；-->
+
+                <!--3．鉴定意见：（淮）公（法医）鉴（尸检）字（2015）039号淮滨县公安局物证鉴定室庞某甲尸检报告；-->
+
+                <!--4．证人程磊、庞某某证言；-->
+
+                <!--5．被告人袁某某供述等证据证实。 以上证据，经当庭质证、认证，确实、充分，足以认定。-->
+                <!--事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。 上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：-->
+                    <!--</p>-->
+
+            <!--</fieldset>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash;todo:右边&ndash;&gt;-->
+    <!--<div class="layui-col-md6">-->
+        <!--<div class="layui-row grid-demo" id="labellist-div-panel">-->
+
+            <!--<div class="layui-row">-->
+                <!--<div class="layui-col-md3">-->
+                    <!--<label class="layui-form-label-col">你选择的标签是：</label>-->
+                <!--</div>-->
+                <!--<div class="layui-col-md6">-->
+                    <!--<label class="layui-form-label-col" id="label-selected"></label>-->
+                <!--</div>-->
+                <!--<div class="layui-col-md3">-->
+                    <!--<input type="button" class="layui-btn layui-btn-normal" id="label_button" value="提交这个label">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<br>-->
+
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+</div>
+
+
 
 
 <script src="./lib/layui/layui.js" charset="utf-8"></script>

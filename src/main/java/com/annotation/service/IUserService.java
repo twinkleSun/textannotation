@@ -9,7 +9,28 @@ import com.annotation.model.User;
 
 public interface IUserService {
 
-    public User queryUserByUsername(String username);
+    User queryUserByUsername(String username);
 
-    public User queryUserByUserId(int id);
+    User queryUserByUserId(int id);
+
+    /**
+     * 新建用户
+     * @param user
+     * @return
+     */
+    int insertNewUser(User user);
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    int updateUserInfo(User user);
+
+    /**
+     * 根据邮箱查询用户是否已经存在
+     * @param email
+     * @return
+     */
+    User queryUserByEmail(String email);
 }

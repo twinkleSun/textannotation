@@ -36,4 +36,37 @@ public class UserServiceImpl implements IUserService {
         return user;
     }
 
+
+    /**
+     * 新建用户
+     * @param user
+     * @return
+     */
+    public int insertNewUser(User user){
+        int res=userMapper.insert(user);
+        return res;
+    }
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    public int updateUserInfo(User user){
+        int res=userMapper.updateByPrimaryKey(user);
+
+       return res;
+
+    }
+
+    /**
+     * 根据邮箱查询用户是否已经存在
+     * @param email
+     * @return
+     */
+    public User queryUserByEmail(String email){
+        User user=userMapper.selectUserByEmail(email);
+        return user;
+    }
+
 }

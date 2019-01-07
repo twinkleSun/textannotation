@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="./js/bootstrap/bootstrap.min.js"></script>
+    <!--<link rel="stylesheet" href="lib/layui/css/layui.css">-->
 
     <style>
         /* Custom Styles */
@@ -47,6 +48,7 @@
         ul.nav-tabs.affix{
             top: 30px; /* Set the top position of pinned element */
         }
+
     </style>
 </head>
 <body>
@@ -133,14 +135,14 @@
                             <h6 class="panel-title"><p id="pubUserName"></p></h6>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <h5 class="panel-title">相关标签:</h5>
-                        </div>
-                        <div class="col-lg-10" id="taskLabels">
+                    <!--<div class="row">-->
+                        <!--<div class="col-lg-2">-->
+                            <!--<h5 class="panel-title">任务描述:</h5>-->
+                        <!--</div>-->
+                        <!--<div class="col-lg-10" id="taskLabels">-->
 
-                        </div>
-                    </div>
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
 
@@ -148,7 +150,7 @@
     </div>
 </div>
 
-<div class="row" id="div-instance-item" style="display: none;">
+<div class="row" id="div-instance-item" style="display: none">
     <div class="col-lg-1">
         <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="200" id="ul-nav">
 
@@ -157,7 +159,29 @@
     <div class="col-lg-11">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <div class="row"> <div class="col-lg-11"></div>
+                <!--<table class="table">-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<div class="col-lg-1">-->
+                                <!--<h5>可选标签:</h5>-->
+                            <!--</div>-->
+                            <!--<div class="col-lg-9" id="instance-label-div">-->
+                            <!--</div>-->
+
+                            <!--<div class="col-lg-2">-->
+                                <!--<input class="btn btn-success" type="button" value="提交该段标签" id="submit-item">-->
+                            <!--</div>-->
+
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+
+                <div class="row">
+                    <div class="col-lg-1">
+                        <h5>可选标签:</h5>
+                    </div>
+                    <div class="col-lg-10" id="instance-label-div">
+                    </div>
                     <div class="col-lg-1">
                         <input class="btn btn-success" type="button" value="提交该段" id="submit-item">
                     </div>
@@ -171,24 +195,33 @@
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="panel panel-success">
-                                    <div class="panel-heading">
-                                        <div class="row">
-                                            <h3 class="panel-title"><span class="col-lg-3">测试1</span></h3>
-                                        </div>
-                                    </div>
+                                <div class="panel panel-default">
+
+                                    <table class="table">
+
+                                        <!--<tr>-->
+                                            <!--<td><div class="col-lg-2">-->
+                                                <!--<h5>任务要求:</h5>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-lg-10" id="item1-label-chosen-div">-->
+                                                    <!--<h5>该段文本只可以选择几个标签</h5>-->
+                                                <!--</div>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <tr>
+                                            <td>
+                                                <div class="col-lg-2">
+                                                    <h5>可选标签:</h5>
+                                                </div>
+                                                <div class="col-lg-10" id="item1-label-div">
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </table>
                                     <div class="panel-body" style="max-height: 500px;overflow:auto" >
 
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">标签</label>
-                                                <div class="col-lg-10">
-                                                  <label class="label-info" id="test-4" onclick="testLabel(this.id)" flag="0">测试1</label>
-                                                   <label class="label-info" id="test-5" onclick="testLabel(this.id)" flag="0">测试2</label>
-                                                    <label class="label-info" id="test-6" onclick="testLabel(this.id)" flag="0">测试3</label>
-                                                </div>
-                                            </div>
-                                        </form>
+
                                         <form class="form-horizontal">
                                             <div class="form-group">
                                                 <p class="col-lg-12" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;" id="p-item-0"></p>
@@ -199,31 +232,34 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <div class="panel panel-success">
+                                <div class="panel panel-default">
 
-                                    <div class="panel-heading">
+                                    <table class="table">
 
-                                        <div class="row">
-                                            <h3 class="panel-title"><span class="col-lg-4">测试标签</span></h3>
+                                        <!--<tr> <div class="col-lg-2">-->
+                                            <!--<h4>标签:</h4>-->
+                                        <!--</div>-->
+                                            <!--<div class="col-lg-10" id="item2-label-div">-->
 
-                                        </div>
+                                            <!--</div>-->
 
-
-                                    </div>
-                                    <div class="panel-body" style="max-height: 500px;overflow:auto" id="div-para">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">标签：</label>
-                                                <div class="col-lg-10">
-                                                    <label class="label-info" id="test-1" onclick="testLabel(this.id)" flag="0">测试1</label>
-                                                    <label class="label-info" id="test-2" onclick="testLabel(this.id)" flag="0">测试2</label>
-                                                    <label class="label-info" id="test-3" onclick="testLabel(this.id)" flag="0">测试3</label>
+                                            <!--</h4>-->
+                                        <!--</tr>-->
+                                        <tr>
+                                            <td>
+                                                <div class="col-lg-2">
+                                                    <h5>可选标签:</h5>
                                                 </div>
-                                            </div>
-                                        </form>
+                                                <div class="col-lg-10" id="item2-label-div">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="panel-body" style="max-height: 500px;overflow:auto" >
+
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <p class="col-lg-12" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;" id="p-item-1">经审理查明：2015年8月20日7
+                                                <p class="col-lg-12" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;" id="p-item-1">
                                                 </p>
                                             </div>
                                         </form>
