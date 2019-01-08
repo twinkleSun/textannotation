@@ -130,7 +130,6 @@ function imgClick(obj) {
     }
 };
 
-
 /**
  * 页脚1，2，3对应的点击事件
  * @param obj
