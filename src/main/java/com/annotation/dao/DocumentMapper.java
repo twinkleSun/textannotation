@@ -58,9 +58,12 @@ public interface DocumentMapper {
        int updateDocStatusByInstanceId(@Param("instId")int instId, @Param("docStatus")String docStatus);
 
 
- /**
-     * 设置数据库自增长为1
-     * @return
-     */
-    int alterDocumentTable();
+       /**
+        * 设置数据库自增长为1
+        * @return
+        */
+        int alterDocumentTable();
+
+
+
 }

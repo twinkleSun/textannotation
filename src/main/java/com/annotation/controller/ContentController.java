@@ -2,6 +2,8 @@ package com.annotation.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.Content;
+import com.annotation.model.User;
+import com.annotation.model.entity.ContentLabelEntity;
 import com.annotation.service.IContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -34,8 +37,12 @@ public class ContentController {
      */
     @RequestMapping(value = "getContent", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getContent(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, int docId) {
-        List<Content> contentList = iContentService.selectContentByDocId(docId);
+    public JSONObject getContent(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse, int docId) {
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        List<ContentLabelEntity> contentList=iContentService.queryContentLabel(docId,user.getId());
+
+        //List<Content> contentList = iContentService.selectContentByDocId(docId);
         JSONObject rs = new JSONObject();
         if(contentList != null){
             rs.put("msg","查询文件内容成功");

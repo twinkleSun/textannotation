@@ -4,6 +4,7 @@ import com.annotation.model.Content;
 import com.annotation.model.DoTask;
 import com.annotation.model.DtInstance;
 import com.annotation.model.User;
+import com.annotation.model.entity.ResponseEntity;
 
 import java.util.List;
 
@@ -86,4 +87,18 @@ public interface IDoTaskService {
      * @return
      */
     String insertManyToManyRelations(int dtInstId,int[] aListitemId,int[] bListitemId);
+
+
+
+    /**
+     * 添加做任务表
+     * 做任务----分类
+     * 分类的conbegin/conend直接传-1
+     * @param dotask
+     * @param userid
+     * @param labelId
+
+     * @return
+     */
+    ResponseEntity addClassifyTask(DoTask dotask, int userid, int[] labelId, int conbegin, int conend);
 }

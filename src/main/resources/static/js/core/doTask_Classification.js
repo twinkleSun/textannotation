@@ -21,6 +21,10 @@ var docId;//从documentList中获取
  */
 var paraIndex=0;//文章的段落数，document->content
 var paraContent=new Array;//每段的内容
+
+var paraLabelAlreadyDone=new Array;//每段已经选中的label
+
+
 var paraId=new Array;//每段的数据库ID，做任务传值需要-->contentid
 var curParaIndex=0;//当前正在做的页面的索引
 var para_label=new Array;//二维数组，存储content-label的对应关系
@@ -68,28 +72,37 @@ $(function () {
     $("#submit-paraLabel").click(function(){
         ajaxTag=0;//用来判定是否有失败的标签
         console.log(para_label);
+        var ajaxLabelId=new Array;
+        var ajaxLabelNum=0;
         for(var i=0;i<labelLength;i++){
             console.log(curParaIndex);
             if(para_label[curParaIndex][i]>-1){
-                var doTaskData={
-                    dtid:"",
-                    userid:"",
-                    taskid :taskId,
-                    contentid:paraId[curParaIndex],
-                    labelId:labelList[i].lid,
-                    conbegin:-1,
-                    conend:-1
-                };
-                //console.log(doTaskData);
-                /**
-                 * 调用ajax上传标签
-                 */
-                ajaxdoTaskInfo(doTaskData);
+                ajaxLabelId[ajaxLabelNum]=labelList[i].lid;
+                ajaxLabelNum++;
+
             }
-            if(ajaxTag!=0){
-                alert("有标签添加失败");
-            }
+            // if(ajaxTag!=0){
+            //     alert("有标签添加失败");
+            // }else{
+            //     ajaxDocContent(docId);
+            // }
         }
+
+        var doTaskData={
+            dtid:"",
+            userid:"",
+            taskid :taskId,
+            contentid:paraId[curParaIndex],
+            labelId:ajaxLabelId,
+            conbegin:-1,
+            conend:-1
+        };
+        //console.log(doTaskData);
+        /**
+         * 调用ajax上传标签
+         */
+        ajaxdoTaskInfo(doTaskData);
+
     });
 
 });
@@ -110,7 +123,7 @@ function imgClick(obj) {
         curLabelIndex=-1;
         //console.log(para_label);
     }else{
-        $("#"+label_list_img[i]).attr("src","./images/isAns.png");
+        $("#"+label_list_img[i]).attr("src","./images/isAnsBlue.png");
         $("#"+label_list_img[i]).removeClass("notAns").addClass("isAns");
         para_label[curParaIndex][curLabelIndex]=curLabelIndex;
         //console.log(para_label);
@@ -123,6 +136,14 @@ function imgClick(obj) {
  * @param obj
  */
 function footerIndex(obj) {
+
+    $("#"+obj).css("color","red");
+    console.log(obj);
+    console.log(panel_footer_index[curParaIndex]);
+
+    $("#"+panel_footer_index[curParaIndex]).css("color","#0d96f2");
+
+
     var aIndex=obj.substring(19,obj.length);//console.log("当前的段落索引为："+aIndex);
     curParaIndex=aIndex;//当前段落的索引
 
@@ -130,14 +151,18 @@ function footerIndex(obj) {
     $("#span-index").html("第"+(curParaIndexNum+1)+"段");//设置内容面板的标题
     $("#p-para").html(paraContent[curParaIndex]);//设置内容
 
+
+    labelHtml(labelList);
+
     for(var i=0;i<labelLength;i++){
-        if(para_label[curParaIndexNum][i]>-1){
-            $("#"+label_list_img[i]).attr("src","./images/isAns.png");
-            $("#"+label_list_img[i]).removeClass("notAns").addClass("isAns");
-        }else{
-            $("#"+label_list_img[i]).attr("src","./images/notAns.png");
-            $("#"+label_list_img[i]).addClass("notAns").removeClass("isAns");
+        if(para_label[curParaIndexNum][i]>-1) {
+            $("#" + label_list_img[i]).attr("src", "./images/isAnsBlue.png");
+            $("#" + label_list_img[i]).removeClass("notAns").addClass("isAns");
         }
+        // }else{
+        //     $("#"+label_list_img[i]).attr("src","./images/notAns.png");
+        //     $("#"+label_list_img[i]).addClass("notAns").removeClass("isAns");
+        // }
     }
 };
 
@@ -249,20 +274,33 @@ function ajaxDocContent(docId) {
                 //todo:可以合并存
                 para_label[i]=new Array;
                 paraContent[i]=data.data[i].paracontent;//每段内容
+
+                paraLabelAlreadyDone[i]=data.data[i].alreadyDone;
                 paraId[i]=data.data[i].cid;//console.log(paraId[i]);//每段内容的ID
 
-                var panel_footer= '\xa0\xa0\xa0\xa0<a id="panel-footer-index-'+i+'" style="color: #0d96f2" onclick="footerIndex(this.id)">'
-                    + (i+1)
-                    +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
+                var panel_footer="";
+                if(i==curParaIndex){
+                    panel_footer= '\xa0\xa0\xa0\xa0<a class="layui-form-label" id="panel-footer-index-'+i+'" style="color: #FF0000" onclick="footerIndex(this.id)">'
+                        + (i+1)
+                        +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
+                }else{
+                    panel_footer= '\xa0\xa0\xa0\xa0<a class="layui-form-label" id="panel-footer-index-'+i+'" style="color: #0d96f2" onclick="footerIndex(this.id)">'
+                        + (i+1)
+                        +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
+                }
+
+                // panel_footer= '\xa0\xa0\xa0\xa0<a class="layui-form-label" id="panel-footer-index-'+i+'" style="color: #0d96f2" onclick="footerIndex(this.id)">'
+                //     + (i+1)
+                //     +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
 
                 panel_footer_index[i]="panel-footer-index-"+i;//页脚a标签对应的ID
 
                 div_footer=div_footer+panel_footer;
             }
             div_footer=div_footer+'</div>';
-            curParaIndex=0;
-            $("#p-para").html(paraContent[0]);//显示第1段内容
-            $("#div-para-footer").append(div_footer);//显示页脚
+
+            $("#p-para").html(paraContent[curParaIndex]);//显示第1段内容
+            $("#div-para-footer").html(div_footer);//显示页脚
 
             /**
              * 调用label处理函数
@@ -285,17 +323,53 @@ function labelHtml(labelList) {
 
     labelLength =labelList.length;
 
-    var label_html="";
-    for(var i=0;i<labelLength;i++){
-        var list_html ='<li class="list-group-item">'
-            +'<img class="notAns" src="./images/notAns.png" id="label-list-img-'+i+'" onclick="imgClick(this.id)">'
-            +labelList[i].labelname
-            +'</li>';
-        label_html =label_html+list_html;
-        label_list_img[i]="label-list-img-"+i;
+    var tmpLabelId=new Array;
+
+    for(var i=0;i<paraLabelAlreadyDone[curParaIndex].length;i++){
+        tmpLabelId[i]=paraLabelAlreadyDone[curParaIndex][i].labelid;
+    }
+    console.log(paraLabelAlreadyDone[curParaIndex]);
+
+    console.log(tmpLabelId.length);
+
+    if(tmpLabelId.length>0){
+        var label_html="";
+        for(var i=0;i<labelLength;i++){
+            var list_html="";
+            if(tmpLabelId.indexOf(labelList[i].lid)!=-1){
+                console.log(tmpLabelId.indexOf(labelList[i].lid));
+                console.log(labelList[i].lid);
+                list_html ='<li class="list-group-item">'
+                    +'<img class="isAns" src="./images/isAns.png" id="label-list-img-'+i+'">'
+                    +labelList[i].labelname
+                    +'</li>';
+            }else{
+                list_html ='<li class="list-group-item">'
+                    +'<img class="notAns" src="./images/notAns.png" id="label-list-img-'+i+'" onclick="imgClick(this.id)">'
+                    +labelList[i].labelname
+                    +'</li>';
+            }
+
+            label_html =label_html+list_html;
+            label_list_img[i]="label-list-img-"+i;
+        }
+
+        $("#ul-label-list").html(label_html);
+    }else{
+        var label_html="";
+        for(var i=0;i<labelLength;i++){
+            var list_html ='<li class="list-group-item">'
+                +'<img class="notAns" src="./images/notAns.png" id="label-list-img-'+i+'" onclick="imgClick(this.id)">'
+                +labelList[i].labelname
+                +'</li>';
+            label_html =label_html+list_html;
+            label_list_img[i]="label-list-img-"+i;
+        }
+
+        $("#ul-label-list").html(label_html);
     }
 
-    $("#ul-label-list").append(label_html);
+
     /**
      * 将值都初始化为-1，选中label则替换-1
      */
@@ -314,7 +388,7 @@ function labelHtml(labelList) {
 function ajaxdoTaskInfo(doTaskData) {
 
     $.ajax({
-        url: "dotask/addDoTask",
+        url: "dotask/addClassifyTask",
         type: "post",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -322,11 +396,13 @@ function ajaxdoTaskInfo(doTaskData) {
         data:doTaskData,
         success: function (data) {
             console.log(data);
-            if(data.status=="0"){
-                ajaxTag=ajaxTag+0;
-            }else{
-                ajaxTag=-1;
-            }
+            ajaxDocContent(docId);
+
+            // if(data.status=="0"){
+            //     ajaxTag=ajaxTag+0;
+            // }else{
+            //     ajaxTag=-1;
+            // }
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 

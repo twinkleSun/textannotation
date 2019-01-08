@@ -2,6 +2,7 @@ package com.annotation.service.impl;
 
 import com.annotation.dao.ContentMapper;
 import com.annotation.model.Content;
+import com.annotation.model.entity.ContentLabelEntity;
 import com.annotation.service.IContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,17 @@ public class ContentServiceImpl implements IContentService {
     public List<Content> selectContentByDocId(int docId){
         List<Content> contentList =contentMapper.selectContentByDocumentId(docId);
         return contentList;
+    }
+
+
+
+    /**
+     * 查询content+label
+     * @param docId
+     * @return
+     */
+    public List<ContentLabelEntity> queryContentLabel(int docId, int userId){
+        List<ContentLabelEntity> contentLabelEntityList=contentMapper.selectContentLabel(docId,userId);
+        return contentLabelEntityList;
     }
 }

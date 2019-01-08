@@ -1,7 +1,9 @@
 package com.annotation.dao;
 
 import com.annotation.model.Content;
+import com.annotation.model.entity.ContentLabelEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,5 +36,15 @@ public interface ContentMapper {
      * @return
      */
     int selectContentDocumentId(Integer contentid);
+
+    /**
+     * 根据文件id获取所有的instance和item
+     * 包括已经做好的
+     * @param docId
+     * @param userId
+     * @return
+     */
+    List<ContentLabelEntity> selectContentLabel(@Param("docId")Integer docId, @Param("userId")Integer userId);
+
 
 }

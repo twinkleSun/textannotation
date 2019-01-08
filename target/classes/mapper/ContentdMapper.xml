@@ -16,5 +16,28 @@
     select documentid from content where cid = #{cid}
     </select>
 
+    <resultMap id="ContentLabelByDocId" type="com.annotation.model.entity.ContentLabelEntity">
+        <id column="cid" property="cid" jdbcType="INTEGER" />
+        <result column="paracontent" property="paracontent" jdbcType="VARCHAR" />
+        <result column="paraindex" property="paraindex" jdbcType="INTEGER" />
+        <result column="parastatus" property="parastatus" jdbcType="VARCHAR" />
+        <result column="paracomptime" property="paracomptime" jdbcType="VARCHAR" />
+        <result column="documentid" property="documentid" jdbcType="INTEGER" />
 
+        <collection property="alreadyDone" ofType="Map">
+            <result column="labelid" property="labelid" jdbcType="INTEGER" />
+            <result column="contentbegin" property="contentbegin" jdbcType="INTEGER" />
+            <result column="contentend" property="contentend" jdbcType="INTEGER" />
+        </collection>
+    </resultMap>
+
+    <select id="selectContentLabel" parameterType="Integer" resultMap="ContentLabelByDocId">
+        select t.cid, t.paracontent, t.paraindex, t.parastatus, t.paracomptime, t.documentid,
+        dtd.labelid, dtd.contentbegin,dtd.contentend
+        from content t
+        left join dotask dt on t.cid=dt.contentid
+        left join dotaskdetail dtd on dt.dtid =dtd.dotaskid
+        and dt.userid=#{userId}
+        where t.documentid=#{docId}
+    </select>
 </mapper>

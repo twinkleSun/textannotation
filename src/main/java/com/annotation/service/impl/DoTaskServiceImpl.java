@@ -2,6 +2,7 @@ package com.annotation.service.impl;
 
 import com.annotation.dao.*;
 import com.annotation.model.*;
+import com.annotation.model.entity.ResponseEntity;
 import com.annotation.service.IDoTaskService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -313,6 +314,109 @@ public class DoTaskServiceImpl implements IDoTaskService{
             if(dtdItemRelationRes != 1){
                 sb=sb.append(i+"#");
             }
+        }
+        return sb.toString();
+    }
+
+
+
+    /**
+     * 添加做任务表
+     * @param dotask
+     * @param userid
+     * @param labelId
+     * @param conbegin
+     * @param conend
+     * @return
+     */
+    public ResponseEntity addClassifyTask(DoTask dotask, int userid, int[] labelId, int conbegin, int conend){
+
+        ResponseEntity responseEntity=new ResponseEntity();
+
+        //先判断插入标签的content有没有之前有没有插入过标签，有就不用再新建dotask表了
+        DoTask doTaskselect = dotaskMapper.selectTask(userid,dotask.getTaskid(),dotask.getContentid());
+        int dotaskID=-1;
+
+        if(doTaskselect==null){
+            //如果做任务表不存在则插入
+            int dotaskRes=dotaskMapper.insertDoTask(dotask);//插入做任务表
+            dotaskID = dotask.getDtid();
+            //插入做任务表失败返回-1
+            if(dotaskRes == -1){
+                responseEntity.setMsg("添加做任务失败，请检查");
+                responseEntity.setStatus(-1);
+                return responseEntity;
+            }
+        }else{
+            //已经存在就不用再插入了
+            dotaskID = doTaskselect.getDtid();
+        }
+
+        //做任务表插入成功，继续插入做任务详细信息表
+        DoTaskDetail doTaskDetail = new DoTaskDetail();
+        //doTaskDetail.setDoTaskid(dotask.getDtid());
+        doTaskDetail.setDoTaskid(dotaskID);
+        //doTaskDetail.setLabelid(labelId);
+        doTaskDetail.setContentbegin(conbegin);
+        doTaskDetail.setContentend(conend);
+        String dotask_detRes =insertClassifyLabels(doTaskDetail,labelId);
+
+//        int dotask_detRes = doTaskDetailMapperr.insertDoTaskDetail(doTaskDetail);
+//
+        if(!dotask_detRes.equals("0#")){
+            responseEntity.setStatus(-2);
+            responseEntity.setMsg("添加做任务详细信息失败");
+            responseEntity.setData(dotask_detRes);
+            return responseEntity;
+
+        }
+
+        //更新任务表的状态
+        Task task = taskMapper.selectTaskById(dotask.getTaskid());
+        task.setTaskcompstatus("正在进行");
+        int updatetask = taskMapper.updateById(task);
+        if(updatetask==-1){
+            responseEntity.setStatus(-3);
+            responseEntity.setMsg("更新任务状态失败");
+            return responseEntity;
+        }
+
+        //更新文档的状态
+        int documentid = contentMapper.selectContentDocumentId(dotask.getContentid());
+        Document document = documentMapper.selectDocumentById(documentid);
+        document.setDocstatus("正在进行");
+        int updatedocument = documentMapper.updateDocumentById(document);
+        if(updatedocument==-1){
+            responseEntity.setStatus(-4);
+            responseEntity.setMsg("更新文档状态失败");
+            return responseEntity;
+        }
+        //返回做任务ID
+        //return dotask.getDtid();
+        responseEntity.setStatus(0);
+        responseEntity.setMsg("添加做任务表成功");
+        Map<String, Object> data = new HashMap<>();
+        data.put("dotaskid", dotaskID);//返回做任务id
+        responseEntity.setData(data);
+
+        return responseEntity;
+    }
+
+
+    public String insertClassifyLabels( DoTaskDetail doTaskDetail,int[] labelId){
+
+        StringBuffer sb=new StringBuffer();
+
+
+        sb.append(0+"#");
+        for(int i=0;i<labelId.length;i++){
+            doTaskDetail.setLabelid(labelId[i]);
+            int dotask_detRes = doTaskDetailMapperr.insertDoTaskDetail(doTaskDetail);
+
+            if(dotask_detRes == -1){
+                sb=sb.append(labelId[i]+"#");
+            }
+
         }
         return sb.toString();
     }

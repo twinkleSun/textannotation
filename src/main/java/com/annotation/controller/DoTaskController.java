@@ -188,4 +188,30 @@ public class DoTaskController {
 
         return jso;
     }
+
+
+
+
+    /**
+     * 添加分类任务
+     * @param httpSession
+     * @param dotask
+     * @param labelId
+     * @param conbegin
+     * @param conend
+     * @return
+     */
+    @RequestMapping(value = "addClassifyTask", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity addClassifyTask(HttpSession httpSession, DoTask dotask, int[] labelId,int conbegin, int conend) {
+
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        //User user =(User)iUserService.queryUserByUsername("test");
+        // userid = String.valueOf(user.getId());
+
+        ResponseEntity responseEntity =iDoTaskService.addClassifyTask(dotask,user.getId(),labelId,conbegin,conend);//创建做任务表的结果
+
+        return responseEntity;
+    }
 }
