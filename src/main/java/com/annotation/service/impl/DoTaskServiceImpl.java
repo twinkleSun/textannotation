@@ -39,6 +39,9 @@ public class DoTaskServiceImpl implements IDoTaskService{
     @Autowired
     DtdItemLabelMapper dtdItemLabelMapper;
 
+    @Autowired
+    DtdItemSortingMapper dtdItemSortingMapper;
+
     /**
      * 添加做任务表
      * @param dotask
@@ -417,6 +420,82 @@ public class DoTaskServiceImpl implements IDoTaskService{
                 sb=sb.append(labelId[i]+"#");
             }
 
+        }
+        return sb.toString();
+    }
+
+
+    public ResponseEntity addSortingInstanceItem(DtInstance dtInstance, int userId,int[] itemIds,int[] newIndexs){
+        dtInstance.setUserId(userId);
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setStatus(0);
+        DtInstance isDtInstance = dtInstanceMapper.selectDtInstance(userId,dtInstance.getTaskId(),dtInstance.getInstanceId());
+        int dtInstId=-1;
+
+        if(isDtInstance==null){
+            //如果做任务表不存在则插入
+            int dtInstanceRes=dtInstanceMapper.insert(dtInstance);//插入做任务表
+            dtInstId = dtInstance.getDtInstid();
+            //插入做任务表失败返回-1
+            if(dtInstanceRes == -1){
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("添加做任务失败，请检查");
+                return responseEntity;
+            }
+        }else{
+            //已经存在就不用再插入了
+            dtInstId = isDtInstance.getDtInstid();
+        }
+
+
+
+        String iRes= insertSortingItem(dtInstId,itemIds,newIndexs);
+        if(!iRes.equals("0#")){
+            responseEntity.setStatus(-2);
+            responseEntity.setMsg("添加失败");
+            responseEntity.setData(iRes);
+            return responseEntity;
+        }
+
+
+        //更新任务表的状态
+        Task task = taskMapper.selectTaskById(dtInstance.getTaskId());
+        task.setTaskcompstatus("正在进行");
+        int updatetask = taskMapper.updateById(task);
+        if(updatetask==-1){
+            responseEntity.setStatus(-3);
+            responseEntity.setMsg("更新任务状态失败");
+            return responseEntity;
+        }
+
+        //更新文档的状态
+        int updatedocument = documentMapper.updateDocStatusByInstanceId(dtInstance.getInstanceId(),"正在进行");
+        if(updatedocument==-1){
+            responseEntity.setStatus(-4);
+            responseEntity.setMsg("更新文档状态失败");
+            return responseEntity;
+        }
+        //返回做任务ID
+
+        responseEntity.setMsg("添加做任务表成功");
+        Map<String, Object> data = new HashMap<>();
+        data.put("dtInstid", dtInstId);//返回做任务id
+        responseEntity.setData(data);
+        return responseEntity;
+    }
+
+
+
+    public String insertSortingItem(int dtInstId,int[] itemIds,int[] newIndexs){
+
+        StringBuffer sb=new StringBuffer();
+
+        sb.append(0+"#");
+        for(int i=0;i<itemIds.length;i++){
+            int dtdItemRelationRes = dtdItemSortingMapper.insertSortingItem(dtInstId,itemIds[i],newIndexs[i]);
+            if(dtdItemRelationRes != 1 && dtdItemRelationRes != 2){
+                sb=sb.append(i+"#");
+            }
         }
         return sb.toString();
     }

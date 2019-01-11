@@ -9,7 +9,7 @@ $(function () {
      */
     var loc = location.href; //console.log("loc===="+loc);
     var taskidArr=loc.split("=");
-    taskId = taskidArr[1];
+    var taskId = taskidArr[1];
     console.log(taskId);
 
     /**
@@ -17,6 +17,20 @@ $(function () {
      */
 
     ajaxTaskInfo(taskId);
+
+    var itemId=[39,37];
+    var newIndex=[1,2];
+    var doTaskData={
+        dtInstid:"",
+        userId:"",
+        taskId :taskId,
+        instanceId:35,
+        itemIds:itemId,
+        newIndex:newIndex
+
+
+    };  console.log(doTaskData);
+    addSortingTask(doTaskData);
 });
 
 /**
@@ -174,3 +188,29 @@ function ajaxDocInstanceItem(docId) {
         },
     });
 }
+
+
+/**
+ * 做任务上传自己的标签
+ * @param doTaskData
+ */
+function addSortingTask(doTaskData) {
+
+    $.ajax({
+        url: "dotask/addSortingTask",
+        type: "post",
+        traditional: true,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: "json",
+        data:doTaskData,
+        success: function (data) {
+            console.log(data);
+
+        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+
+        },
+    });
+
+
+};

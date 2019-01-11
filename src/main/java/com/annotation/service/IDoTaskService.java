@@ -1,9 +1,6 @@
 package com.annotation.service;
 
-import com.annotation.model.Content;
-import com.annotation.model.DoTask;
-import com.annotation.model.DtInstance;
-import com.annotation.model.User;
+import com.annotation.model.*;
 import com.annotation.model.entity.ResponseEntity;
 
 import java.util.List;
@@ -101,4 +98,15 @@ public interface IDoTaskService {
      * @return
      */
     ResponseEntity addClassifyTask(DoTask dotask, int userid, int[] labelId, int conbegin, int conend);
+
+
+
+    /**
+     * 做任务---添加文本关系类型标注
+     * @param dtInstance
+
+     * @return
+     */
+    ResponseEntity addSortingInstanceItem(DtInstance dtInstance, int userId,int[] itemIds,int[] newIndexs);
+
 }

@@ -37,4 +37,10 @@
       </if>
     </trim>
   </insert>
+
+
+  <insert id="insertSortingItem" parameterType="Integer">
+    replace into dtd_item_sorting (dt_inst_id, item_id,newindex)
+    values (#{dtInstId}, #{itemId},#{newIndex})
+  </insert>
 </mapper>

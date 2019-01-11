@@ -109,6 +109,7 @@ CREATE TABLE `dtd_item_sorting` (
   `item_id` INT(11) NOT NULL  COMMENT 'itemID',
   `newindex` INT(11) NOT NULL COMMENT '索引',
   FOREIGN KEY (`dt_inst_id`) REFERENCES `dt_instance` (`dt_instid`),
-  FOREIGN KEY (`item_id`) REFERENCES `item` (`itid`)
+  FOREIGN KEY (`item_id`) REFERENCES `item` (`itid`),
+    UNIQUE KEY `dt_inst_id` (`dt_inst_id`,`item_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 INSERT INTO `dtd_item_sorting` VALUES ('1','1','1');

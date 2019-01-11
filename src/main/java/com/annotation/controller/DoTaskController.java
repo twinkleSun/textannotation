@@ -109,27 +109,19 @@ public class DoTaskController {
 
         switch (dtInstItemRes){
             case -1:
-                responseEntity.setStatus(-1);
-                responseEntity.setMsg("添加做任务失败，请检查");
+
                 break;
             case -2:
-                responseEntity.setStatus(-1);
-                responseEntity.setMsg("添加做任务详细信息失败");
+
                 break;
             case -3:
-                responseEntity.setStatus(-1);
-                responseEntity.setMsg("更新任务状态失败");
+
                 break;
             case -4:
-                responseEntity.setStatus(-1);
-                responseEntity.setMsg("更新文档状态失败");
+
                 break;
             default:
-                responseEntity.setStatus(0);
-                responseEntity.setMsg("添加做任务表成功");
-                Map<String, Object> data = new HashMap<>();
-                data.put("dtInstid", dtInstItemRes);//返回做任务id
-                responseEntity.setData(data);
+
         }
         return responseEntity;
     }
@@ -211,6 +203,21 @@ public class DoTaskController {
         // userid = String.valueOf(user.getId());
 
         ResponseEntity responseEntity =iDoTaskService.addClassifyTask(dotask,user.getId(),labelId,conbegin,conend);//创建做任务表的结果
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping(value = "addSortingTask", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity addSortingTask(HttpSession httpSession, DtInstance dtInstance, int[] itemIds,int[] newIndex) {
+
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        //User user =(User)iUserService.queryUserByUsername("test");
+        // userid = String.valueOf(user.getId());
+
+        ResponseEntity responseEntity =iDoTaskService.addSortingInstanceItem(dtInstance,user.getId(),itemIds,newIndex);//创建做任务表的结果
 
         return responseEntity;
     }

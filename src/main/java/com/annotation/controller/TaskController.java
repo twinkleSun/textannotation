@@ -56,6 +56,7 @@ public class TaskController {
         }
         return responseEntity;
     }
+
     /**
      * 创建信息抽取和分类的任务
      * @param httpSession
