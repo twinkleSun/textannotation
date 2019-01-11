@@ -99,3 +99,16 @@ CREATE TABLE `insta_label` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `insta_label` VALUES ('1','1','1');
 INSERT INTO `insta_label` VALUES ('2','2','1');
+
+
+# 文本配对的item关系表
+use textannotation;
+DROP TABLE IF EXISTS `dtd_item_sorting`;
+CREATE TABLE `dtd_item_sorting` (
+  `dt_inst_id` int(11) NOT NULL COMMENT '做任务ID',
+  `item_id` INT(11) NOT NULL  COMMENT 'itemID',
+  `newindex` INT(11) NOT NULL COMMENT '索引',
+  FOREIGN KEY (`dt_inst_id`) REFERENCES `dt_instance` (`dt_instid`),
+  FOREIGN KEY (`item_id`) REFERENCES `item` (`itid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+INSERT INTO `dtd_item_sorting` VALUES ('1','1','1');

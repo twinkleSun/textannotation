@@ -45,4 +45,15 @@ public interface InstanceMapper {
      * @return
      */
     int alterInstanceTable();
+
+
+    /**
+     * 根据文件id获取所有的instance和item
+     * 包括已经做好的
+     * @param docId
+     * @param userId
+     * @return
+     */
+    List<InstanceItemEntity> selectSortingInstanceItem(@Param("docId")Integer docId, @Param("userId")Integer userId);
+
 }

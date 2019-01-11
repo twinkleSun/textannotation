@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.annotation.dao.DtdItemSortingMapper" >
+  <resultMap id="BaseResultMap" type="com.annotation.model.DtdItemSorting" >
+    <result column="dt_inst_id" property="dtInstId" jdbcType="INTEGER" />
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="newindex" property="newindex" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.annotation.model.DtdItemSorting" >
+    insert into dtd_item_sorting (dt_inst_id, item_id, newindex
+      )
+    values (#{dtInstId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{newindex,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.annotation.model.DtdItemSorting" >
+    insert into dtd_item_sorting
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dtInstId != null" >
+        dt_inst_id,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="newindex != null" >
+        newindex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dtInstId != null" >
+        #{dtInstId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="newindex != null" >
+        #{newindex,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

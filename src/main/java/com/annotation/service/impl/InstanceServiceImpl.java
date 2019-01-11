@@ -42,4 +42,16 @@ public class InstanceServiceImpl implements IInstanceService {
         List<InstanceListitemEntity> instanceListitemEntityList=instanceMapper.selectInstanceListitem(docId,userid);
         return instanceListitemEntityList;
     }
+
+
+    /**
+     * 根据文件的ID查询instance+Item
+     * 文本关系类别
+     * @param docId
+     * @return
+     */
+    public List<InstanceItemEntity> querySortingInstanceItem(int docId ,int userid){
+        List<InstanceItemEntity> instanceItemEntityList=instanceMapper.selectSortingInstanceItem(docId,userid);
+        return instanceItemEntityList;
+    }
 }

@@ -25,4 +25,11 @@ public interface IInstanceService {
      */
     List<InstanceListitemEntity> queryInstanceListitem(int docId,int userid);
 
+    /**
+     * 查询instance+item
+     * @param docId
+     * @return
+     */
+    List<InstanceItemEntity> querySortingInstanceItem(int docId,int userId);
+
 }
