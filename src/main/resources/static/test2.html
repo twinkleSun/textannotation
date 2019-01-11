@@ -5,183 +5,165 @@
     <title>layui</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="plugins/layui/css/layui.css">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="./css/font.css">
-    <link rel="stylesheet" href="./lib/layui/css/layui.css">
-    <link rel="stylesheet" type="text/css" href="./css/tag.css" />
-    <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
-    <style>
-        /*bootstrap-tagsinput 样式*/
-        .bootstrap-tagsinput {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-            display: inline-block;
-            padding: 5px 6px;
-            color: #555;
-            vertical-align: middle;
-            border-radius: 4px;
-            width: 100%;
-            line-height: 22px;
-            cursor: text;
-        }
-
-        .bootstrap-tagsinput input {
-            border: none;
-            box-shadow: none;
-            outline: none;
-            background-color: transparent;
-            padding: 0;
-            margin: 0;
-            width: auto !important;
-            max-width: inherit;
-        }
-
-        .bootstrap-tagsinput input:focus {
-            border: none;
-            box-shadow: none;
-        }
-
-        .bootstrap-tagsinput .tag {
-            margin-right: 2px;
-            color: white;
-            font-size: 100%;
-        }
-
-        .bootstrap-tagsinput .tag [data-role="remove"] {
-            margin-left: 8px;
-            cursor: pointer;
-        }
-
-        .bootstrap-tagsinput .tag [data-role="remove"]:after {
-            content: "x";
-            padding: 0px 2px;
-        }
-
-        .bootstrap-tagsinput .tag [data-role="remove"]:hover {
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
-            rgba(0, 0, 0, 0.05);
-        }
-
-        .bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
-            box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-        }
-    </style>
-
+    <link rel="stylesheet" href="plugins/css/font.css">
+    <script src="plugins/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/my_Homepage.js"></script>
+    <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="plugins/css/tag.css" />
+    <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
 </head>
 <body>
 
-<h1><span class="label label-success">成功标签</span></h1>
-<!--<div class="layui-collapse" lay-accordion="">-->
-    <!--<div class="layui-colla-item">-->
-        <!--<h2 class="layui-colla-title">任务相关信息</h2>-->
-        <!--<div class="layui-colla-content layui-show">-->
 
-            <!--&lt;!&ndash;todo:上方设置可折叠文本相关信息的面板&ndash;&gt;-->
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <div class="layui-row">
+            <div class="layui-col-md11">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#taskInfoPanel">
+                        <img src="./images/open.png">
+                        任务相关信息
+                    </a>
+                </h4>
+            </div>
+            <div class="layui-col-md1">
+                <input type="button" class="btn-default" id="input-dotask" value="我要做任务">
+            </div>
+        </div>
 
-                <!--<div class="layui-row">-->
-                    <!--<div class="layui-col-md1">-->
-                        <!--<label class="layui-form-label">任务标题</label>-->
-                    <!--</div>-->
-                    <!--<div class="layui-col-md11">-->
-                        <!--<p id="tasktitle" class="layui-text">任务标题前端测试文本</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<br>-->
-                <!--<div class="layui-row">-->
-                    <!--<div class="layui-col-md1">-->
-                        <!--<label class="layui-form-label">任务描述</label>-->
-                    <!--</div>-->
-                    <!--<div class="layui-col-md11">-->
-                        <!--<p id="taskdesciption" class="layui-text">任务描述前端测试文本</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<br>-->
-                <!--<div class="layui-row">-->
-                    <!--<div class="layui-col-md1">-->
-                        <!--<label class="layui-form-label">其他备注</label>-->
-                    <!--</div>-->
-                    <!--<div class="layui-col-md11">-->
-                        <!--<p id="taskotherinfo" class="layui-text">其他备注前端测试文本</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<br>-->
+    </div>
+    <div id="taskInfoPanel" class="panel-collapse collapse">
+        <div class="panel-body">
+            <div class="layui-row" id="taskDetailInfo">
+                <div class="layui-col-md6">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title">任务标题:</h5>
+                        </div>
+                        <div class="layui-col-md10">
+                            <h6 class="panel-title"><p id="taskTitle"></p></h6>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title">任务描述:</h5>
+                        </div>
+                        <div class="layui-col-md10">
+                            <h6 class="panel-title"><p id="taskDescription"></p></h6>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title">其他备注:</h5>
+                        </div>
+                        <div class="layui-col-md10">
+                            <h6 class="panel-title"><p id="taskOtherInfo"></p></h6>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title">文件列表:</h5>
+                        </div>
+                        <div class="layui-col-md10" id="taskFiles">
 
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+                        </div>
+                    </div>
+                </div>
 
-<br>
+                <div class="layui-col-md6">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title">创建时间:</h5>
+                        </div>
+                        <div class="layui-col-md10">
+                            <h6 class="panel-title"><p id="taskCreateTime"></p></h6>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title">截止日期:</h5>
+                        </div>
+                        <div class="layui-col-md10">
+                            <h6 class="panel-title"><p id="taskDeadline"></p></h6>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title"> 发布者:</h5>
+                        </div>
+                        <div class="layui-col-md10">
+                            <h6 class="panel-title"><p id="pubUserName"></p></h6>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <h5 class="panel-title">相关标签:</h5>
+                        </div>
+                        <div class="layui-col-md10" id="taskLabels">
 
-<!--<div class="layui-row">-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="layui-row layui-col-space10" id="row-div-dotask" style="display: none">
+    <div class="layui-col-md6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="layui-row">
+                    <div class="layui-col-md8"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
+                    <div class="layui-col-md4">
+                        <input type="button" class="form-control" value="提交该段对应的标签" id="submit-paraLabel">
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-body" style="max-height: 500px;overflow:auto" id="div-para">
+                <p id="p-para" class="layui-form-text" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;">
+
+                </p>
+            </div>
+            <div class="panel-footer" id="div-para-footer" >
+                <a id="link1" style="color: #0d96f2" onclick="tt(this.id)">1</a>
+                <a id="link2" style="color: #0d96f2" onclick="tt(this.id)">2</a>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span>标签</span></h3>
+            </div>
+            <div class="panel-body" style="max-height: 500px;overflow:auto">
+                <ul class="list-group" id="ul-label-list">
+
+                </ul>
+            </div>
+        </div>
 
 
-    <!--<div class="layui-col-md6">-->
-        <!--&lt;!&ndash;<div class="layui-card">&ndash;&gt;-->
-            <!--<fieldset class="layui-elem-field" style="max-height: 500px;overflow:auto">-->
 
-            <!--<p id="test" class="layui-form-text" style="font-size: 18px;letter-spacing: 4px;text-indent: 20px;"> 经审理查明，2015年8月12日12时50分许，被告人袁某某驾驶皖KH0766号重型自卸货车，沿着省道216线由北向南行驶至淮滨县王店乡北庙村向阳路口男200米处时，由于观察不周、操作不当，与庞某甲驾驶两轮电动车发生碰撞，造成庞某甲当场死亡的事故。经淮滨县公安局交警大队认定：袁某某负此次事故的全部责任。-->
-
-                <!--事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。 上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：-->
-
-                <!--1．书证：受案登记表、立案决定书、接处警记录表、被告人袁某某户籍证明、前科证明、谅解书、协议书、到案经过、驾驶人信息查询结果、机动车信息查询结果单、机动车行驶证复印件、被告人袁某某的驾驶证复印件、被害人庞某甲的户籍证明及其注销证明、道路交通事故认定书及送达回执；-->
-
-                <!--2．道路交通事故现场图以及照片、道路交通事故现场勘查笔录；-->
-
-                <!--3．鉴定意见：（淮）公（法医）鉴（尸检）字（2015）039号淮滨县公安局物证鉴定室庞某甲尸检报告；-->
-
-                <!--4．证人程磊、庞某某证言；-->
-
-                <!--5．被告人袁某某供述等证据证实。 以上证据，经当庭质证、认证，确实、充分，足以认定。-->
-                <!--事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。 上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：-->
-                    <!--</p>-->
-
-            <!--</fieldset>-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
-    <!--&lt;!&ndash;todo:右边&ndash;&gt;-->
-    <!--<div class="layui-col-md6">-->
-        <!--<div class="layui-row grid-demo" id="labellist-div-panel">-->
-
-            <!--<div class="layui-row">-->
-                <!--<div class="layui-col-md3">-->
-                    <!--<label class="layui-form-label-col">你选择的标签是：</label>-->
-                <!--</div>-->
-                <!--<div class="layui-col-md6">-->
-                    <!--<label class="layui-form-label-col" id="label-selected"></label>-->
-                <!--</div>-->
-                <!--<div class="layui-col-md3">-->
-                    <!--<input type="button" class="layui-btn layui-btn-normal" id="label_button" value="提交这个label">-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<br>-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+    </div>
+</div>
 
 </div>
 
 
 
+<script src="js/do_Classification.js" ></script>
+<script type="text/javascript">
 
-<script src="./lib/layui/layui.js" charset="utf-8"></script>
-<script src="js/jquery-2.1.4.min.js"></script>
-<script src="./js/core/test2.js" ></script>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+    $(function () { $('#taskInfoPanel').collapse('show')});
+    //    $(function () { $('#collapseTwo2').collapse('hide')});
 
-
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-<script>
-    layui.use(['element', 'layer'], function(){
-        var element = layui.element;
-        var layer = layui.layer;
-
-        //监听折叠
-        element.on('collapse(test)', function(data){
-            layer.msg('展开状态：'+ data.show);
-        });
-    });
 </script>
+
 </body>
 </html>

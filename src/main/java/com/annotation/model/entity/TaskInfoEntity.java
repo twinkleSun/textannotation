@@ -4,6 +4,7 @@ import com.annotation.model.Document;
 import com.annotation.model.Label;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by twinkleStar on 2018/12/23.
@@ -20,8 +21,9 @@ public class TaskInfoEntity {
     private String otherinfo;
     private Integer userid;
     private String type;
-    private List<Label> labelList;
+//    private List<Label> labelList;
     private List<Document> documentList;
+    private List<Map<String,Object>> labelList;
 
     private static final long serialVersionUID = 1L;
 
@@ -94,13 +96,21 @@ public class TaskInfoEntity {
         this.type = type == null ? null : type.trim();
     }
 
-    public List<Label> getLabelList(){
-        return labelList;
-    }
-    public void setLabelList(List<Label> labelList){
-        this.labelList = labelList;
-    }
+//    public List<Label> getLabelList(){
+//        return labelList;
+//    }
+//    public void setLabelList(List<Label> labelList){
+//        this.labelList = labelList;
+//    }
 
     public List<Document> getDocumentList(){return documentList;}
     public void setDocumentList(List<Document> documentList){this.documentList=documentList;}
+
+    public List<Map<String,Object>> getLabelList(){
+        return labelList;
+    }
+    public void setLabelList(List<Map<String,Object>> labelList){
+        this.labelList = labelList;
+    }
+
 }

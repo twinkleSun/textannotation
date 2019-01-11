@@ -28,15 +28,18 @@
             <result column="labelid" property="labelid" jdbcType="INTEGER" />
             <result column="contentbegin" property="contentbegin" jdbcType="INTEGER" />
             <result column="contentend" property="contentend" jdbcType="INTEGER" />
+            <result column="color" property="color" jdbcType="VARCHAR" />
         </collection>
     </resultMap>
 
     <select id="selectContentLabel" parameterType="Integer" resultMap="ContentLabelByDocId">
         select t.cid, t.paracontent, t.paraindex, t.parastatus, t.paracomptime, t.documentid,
-        dtd.labelid, dtd.contentbegin,dtd.contentend
+        dtd.labelid, dtd.contentbegin,dtd.contentend,
+        tl.color
         from content t
         left join dotask dt on t.cid=dt.contentid
         left join dotaskdetail dtd on dt.dtid =dtd.dotaskid
+        left join task_label tl on tl.taskid =dt.taskid and dtd.labelid=tl.labelid
         and dt.userid=#{userId}
         where t.documentid=#{docId}
     </select>

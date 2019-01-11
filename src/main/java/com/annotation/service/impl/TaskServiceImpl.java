@@ -43,7 +43,7 @@ public class TaskServiceImpl implements ITaskService{
      * @return
      */
     @Transactional
-    public int addTask(Task task, User user, List<Integer> docids, String labels){
+    public int addTask(Task task, User user, List<Integer> docids, String labels,String colors){
 
         task.setUserid(user.getId());
         int taskRes=taskMapper.insertTask(task);//插入任务
@@ -68,6 +68,8 @@ public class TaskServiceImpl implements ITaskService{
 
         //继续插入标签表
         String[] labelArr=labels.split("#");
+        String[] colorArr=colors.split("@");
+
         for(int i=0;i<labelArr.length;i++){
 
             //查询该标签是否已经存在
@@ -96,6 +98,7 @@ public class TaskServiceImpl implements ITaskService{
             TaskLabel taskLabel = new TaskLabel();
             taskLabel.setLabelid(labelId);
             taskLabel.setTaskid(task.getTid());
+            taskLabel.setColor(colorArr[i]);
             int task_labelRes = taskLabelMapper.insertTaskLabel(taskLabel);
 
             //文件-标签关系表插入失败
@@ -450,7 +453,15 @@ public class TaskServiceImpl implements ITaskService{
         /**
          * 文本配对标注
          */
-        }else if(task.getType().contains("文本配对标注")){
+        }else if(task.getType().equals("文本配对标注")){
+            taskInfoEntity =taskMapper.selectTaskInfoWithDoc(tid);
+        }else if(task.getType().equals("文本排序")){
+
+
+            taskInfoEntity =taskMapper.selectTaskInfoWithDoc(tid);
+        }else if(task.getType().contains("文本类比排序")){
+
+
             taskInfoEntity =taskMapper.selectTaskInfoWithDoc(tid);
         }else{
             //todo：其他类型，待开发
@@ -479,6 +490,42 @@ public class TaskServiceImpl implements ITaskService{
         return num;
     }
 
+
+
+    public ResponseEntity  addTaskOneSorting(Task task, User user, List<Integer> docids){
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        task.setUserid(user.getId());
+        int taskRes=taskMapper.insertTask(task);//插入任务
+
+        //插入任务表失败返回-1
+        if(taskRes == -1){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("添加任务失败，请检查");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return responseEntity;
+        }
+
+        //任务表插入成功，继续插入关系表
+        for(int i=0;i<docids.size();i++){
+            TaskDocument taskDocument =new TaskDocument();
+            taskDocument.setDocumentid(docids.get(i));
+            taskDocument.setTaskid(task.getTid());
+            int task_docRes = taskAssociateDocumentMapper.insertTaskDocument(taskDocument);//插入关系表
+            //插入任务-文件 关系表，失败返回-2
+            if(task_docRes == -1){
+                //todo:删除已经插入的任务表
+                responseEntity.setStatus(-2);
+                responseEntity.setMsg("任务-文件关系插入失败");
+                //插入数据库有错误时整体回滚
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return responseEntity;
+            }
+        }
+
+        //返回任务ID
+        return responseEntity;
+    }
 }
 
 

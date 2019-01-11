@@ -23,7 +23,7 @@ public interface ITaskService {
      * @param labels
      * @return
      */
-    int addTask(Task task, User user, List<Integer> docId, String labels);
+    int addTask(Task task, User user, List<Integer> docId, String labels,String colors);
 
     /**
      * 分页查询
@@ -111,6 +111,9 @@ public interface ITaskService {
      * @return
      */
     @Transactional
-    public ResponseEntity  addTaskMatchCategory(Task task, User user, List<Integer> docids);
+    ResponseEntity  addTaskMatchCategory(Task task, User user, List<Integer> docids);
+
+
+    ResponseEntity  addTaskOneSorting(Task task, User user, List<Integer> docids);
 
 }

@@ -69,7 +69,7 @@ public class TaskController {
     @Transactional
     @RequestMapping(value = "addTask", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity addTask(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String label,String userid)throws IllegalStateException, IOException {
+    public ResponseEntity addTask(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,HttpServletRequest request,HttpSession httpSession, Task task,String label,String userid,String color)throws IllegalStateException, IOException {
 
         User user =(User)httpSession.getAttribute("currentUser");
 //        if(!userid.equals(null) && !userid.equals("")){
@@ -101,7 +101,7 @@ public class TaskController {
 
         //防止自增的ID不连续
         iTaskService.alterTaskTable();
-        int taskRes =iTaskService.addTask(task,user,docids,label);//创建任务的结果
+        int taskRes =iTaskService.addTask(task,user,docids,label,color);//创建任务的结果
 
         switch (taskRes){
             case -1:
@@ -279,9 +279,6 @@ public class TaskController {
     }
 
 
-
-
-
     /**
      * 分页查询
      * @param request
@@ -381,6 +378,76 @@ public class TaskController {
 
         return jso;
     }
+
+
+
+    /**
+     *
+     * @param httpSession
+     * @param request
+     * @param multipartFiles
+     * @param task
+     * @return
+     */
+    @Transactional
+    @RequestMapping(value = "addSortingTask", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity addSortingTask(
+            @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,
+            HttpServletRequest request,
+            HttpSession httpSession,
+            Task task)throws IllegalStateException, IOException {
+
+        User user = (User) httpSession.getAttribute("currentUser");
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        List<Integer> docids = new ArrayList<Integer>();
+        //User user =(User)iUserService.queryUserByUsername("test");
+
+        //获取上传的文件数组
+        ResponseEntity fileResponseEntity = iDocumentService.addMultiFileOneSorting(multipartFiles, user,task.getType());
+        int num = fileResponseEntity.getStatus();
+        if (num < 0) {
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(fileResponseEntity.getMsg());
+            //插入数据库有错误时整体回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return responseEntity;
+        } else {
+            //获取到上传文件的ID
+            HashMap<String, List<Integer>> hashmap = (HashMap) fileResponseEntity.getData();
+            List<Integer> list = hashmap.get("docIds");
+            for (int i = 0; i < list.size(); i++) {
+                docids.add(list.get(i));
+                //System.out.println("----------"+list.get(i));
+            }
+        }
+
+        //防止自增的ID不连续
+        iTaskService.alterTaskTable();
+        ResponseEntity taskRes = new ResponseEntity();
+        taskRes = iTaskService.addTaskOneSorting(task, user, docids);//创建任务的结果
+        int resnum = taskRes.getStatus();
+        if (resnum < 0) {
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg(fileResponseEntity.getMsg());
+            //插入数据库有错误时整体回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return responseEntity;
+        } else {
+            responseEntity.setStatus(0);
+            responseEntity.setMsg("创建任务成功");
+            Map<String, Object> data = new HashMap<>();
+            StringBuffer fileids = new StringBuffer();
+            data.put("taskid", taskRes.getData());//返回文件id，方便后续添加任务
+            data.put("docIds", docids);
+            responseEntity.setData(data);
+        }
+
+        return responseEntity;
+
+    }
+
 
 
 }

@@ -21,7 +21,7 @@ public interface IDocumentService {
      * @param docContent 文件内容
      * @return
      */
-    public int addDocument(Document document,User user,String docContent);
+     int addDocument(Document document,User user,String docContent);
 
     /**
      * 文件分页查询
@@ -30,14 +30,14 @@ public interface IDocumentService {
      * @param limit 每页数量
      * @return
      */
-    public List<Document> queryDocByRelatedInfo(int userId, int page, int limit);
+     List<Document> queryDocByRelatedInfo(int userId, int page, int limit);
 
     /**
      * 根据用户ID查询文件总数
      * @param userId
      * @return
      */
-    public int countNumByUserId(int userId);
+     int countNumByUserId(int userId);
 
     /**
      * 插入文件内容
@@ -45,27 +45,27 @@ public interface IDocumentService {
      * @param contentArr
      * @return
      */
-    public int addContent(int docId,String[] contentArr);
+     int addContent(int docId,String[] contentArr);
 
     /**
      * 设置数据库自增长为1
      * @return
      */
-    public int alterDocumentTable();
+     int alterDocumentTable();
 
     /**
      * 信息抽取和分类多文件上传
      * @param files
      * @return
      */
-    public ResponseEntity addMultiFile(MultipartFile[] files,User user);
+     ResponseEntity addMultiFile(MultipartFile[] files,User user);
 
     /**
      * 两个item多文件上传
      * @param files
      * @return
      */
-    public ResponseEntity addMultiFileTwoItems(MultipartFile[] files,User user,int labelnum,int labelitem1,int labelitem2);
+     ResponseEntity addMultiFileTwoItems(MultipartFile[] files,User user,int labelnum,int labelitem1,int labelitem2);
 
     /**
      * 两个item插入文件
@@ -74,7 +74,7 @@ public interface IDocumentService {
      * @param docContent 文件内容
      * @return
      */
-    public int addDocumentTwoitems(Document document,User user,String docContent,int labelnum,int labelitem1,int labelitem2);
+     int addDocumentTwoitems(Document document,User user,String docContent,int labelnum,int labelitem1,int labelitem2);
 
     /**
      * 信息抽取和分类插入文件内容
@@ -83,7 +83,7 @@ public interface IDocumentService {
      * @param labelnum
      * @return
      */
-    public int addInstanceTwoitems(int docId,String[] instanceArr,int labelnum,int labelitem1,int labelitem2);
+     int addInstanceTwoitems(int docId,String[] instanceArr,int labelnum,int labelitem1,int labelitem2);
 
     /**
      * 两个文本插入item内容
@@ -93,14 +93,14 @@ public interface IDocumentService {
      * @param labelitem2
      * @return
      */
-    public int addItem(int instId,String[] itemArr,int labelitem1,int labelitem2);
+     int addItem(int instId,String[] itemArr,int labelitem1,int labelitem2);
 
-    /*
+    /**
      * 文本配对的多文件上传
      * @param files
      * @param user
      */
-    public ResponseEntity addMultiFileMatchCategory(MultipartFile[] files,User user);
+     ResponseEntity addMultiFileMatchCategory(MultipartFile[] files,User user);
 
     /**
      * 文本匹配插入文件
@@ -109,7 +109,7 @@ public interface IDocumentService {
      * @param docContent 文件内容
      * @return
      */
-    public int addDocumentMatchCategory(Document document,User user,String docContent);
+     int addDocumentMatchCategory(Document document,User user,String docContent);
 
     /**
      * 文本匹配插入instance内容
@@ -117,7 +117,7 @@ public interface IDocumentService {
      * @param instanceArr
      * @return
      */
-    public int addInstanceMatchCategory(int docId,String[] instanceArr);
+     int addInstanceMatchCategory(int docId,String[] instanceArr);
 
     /**
      * 文本匹配插入listitem内容
@@ -125,6 +125,29 @@ public interface IDocumentService {
      * @param itemArr
      * @return
      */
-    public int addListItem(int instId,String[] itemArr);
+     int addListItem(int instId,String[] itemArr);
+
+
+    /**
+     * 文本排序
+     * @param files
+     * @param user
+     * @return
+     */
+    ResponseEntity addMultiFileOneSorting(MultipartFile[] files,User user,String taskType);
+
+    /**
+     * 文本类比排序
+
+     * @param user
+     * @return
+     */
+    //ResponseEntity addMultiFileTwoSorting(MultipartFile[] files,User user);
+
+    int addTwoInstances(Document document,User user,String docContent,String taskType);
+
+    int addTwoItems(int docId,String[] instanceArr,String taskType);
+
+    int addItems(int instId,String[] itemArr,String taskType);
 
 }

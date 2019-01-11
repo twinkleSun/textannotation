@@ -75,15 +75,17 @@
             <result column="doccomptime" property="doccomptime"></result>
             <result column="docstatus" property="docstatus"></result>
         </collection>
-        <collection property="labelList" ofType="com.annotation.model.Label">
+        <collection property="labelList" ofType="Map">
             <id column="lid" property="lid"></id>
             <result column="labelname" property="labelname"></result>
+            <result column="color" property="color"></result>
+
         </collection>
     </resultMap>
 
     <select id="selectTaskInfoWithDocLabel" parameterType="Integer" resultMap="TaskInfoWithDocLabel">
         select t.tid,t.title,t.description,t.type,t.createtime,t.deadline,
-                t.taskcomptime,t.taskcompstatus,t.otherinfo,t.userid,
+                t.taskcomptime,t.taskcompstatus,t.otherinfo,t.userid,tl.color,
                 d.did,d.filename,d.filetype,d.filesize,d.docuploadtime,d.doccomptime,d.docstatus,
                 l.lid,l.labelname from task t,label l,document d,task_label tl,task_document td
                 where t.tid=#{tid} AND t.tid=tl.taskid AND tl.labelid=l.lid AND t.tid=td.taskid AND td.documentid= d.did
@@ -121,7 +123,7 @@
 
     <resultMap id="TaskInfoWithLabel" type="com.annotation.model.entity.TaskInfoEntity">
         <id column="tid" property="tid"></id>
-        <collection property="labelList" ofType="com.annotation.model.Label">
+        <collection property="labelList" ofType="Map">
             <id column="lid" property="lid"></id>
             <result column="labelname" property="labelname"></result>
         </collection>
