@@ -30,7 +30,7 @@ $(function () {
             dataType: "text",
             success: function (data) {
 
-                window.location.href ="login.html";
+                window.location.href ="u_login.html";
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
             },

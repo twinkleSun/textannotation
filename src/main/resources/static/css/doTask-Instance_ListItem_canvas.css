@@ -22,12 +22,11 @@
 }
 .showleft{
     float:left;
-    width:150px;
+    /*width:400px;*/
 }
 .showright {
-
     float:right;
-    width:150px;
+    /*width:400px;*/
 }
 .showtop, .showbottom {
     float: left;

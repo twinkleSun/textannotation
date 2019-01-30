@@ -19,4 +19,6 @@ public interface ItemMapper {
     List<Item> selectAll();
 
     int updateByPrimaryKey(Item record);
+
+    int alterItemTable();
 }

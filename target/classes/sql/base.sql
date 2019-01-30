@@ -76,11 +76,12 @@ DROP TABLE IF EXISTS `task_label`;
 CREATE TABLE `task_label` (
   `taskid` int(11) NOT NULL COMMENT '文件ID',
   `labelid` INT(11) NOT NULL COMMENT '标签ID',
+  `color` VARCHAR(40) DEFAULT NULL COMMENT '标签对应的颜色',
   FOREIGN KEY (`taskid`) REFERENCES `task` (`tid`),
   FOREIGN KEY (`labelid`) REFERENCES `label` (`lid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `task_label` VALUES ('1', '1');
+INSERT INTO `task_label` VALUES ('1', '1','#ff0000');
 
 
 use textannotation;

@@ -102,6 +102,7 @@
         <result column="taskcompstatus" property="taskcompstatus"></result>
         <result column="otherinfo" property="otherinfo"></result>
         <result column="userid" property="userid"></result>
+        <result column="username" property="username"></result>
         <collection property="documentList" ofType="com.annotation.model.Document">
             <id column="did" property="did"></id>
             <result column="filename" property="filename"></result>

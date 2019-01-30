@@ -16,6 +16,10 @@ public class InstanceListitemEntity {
     private String inscomptime;
     private Integer documentid;
 
+    private String dotime;
+    private String comptime;
+    private String dtstatus;
+
     private List<Listitem> listitems;
     private List<Map<String,Object>> alreadyDone;
 
@@ -66,6 +70,29 @@ public class InstanceListitemEntity {
     }
     public void setAlreadyDone(List<Map<String,Object>> alreadyDone){
         this.alreadyDone = alreadyDone;
+    }
+    public String getDotime() {
+        return dotime;
+    }
+
+    public void setDotime(String dotime) {
+        this.dotime = dotime == null ? null : dotime.trim();
+    }
+
+    public String getComptime() {
+        return comptime;
+    }
+
+    public void setComptime(String comptime) {
+        this.comptime = comptime == null ? null : comptime.trim();
+    }
+
+    public String getDtstatus() {
+        return dtstatus;
+    }
+
+    public void setDtstatus(String dtstatus) {
+        this.dtstatus = dtstatus == null ? null : dtstatus.trim();
     }
 
 }

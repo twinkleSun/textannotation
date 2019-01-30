@@ -46,5 +46,6 @@ public interface ContentMapper {
      */
     List<ContentLabelEntity> selectContentLabel(@Param("docId")Integer docId, @Param("userId")Integer userId);
 
+    int alterContentTable();
 
 }

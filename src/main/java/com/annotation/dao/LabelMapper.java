@@ -55,4 +55,6 @@ public interface LabelMapper {
      * @return
      */
     List<Label> selectItem2LabelByDocId(int docId);
+
+    int alterLabelTable();
 }

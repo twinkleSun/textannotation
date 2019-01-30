@@ -56,4 +56,5 @@ public interface InstanceMapper {
      */
     List<InstanceItemEntity> selectSortingInstanceItem(@Param("docId")Integer docId, @Param("userId")Integer userId);
 
+
 }

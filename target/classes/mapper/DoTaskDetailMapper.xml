@@ -8,5 +8,7 @@
         values
           (#{dotaskid}, #{labelid},  #{contentbegin},#{contentend})
     </insert>
-
+    <update id="alterDotaskDetailTable">
+        ALTER TABLE dotaskdetail AUTO_INCREMENT =1
+    </update>
 </mapper>

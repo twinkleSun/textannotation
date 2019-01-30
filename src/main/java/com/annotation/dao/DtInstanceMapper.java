@@ -28,4 +28,6 @@ public interface DtInstanceMapper {
      * @return
      */
     DtInstance selectDtInstance(@Param("userId")int userId, @Param("taskId")int taskId, @Param("instanceId")int instanceId);
+
+    int alterDtInstanceTable();
 }

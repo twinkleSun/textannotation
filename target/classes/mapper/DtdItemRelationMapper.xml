@@ -65,4 +65,9 @@
     insert into dtd_item_relation (dt_inst_id, a_listitem_id,b_listitem_id)
      values (#{dtInstId}, #{aListItemId},#{bListItemId})
   </insert>
+
+
+  <update id="alterDtdItemRelationTable">
+    ALTER TABLE dtd_item_relation AUTO_INCREMENT =1
+  </update>
 </mapper>

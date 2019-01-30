@@ -7,10 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="plugins/css/font.css">
+    <link rel="stylesheet" href="plugins/layui/css/layui.css">
     <link rel="stylesheet" type="text/css" href="plugins/css/tag.css" />
     <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
     <script src="plugins/js/jquery-2.1.4.min.js"></script>
     <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <!--<link rel="stylesheet" href="plugins/layui/css/layui.css">-->
     <!--<style type="text/css">-->
         <!--#p-para ::selection { color:red;}-->
     <!--</style>-->
@@ -24,8 +26,8 @@
 <!--折叠面板-->
 <div class="panel panel-success">
     <div class="panel-heading">
-        <div class="row">
-            <div class="col-lg-11">
+        <div class="layui-row">
+            <div class="layui-col-md11">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion"
                        href="#taskInfoPanel">
@@ -34,79 +36,79 @@
                     </a>
                 </h4>
             </div>
-            <div class="col-lg-1">
+            <div class="ayui-col-md1">
                 <input type="button" class="btn-default" id="input-dotask" value="我要做任务">
             </div>
         </div>
     </div>
     <div id="taskInfoPanel" class="panel-collapse collapse">
         <div class="panel-body">
-            <div class="row" id="taskDetailInfo">
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-lg-2">
+            <div class="layui-row" id="taskDetailInfo">
+                <div class="layui-col-md6">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title">任务标题:</h5>
                         </div>
-                        <div class="col-lg-10">
+                        <div class="layui-col-md10">
                             <h6 class="panel-title"><p id="taskTitle"></p></h6>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-2">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title">任务描述:</h5>
                         </div>
-                        <div class="col-lg-10">
+                        <div class="layui-col-md10">
                             <h6 class="panel-title"><p id="taskDescription"></p></h6>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-2">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title">其他备注:</h5>
                         </div>
-                        <div class="col-lg-10">
+                        <div class="layui-col-md10">
                             <h6 class="panel-title"><p id="taskOtherInfo"></p></h6>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-2">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title">文件列表:</h5>
                         </div>
-                        <div class="col-lg-10" id="taskFiles">
+                        <div class="layui-col-md10" id="taskFiles">
 
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-lg-2">
+                <div class="layui-col-md6">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title">创建时间:</h5>
                         </div>
-                        <div class="col-lg-10">
+                        <div class="layui-col-md10">
                             <h6 class="panel-title"><p id="taskCreateTime"></p></h6>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-2">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title">截止日期:</h5>
                         </div>
-                        <div class="col-lg-10">
+                        <div class="layui-col-md10">
                             <h6 class="panel-title"><p id="taskDeadline"></p></h6>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-2">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title"> 发布者:</h5>
                         </div>
-                        <div class="col-lg-10">
+                        <div class="layui-col-md10">
                             <h6 class="panel-title"><p id="pubUserName"></p></h6>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-2">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
                             <h5 class="panel-title">相关标签:</h5>
                         </div>
-                        <div class="col-lg-10" id="taskLabels">
+                        <div class="layui-col-md10" id="taskLabels">
 
                         </div>
                     </div>
@@ -118,13 +120,13 @@
     </div>
 </div>
 
-<div class="row" id="row-div-dotask" style="display: none">
-    <div class="col-lg-6">
+<div class="layui-row layui-col-space10" id="row-div-dotask" style="display: none">
+    <div class="layui-col-md6">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <div class="row">
-                    <div class="col-lg-10"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
-                    <div class="col-lg-2">
+                <div class="layui-row">
+                    <div class="layui-col-md10"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
+                    <div class="layui-col-md2">
                         <input type="button" class="btn-success" value="结束任务" id="submit-nextPara">
                     </div>
                 </div>
@@ -132,22 +134,7 @@
             </div>
             <div class="panel-body" style="max-height: 500px;overflow:auto" id="div-para">
                 <p id="p-para" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;">
-                    经审理查明，2015年8月12日12时50分许，被告人袁某某驾驶皖KH0766号重型自卸货车，
-                    沿着省道216线由北向南行驶至淮滨县王店乡北庙村向阳路口男200米处时，
-                    由于观察不周、操作不当，与庞某甲驾驶两轮电动车发生碰撞，
-                    造成庞某甲当场死亡的事故。经淮滨县公安局交警大队认定：袁某某负此次事故的全部责任。
-                    事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，
-                    被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。
-                    上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：
-                    1．书证：受案登记表、立案决定书、接处警记录表、被
-                    告人袁某某户籍证明、前科证明、谅解书、协议书、到案经过、驾驶人信息查询结果、机动车信息查询结果单、机动车行驶证复印件、被告人袁某某的驾驶证复印件、被害人庞某甲的户籍证明及其注销证明、道路交通事故认定书及送达回执；
-                    2．道路交通事故现场图以及照片、道路交通事故现场勘查笔录；
-                    3．鉴定意见：（淮）公（法医）鉴（尸检）字（2015）039号淮滨县公安局物证鉴定室庞某甲尸检报告；
-                    4．证人程磊、庞某某证言；
-                    5．被告人袁某某供述等证据证实。 以上证据，经当庭质证、认证，确实、充分，足以认定。
-                    事故发生后，被告人袁某某在现场等候处理。本案在审理过程中，
-                    被告人袁某某家人补偿了被害人家人各项损失共计45000元，取得了被害人家人的谅解。
-                    上述事实，被告人袁某某在开庭审理过程中并无异议，并有下列经当庭质证的证据可以证实：
+
                 </p>
             </div>
             <div class="panel-footer" id="div-para-footer" >
@@ -156,7 +143,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
+    <div class="layui-col-md6" >
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title"><span>标签</span></h3>
@@ -251,7 +238,7 @@
                 </h4>
             </div>
             <div class="modal-body" id="modal_content">
-                在这里添加一些文本
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭

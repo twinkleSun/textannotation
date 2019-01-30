@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>layout 后台大布局 - Layui</title>
+
     <link rel="stylesheet" href="plugins/layui/css/layui.css">
     <link rel="stylesheet" href="plugins/css/font.css">
     <script src="plugins/js/jquery-2.1.4.min.js"></script>
@@ -21,8 +22,8 @@
         </div>
         <!--<div class="layui-logo"><a href="./homepage.html"><i class="layui-icon">&#xe65c;</i> 返回主页</a></div>-->
         <ul class="layui-nav layui-layout-left " lay-filter="">
-            <!--<li class="layui-nav-item"><a data-url="my_myPubTask.html" data-id="11" data-title="我的任务"  class="site-demo-active"  href="javascript:void(0);">我的任务</a></li>-->
-            <!--<li class="layui-nav-item"><a data-url="my_myFile.html" data-id="22" data-title="我的文件"  class="site-demo-active"  href="javascript:void(0);">我的文件</a></li>-->
+            <li class="layui-nav-item"><a data-url="test2.html" data-id="11" data-title="我的任务"  class="site-demo-active"  href="javascript:void(0);">我的任务</a></li>
+            <li class="layui-nav-item"><a data-url="do_OneSorting.html" data-id="22" data-title="我的文件"  class="site-demo-active"  href="javascript:void(0);">测试用</a></li>
             <li class="layui-nav-item">
                 <a href="javascript:;">+其他功能区</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
@@ -66,9 +67,8 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">我参与的</a>
                     <dl class="layui-nav-child">
-                        <dd><a data-url="my_TaskDoneByMe.html" data-id="taskDoneByMe" data-title="已完成"  class="site-demo-active"  href="javascript:void(0);">已完成</a></dd>
                         <dd><a data-url="my_TaskDoingByMe.html" data-id="taskDoingByMe" data-title="进行中"  class="site-demo-active"  href="javascript:void(0);">进行中</a></dd>
-
+                        <dd><a data-url="my_TaskDoneByMe.html" data-id="taskDoneByMe" data-title="已完成"  class="site-demo-active"  href="javascript:void(0);">已完成</a></dd>
                         <!--<dd><a href="">超链接</a></dd>-->
                     </dl>
                 </li>
@@ -210,9 +210,9 @@
 
         //默认开始就新增一个tab
         var json = {
-            url : "./test.html",
-            id : "all",
-            title : '<i class="layui-icon">&#xe62a;</i> 任务列表'
+            url : "my_myPubTask.html",
+            id : "myPub",
+            title : '<i class="layui-icon">&#xe62a;</i> 我发布的任务'
         };
         active.tabAdd(json);
         active.tabChange(json.id);

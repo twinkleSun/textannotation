@@ -49,10 +49,11 @@
     <resultMap id="InstanceItemByDocId" type="com.annotation.model.entity.InstanceItemEntity">
         <id column="insid" property="insid"></id>
         <result column="insindex" property="insindex"></result>
-        <result column="insstatus" property="insstatus"></result>
-        <result column="inscomptime" property="inscomptime"></result>
         <result column="documentid" property="documentid"></result>
         <result column="labelnum" property="labelnum"></result>
+        <result column="dotime" property="dotime" jdbcType="VARCHAR" />
+        <result column="comptime" property="comptime" jdbcType="VARCHAR" />
+        <result column="dtstatus" property="dtstatus" jdbcType="VARCHAR" />
         <collection property="itemList" ofType="com.annotation.model.Item">
             <id column="itid" property="itid"></id>
             <result column="itemcontent" property="itemcontent"></result>
@@ -69,21 +70,24 @@
     <select id="selectInstanceItem" parameterType="Integer" resultMap="InstanceItemByDocId">
         select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelnum,
             t.itid, t.itemcontent, t.itemindex, t.instanceid, t.labelnum itemlabelnum,
-            dil.labeltype, dil.label_id,dt.instance_id
+            dil.labeltype, dil.label_id,dt.instance_id,dt.dotime,dt.comptime,dt.dtstatus
             from instance s
             left join dt_instance dt on s.insid=dt.instance_id
             left join item t on s.insid=t.instanceid
             left join dtd_item_label dil on dt.dt_instid =dil.dt_inst_id
             and dt.user_id=#{userId}
             where s.documentid=#{docId}
+            ORDER BY s.insid
     </select>
 
     <resultMap id="InstanceListitemByDocId" type="com.annotation.model.entity.InstanceListitemEntity">
         <id column="insid" property="insid"></id>
         <result column="insindex" property="insindex"></result>
-        <result column="insstatus" property="insstatus"></result>
-        <result column="inscomptime" property="inscomptime"></result>
+
         <result column="documentid" property="documentid"></result>
+        <result column="dotime" property="dotime" jdbcType="VARCHAR" />
+        <result column="comptime" property="comptime" jdbcType="VARCHAR" />
+        <result column="dtstatus" property="dtstatus" jdbcType="VARCHAR" />
         <collection property="listitems" ofType="com.annotation.model.Listitem">
             <id column="liid" property="liid"></id>
             <result column="listindex" property="listindex"></result>
@@ -101,14 +105,15 @@
     <select id="selectInstanceListitem" parameterType="Integer" resultMap="InstanceListitemByDocId">
        select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid,
         t.liid, t.listindex, t.litemindex, t.litemstatus, t.litemcomptime,t.litemcontent,
-         dir.dt_inst_id,dir.a_listitem_id, dir.b_listitem_id
+         dir.dt_inst_id,dir.a_listitem_id, dir.b_listitem_id,
+         dt.dotime,dt.comptime,dt.dtstatus
         from instance s
         left join dt_instance dt on s.insid=dt.instance_id
         left join listitem t on s.insid=t.instanceid
         left join dtd_item_relation dir on dt.dt_instid =dir.dt_inst_id
         and dt.user_id=#{userId}
         where s.documentid=#{docId}
-
+        ORDER BY s.insid
     </select>
 
 
@@ -120,10 +125,12 @@
     <resultMap id="InstanceItemSortingByDocId" type="com.annotation.model.entity.InstanceItemEntity">
         <id column="insid" property="insid"></id>
         <result column="insindex" property="insindex"></result>
-        <result column="insstatus" property="insstatus"></result>
-        <result column="inscomptime" property="inscomptime"></result>
+
         <result column="documentid" property="documentid"></result>
         <result column="labelnum" property="labelnum"></result>
+        <result column="dotime" property="dotime" jdbcType="VARCHAR" />
+        <result column="comptime" property="comptime" jdbcType="VARCHAR" />
+        <result column="dtstatus" property="dtstatus" jdbcType="VARCHAR" />
         <collection property="itemList" ofType="com.annotation.model.Item">
             <id column="itid" property="itid"></id>
             <result column="itemcontent" property="itemcontent"></result>
@@ -140,13 +147,14 @@
     <select id="selectSortingInstanceItem" parameterType="Integer" resultMap="InstanceItemSortingByDocId">
         select s.insid, s.insindex, s.insstatus, s.inscomptime, s.documentid, s.labelnum,
         t.itid, t.itemcontent, t.itemindex, t.instanceid, t.labelnum itemlabelnum,
-        dis.item_id, dis.newindex,dt.instance_id
+        dis.item_id, dis.newindex,dt.instance_id,dt.dotime,dt.comptime,dt.dtstatus
         from instance s
         left join dt_instance dt on s.insid=dt.instance_id
         left join item t on s.insid=t.instanceid
         left join dtd_item_sorting dis on dt.dt_instid =dis.dt_inst_id
         and dt.user_id=#{userId}
         where s.documentid=#{docId}
+        ORDER BY s.insid
     </select>
 
 

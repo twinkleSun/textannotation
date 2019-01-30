@@ -25,5 +25,6 @@ public interface DtdItemLabelMapper {
      */
     int insertLabelList(@Param("dtInstId")Integer dtInstId, @Param("labeltype")String labeltype, @Param("itemLabels")int[] itemLabels);
 
+    int alterDtdItemLabelTable();
 
 }

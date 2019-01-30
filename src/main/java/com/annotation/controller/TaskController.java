@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.*;
+import com.annotation.model.entity.MyPubTaskByDoing;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.service.IDocumentService;
@@ -449,6 +450,83 @@ public class TaskController {
 
     }
 
+
+
+    @RequestMapping(value = "getDetailDoingTasklist", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getDetailDoingTasklist(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int page, int limit,int taskId) {
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        List<Task> tasklist = iTaskService.queryTaskByRelatedInfo(user.getId(),page,limit);
+        int count=iTaskService.countTasknumByUserId(user.getId());
+        JSONObject rs =new JSONObject();
+        if(tasklist==null){
+            rs.put("msg","查询失败");
+            rs.put("code",-1);
+            rs.put("count",0);
+        }else{
+            rs.put("msg","success");
+            rs.put("code",0);
+            rs.put("data",tasklist);
+            rs.put("count",count);
+        }
+
+        return rs;
+    }
+
+    @RequestMapping(value = "getMyPubTaskDoing", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getMyPubTaskDoing(
+            HttpServletRequest request,
+            HttpServletResponse httpServletResponse,
+            HttpSession httpSession,
+            int taskId,String taskType,
+            int page, int limit) {
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        List<MyPubTaskByDoing> tasklist = iTaskService.queryMyPubTaskByRelatedInfo(user.getId(),taskId,page,limit,taskType);
+        int count=2;
+        JSONObject rs =new JSONObject();
+        if(tasklist==null){
+            rs.put("msg","查询失败");
+            rs.put("code",-1);
+            rs.put("count",0);
+        }else{
+            rs.put("msg","success");
+            rs.put("code",0);
+            rs.put("data",tasklist);
+            rs.put("count",count);
+        }
+
+        return rs;
+    }
+
+    @RequestMapping(value = "getTaskIPartIn", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getTaskIPartIn(
+            HttpServletRequest request,
+            HttpServletResponse httpServletResponse,
+            HttpSession httpSession,
+            String dtstatus,
+            int page, int limit) {
+        User user =(User)httpSession.getAttribute("currentUser");
+
+        List<MyPubTaskByDoing> tasklist = iTaskService.queryTaskIPartIn(user.getId(),dtstatus,page,limit);
+        int count=2;
+        JSONObject rs =new JSONObject();
+        if(tasklist==null){
+            rs.put("msg","查询失败");
+            rs.put("code",-1);
+            rs.put("count",0);
+        }else{
+            rs.put("msg","success");
+            rs.put("code",0);
+            rs.put("data",tasklist);
+            rs.put("count",count);
+        }
+
+        return rs;
+    }
 
 
 }

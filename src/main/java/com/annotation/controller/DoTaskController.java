@@ -52,6 +52,8 @@ public class DoTaskController {
         //User user =(User)iUserService.queryUserByUsername("test");
        // userid = String.valueOf(user.getId());
 
+
+
         int dotaskRes =iDoTaskService.addDoTask(dotask,userid,labelId,conbegin,conend);//创建做任务表的结果
 
         ResponseEntity responseEntity = new ResponseEntity();
@@ -202,6 +204,7 @@ public class DoTaskController {
         //User user =(User)iUserService.queryUserByUsername("test");
         // userid = String.valueOf(user.getId());
 
+        dotask.setUserid(user.getId());
         ResponseEntity responseEntity =iDoTaskService.addClassifyTask(dotask,user.getId(),labelId,conbegin,conend);//创建做任务表的结果
 
         return responseEntity;

@@ -339,7 +339,7 @@ $(function(){
         }
         var deadtime =$("#date").val();
         var currenttime =getNowFormatDate();
-        var taskstatusStr="未完成";
+        var taskstatusStr="暂无人做";
 
         mformData.append("title",$("#title").val());
         mformData.append("description",$("#description").val());
@@ -801,9 +801,9 @@ function ajaxType12(mformData) {
                     layer.open({
                         type:1,
                         content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
-                        '<br>你可以选择<a href="manageTask_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
-                        '或前去<a href="doTask_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
-                        '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                        '<br>你可以选择<a href="my_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                        '或前去<a href="do_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                        '也可以选择继续<a href="p_publishIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
                     })
                 });
 
@@ -897,9 +897,9 @@ function ajaxType3(mformData){
                     layer.open({
                         type:1,
                         content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
-                        '<br>你可以选择<a href="manageTask_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
-                        '或前去<a href="doTask_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
-                        '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                        '<br>你可以选择<a href="my_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                        '或前去<a href="do_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                        '也可以选择继续<a href="p_publishIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
                     })
                 });
 
@@ -936,9 +936,9 @@ function ajaxType4(mformData) {
                     layer.open({
                         type:1,
                         content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
-                        '<br>你可以选择<a href="manageTask_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
-                        '或前去<a href="doTask_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
-                        '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                        '<br>你可以选择<a href="my_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                        '或前去<a href="do_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                        '也可以选择继续<a href="p_publishIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
                     })
                 });
 
@@ -975,9 +975,9 @@ function ajaxType5(mformData) {
                     layer.open({
                         type: 1,
                         content: '<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
-                        '<br>你可以选择<a href="manageTask_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
-                        '或前去<a href="doTask_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
-                        '也可以选择继续<a href="publishTaskIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                        '<br>你可以选择<a href="my_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                        '或前去<a href="do_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                        '也可以选择继续<a href="p_publishIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
                     })
                 });
 

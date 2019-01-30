@@ -1,6 +1,7 @@
 package com.annotation.service;
 
 import com.annotation.model.Task;
+import com.annotation.model.entity.MyPubTaskByDoing;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.model.User;
@@ -116,4 +117,8 @@ public interface ITaskService {
 
     ResponseEntity  addTaskOneSorting(Task task, User user, List<Integer> docids);
 
+
+    List<MyPubTaskByDoing> queryMyPubTaskByRelatedInfo(int userid, int taskId, int page, int limit,String taskType);
+
+    List<MyPubTaskByDoing> queryTaskIPartIn(int userid, String dtstatus,int page, int limit);
 }

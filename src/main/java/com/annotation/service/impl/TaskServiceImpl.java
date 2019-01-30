@@ -2,6 +2,7 @@ package com.annotation.service.impl;
 
 import com.annotation.dao.*;
 import com.annotation.model.*;
+import com.annotation.model.entity.MyPubTaskByDoing;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.model.InstaLabel;
@@ -11,9 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by twinkleStar on 2018/12/9.
@@ -32,7 +31,8 @@ public class TaskServiceImpl implements ITaskService{
     TaskLabelMapper taskLabelMapper;
     @Autowired
     InstanceLabelMapper instanceLabelMapper;
-
+    @Autowired
+    DoTaskMapper doTaskMapper;
 
     /**
      * 信息抽取和分类添加任务
@@ -46,6 +46,7 @@ public class TaskServiceImpl implements ITaskService{
     public int addTask(Task task, User user, List<Integer> docids, String labels,String colors){
 
         task.setUserid(user.getId());
+        taskMapper.alterTaskTable();
         int taskRes=taskMapper.insertTask(task);//插入任务
 
         //插入任务表失败返回-1
@@ -54,6 +55,7 @@ public class TaskServiceImpl implements ITaskService{
         }
 
         //任务表插入成功，继续插入关系表
+
         for(int i=0;i<docids.size();i++){
             TaskDocument taskDocument =new TaskDocument();
             taskDocument.setDocumentid(docids.get(i));
@@ -69,7 +71,7 @@ public class TaskServiceImpl implements ITaskService{
         //继续插入标签表
         String[] labelArr=labels.split("#");
         String[] colorArr=colors.split("@");
-
+        labelMapper.alterLabelTable();
         for(int i=0;i<labelArr.length;i++){
 
             //查询该标签是否已经存在
@@ -128,6 +130,7 @@ public class TaskServiceImpl implements ITaskService{
 
         ResponseEntity responseEntity = new ResponseEntity();
         task.setUserid(user.getId());
+        taskMapper.alterTaskTable();
         int taskRes=taskMapper.insertTask(task);//插入任务
 
         //插入任务表失败返回-1
@@ -156,6 +159,7 @@ public class TaskServiceImpl implements ITaskService{
         }
 
         //继续插入标签表
+        labelMapper.alterLabelTable();
         String[] labelArr=labels.split("#");
         for(int i=0;i<labelArr.length;i++) {
 
@@ -316,6 +320,7 @@ public class TaskServiceImpl implements ITaskService{
 
         ResponseEntity responseEntity = new ResponseEntity();
         task.setUserid(user.getId());
+        taskMapper.alterTaskTable();
         int taskRes=taskMapper.insertTask(task);//插入任务
 
         //插入任务表失败返回-1
@@ -496,6 +501,7 @@ public class TaskServiceImpl implements ITaskService{
 
         ResponseEntity responseEntity = new ResponseEntity();
         task.setUserid(user.getId());
+        taskMapper.alterTaskTable();
         int taskRes=taskMapper.insertTask(task);//插入任务
 
         //插入任务表失败返回-1
@@ -526,6 +532,50 @@ public class TaskServiceImpl implements ITaskService{
         //返回任务ID
         return responseEntity;
     }
+
+
+    public List<MyPubTaskByDoing> queryMyPubTaskByRelatedInfo(int userid, int taskId,int page, int limit,String taskType){
+        int startNum =(page-1)*limit;
+
+
+        /**
+         * 信息抽取和分类
+         */
+        if (taskType.equals("信息抽取") || taskType.equals("分类")){
+            List<MyPubTaskByDoing> myPubTask =doTaskMapper.selectMyDoingPubTaskInfo(userid,taskId,startNum,limit);
+            return myPubTask;
+
+            /**
+             * 文本关系类别标注
+             */
+        }else if(taskType.equals("文本关系类别标注")|| taskType.contains("文本配对标注")|| taskType.equals("文本排序")||taskType.contains("文本类比排序")){
+            List<MyPubTaskByDoing> myPubTask =doTaskMapper.selectMyDoingPubTaskInfoInst(userid,taskId,startNum,limit);
+            return myPubTask;
+
+        }else{
+            //todo:这里不是这么写的
+            List<MyPubTaskByDoing> myPubTask =doTaskMapper.selectMyDoingPubTaskInfoInst(userid,taskId,startNum,limit);
+            return myPubTask;
+        }
+
+
+    }
+
+
+    public List<MyPubTaskByDoing> queryTaskIPartIn(int userid, String dtstatus,int page, int limit){
+        int startNum =(page-1)*limit;
+
+        List<MyPubTaskByDoing> myPubTask1 =doTaskMapper.selectTaskIPartIn(userid,dtstatus,startNum,limit);
+
+        List<MyPubTaskByDoing> myPubTask2 =doTaskMapper.selectTaskIPartInInstance(userid,dtstatus,startNum,limit);
+
+
+        myPubTask1.addAll(myPubTask2);
+        return myPubTask1;
+
+    }
+
+
 }
 
 

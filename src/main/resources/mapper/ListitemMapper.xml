@@ -48,4 +48,8 @@
     from listitem
   </select>
 
+
+  <update id="alterListitemTable">
+    ALTER TABLE listitem AUTO_INCREMENT =1
+  </update>
 </mapper>

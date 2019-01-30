@@ -59,6 +59,7 @@ public class DocumentServiceImpl implements IDocumentService {
 
         //开始插入文件相关信息
         document.setUserid(user.getId());
+        documentMapper.alterDocumentTable();
         int docInsertRes = documentMapper.insertDocument(document);//插入结果
         //插入文件失败
         if(docInsertRes == -1){
@@ -67,6 +68,7 @@ public class DocumentServiceImpl implements IDocumentService {
             //插入文件成功
             int docId=document.getDid();//插入成功的文件ID
             //文件内容，用#分隔了
+            contentMapper.alterContentTable();
             int addContentRes =addContent(docId,contentArr);
             //文件内容插入失败
             if(addContentRes == -2){
@@ -120,6 +122,7 @@ public class DocumentServiceImpl implements IDocumentService {
 
         //开始插入文件相关信息
         document.setUserid(user.getId());
+        documentMapper.alterDocumentTable();
         int docInsertRes = documentMapper.insertDocument(document);//插入结果
 
         //插入文件失败
@@ -167,6 +170,7 @@ public class DocumentServiceImpl implements IDocumentService {
                 //Instance插入成功
                 int instId=instance.getInsid();//插入成功的文件ID
                 //文件内容，用#分隔了
+                itemMapper.alterItemTable();
                 int addItemRes =addItem(instId,itemArr,labelitem1,labelitem2);
                 //文件内容插入失败
                 if(addItemRes == -3){
@@ -223,6 +227,7 @@ public class DocumentServiceImpl implements IDocumentService {
 
         //开始插入文件相关信息
         document.setUserid(user.getId());
+        documentMapper.alterDocumentTable();
         int docInsertRes = documentMapper.insertDocument(document);//插入结果
 
         //插入文件失败
@@ -260,6 +265,7 @@ public class DocumentServiceImpl implements IDocumentService {
             instance.setInsindex(String.valueOf(i+1));
             instance.setInsstatus("未完成");
             instance.setDocumentid(docId);
+            instanceMapper.alterInstanceTable();
             int instanceRes =instanceMapper.insert(instance);
             //Instance插入失败则返回3
             if(instanceRes == -1){
@@ -268,6 +274,8 @@ public class DocumentServiceImpl implements IDocumentService {
                 //Instance插入成功
                 int instId=instance.getInsid();//插入成功的文件ID
                 //文件内容，用#分隔了
+
+                listitemMapper.alterListitemTable();
                 int addItemRes =addListItem(instId,itemArr);
                 //文件内容插入失败
                 if(addItemRes == -3){
@@ -837,6 +845,7 @@ public class DocumentServiceImpl implements IDocumentService {
                 //Instance插入成功
                 int instId=instance.getInsid();//插入成功的文件ID
                 //文件内容，用#分隔了
+                itemMapper.alterItemTable();
                 int addItemRes =addItems(instId,itemArr,taskType);
                 //文件内容插入失败
                 if(addItemRes == -3){

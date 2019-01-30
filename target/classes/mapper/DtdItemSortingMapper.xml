@@ -43,4 +43,9 @@
     replace into dtd_item_sorting (dt_inst_id, item_id,newindex)
     values (#{dtInstId}, #{itemId},#{newIndex})
   </insert>
+
+
+  <update id="alterDtdItemSortingTable">
+    ALTER TABLE dtd_item_sorting AUTO_INCREMENT =1
+  </update>
 </mapper>

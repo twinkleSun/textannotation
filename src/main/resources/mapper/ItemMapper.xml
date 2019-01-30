@@ -42,4 +42,8 @@
     from item
   </select>
 
+
+  <update id="alterItemTable">
+    ALTER TABLE item AUTO_INCREMENT =1
+  </update>
 </mapper>

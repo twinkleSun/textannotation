@@ -214,6 +214,9 @@ $(function ($) {
         var doTaskData={
             dtInstid:"",
             taskId :taskId,
+            dotime:"",
+            comptime:"",
+            dtstatus:"进行中",
             instanceId:instanceItem[curInstanceIndex].insid,
             aListitemId:aListitemId,
             bListitemId:bListitemId,

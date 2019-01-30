@@ -45,6 +45,12 @@ public class DoTask implements Serializable {
      *
      * @mbg.generated
      */
+
+    private String dotime;
+
+    private String comptime;
+
+    private String dtstatus;
     private static final long serialVersionUID = 1L;
 
     public Integer getDtid() {
@@ -78,4 +84,29 @@ public class DoTask implements Serializable {
     public void setContentid(Integer contentid) {
         this.contentid = contentid;
     }
+
+    public String getDotime() {
+        return dotime;
+    }
+
+    public void setDotime(String dotime) {
+        this.dotime = dotime == null ? null : dotime.trim();
+    }
+
+    public String getComptime() {
+        return comptime;
+    }
+
+    public void setComptime(String comptime) {
+        this.comptime = comptime == null ? null : comptime.trim();
+    }
+
+    public String getDtstatus() {
+        return dtstatus;
+    }
+
+    public void setDtstatus(String dtstatus) {
+        this.dtstatus = dtstatus == null ? null : dtstatus.trim();
+    }
+
 }

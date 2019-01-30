@@ -20,4 +20,6 @@ public interface DoTaskDetailMapper {
      * @return
      */
     int insertDoTaskDetail(DoTaskDetail dotaskdetail);
+
+    int alterDotaskDetailTable();
 }

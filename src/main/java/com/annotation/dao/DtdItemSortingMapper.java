@@ -16,5 +16,6 @@ public interface DtdItemSortingMapper {
                           @Param("itemId")int itemId,
                           @Param("newIndex")int newIndex);
 
+    int alterDtdItemSortingTable();
 
 }

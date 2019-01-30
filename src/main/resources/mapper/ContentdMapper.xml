@@ -9,20 +9,21 @@
     </insert>
 
     <select id="selectContentByDocumentId" parameterType="Integer" resultType="com.annotation.model.Content">
-        select * from content where documentid = #{documentid}
+        select * from content where documentid = #{documentid} ORDER BY cid
     </select>
 
     <select id="selectContentDocumentId" parameterType="Integer" resultType="Integer" >
-    select documentid from content where cid = #{cid}
+    select documentid from content where cid = #{cid} ORDER BY cid
     </select>
 
     <resultMap id="ContentLabelByDocId" type="com.annotation.model.entity.ContentLabelEntity">
         <id column="cid" property="cid" jdbcType="INTEGER" />
         <result column="paracontent" property="paracontent" jdbcType="VARCHAR" />
         <result column="paraindex" property="paraindex" jdbcType="INTEGER" />
-        <result column="parastatus" property="parastatus" jdbcType="VARCHAR" />
-        <result column="paracomptime" property="paracomptime" jdbcType="VARCHAR" />
         <result column="documentid" property="documentid" jdbcType="INTEGER" />
+        <result column="dotime" property="dotime" jdbcType="VARCHAR" />
+        <result column="comptime" property="comptime" jdbcType="VARCHAR" />
+        <result column="dtstatus" property="dtstatus" jdbcType="VARCHAR" />
 
         <collection property="alreadyDone" ofType="Map">
             <result column="labelid" property="labelid" jdbcType="INTEGER" />
@@ -33,14 +34,20 @@
     </resultMap>
 
     <select id="selectContentLabel" parameterType="Integer" resultMap="ContentLabelByDocId">
-        select t.cid, t.paracontent, t.paraindex, t.parastatus, t.paracomptime, t.documentid,
+        select t.cid, t.paracontent, t.paraindex,  t.documentid,
         dtd.labelid, dtd.contentbegin,dtd.contentend,
-        tl.color
+        tl.color,
+        dt.dotime,dt.comptime,dt.dtstatus
         from content t
         left join dotask dt on t.cid=dt.contentid
         left join dotaskdetail dtd on dt.dtid =dtd.dotaskid
         left join task_label tl on tl.taskid =dt.taskid and dtd.labelid=tl.labelid
         and dt.userid=#{userId}
         where t.documentid=#{docId}
+        ORDER BY t.cid
     </select>
+
+    <update id="alterContentTable">
+        ALTER TABLE content AUTO_INCREMENT =1
+    </update>
 </mapper>

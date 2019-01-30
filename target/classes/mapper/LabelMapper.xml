@@ -38,4 +38,8 @@
         WHERE td.documentid=#{docId} AND td.taskid=tl.taskid AND l.lid=tl.lebelid AND  tl.lebelindex="2"
     </select>
 
+
+    <update id="alterLabelTable">
+        ALTER TABLE label AUTO_INCREMENT =1
+    </update>
 </mapper>

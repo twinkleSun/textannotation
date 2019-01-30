@@ -19,6 +19,7 @@ public class TaskInfoEntity {
     private String taskcomptime;
     private String taskcompstatus;
     private String otherinfo;
+    private String username;
     private Integer userid;
     private String type;
 //    private List<Label> labelList;
@@ -96,13 +97,12 @@ public class TaskInfoEntity {
         this.type = type == null ? null : type.trim();
     }
 
-//    public List<Label> getLabelList(){
-//        return labelList;
-//    }
-//    public void setLabelList(List<Label> labelList){
-//        this.labelList = labelList;
-//    }
-
+    public String getUsername(){
+        return username;
+    }
+    public void setUsername(String username){
+        this.username=username;
+    }
     public List<Document> getDocumentList(){return documentList;}
     public void setDocumentList(List<Document> documentList){this.documentList=documentList;}
 

@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +63,11 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
         if(doTaskselect==null){
             //如果做任务表不存在则插入
+
+            //设置时间
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            dotask.setDotime(df.format(new Date()));
+            dotaskMapper.alterDotaskTable();
             int dotaskRes=dotaskMapper.insertDoTask(dotask);//插入做任务表
             dotaskID = dotask.getDtid();
             //插入做任务表失败返回-1
@@ -79,6 +86,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
         doTaskDetail.setLabelid(labelId);
         doTaskDetail.setContentbegin(conbegin);
         doTaskDetail.setContentend(conend);
+        doTaskDetailMapperr.alterDotaskDetailTable();
         int dotask_detRes = doTaskDetailMapperr.insertDoTaskDetail(doTaskDetail);
 
         if(dotask_detRes == -1){
@@ -126,6 +134,10 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
         if(isDtInstance==null){
             //如果做任务表不存在则插入
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            dtInstance.setDotime(df.format(new Date()));
+            dtInstanceMapper.alterDtInstanceTable();
             int dtInstanceRes=dtInstanceMapper.insert(dtInstance);//插入做任务表
             dtInstId = dtInstance.getDtInstid();
             //插入做任务表失败返回-1
@@ -196,6 +208,10 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
         if(dtInstanceR==null){
             //如果做任务表不存在则插入
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            dtInstance.setDotime(df.format(new Date()));
+
+            dtInstanceMapper.alterDtInstanceTable();
             int dtInstanceRes = dtInstanceMapper.insert(dtInstance);//插入做任务表
 
             //插入做任务表失败返回-1
@@ -270,6 +286,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
 //        map.put("dtInstId", dtInstId);
 //        map.put("labeltype", labeltype);
 
+        dtdItemLabelMapper.alterDtdItemLabelTable();
         int res=dtdItemLabelMapper.insertLabelList(dtInstId,labeltype,itemLabels);
 
         return res;
@@ -282,6 +299,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
         StringBuffer sb=new StringBuffer();
 
         sb.append(0);
+        dtdItemRelationMapper.alterDtdItemRelationTable();
         for(int i=0;i<aListitemId.length;i++){
             int dtdItemRelationRes = dtdItemRelationMapper.insertRelationListByOneToOne(dtInstId,aListitemId[i],bListitemId[i]);
             if(dtdItemRelationRes != 1){
@@ -297,6 +315,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
         StringBuffer sb=new StringBuffer();
 
         sb.append(0);
+        dtdItemRelationMapper.alterDtdItemRelationTable();
         for(int i=0;i<aListitemId.length;i++){
             int dtdItemRelationRes = dtdItemRelationMapper.insertRelationListByOneToMany(dtInstId,aListitemId[i],bListitemId[i]);
             if(dtdItemRelationRes != 1){
@@ -312,6 +331,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
         StringBuffer sb=new StringBuffer();
 
         sb.append(0);
+        dtdItemRelationMapper.alterDtdItemRelationTable();
         for(int i=0;i<aListitemId.length;i++){
             int dtdItemRelationRes = dtdItemRelationMapper.insertRelationListByManyToMany(dtInstId,aListitemId[i],bListitemId[i]);
             if(dtdItemRelationRes != 1){
@@ -342,6 +362,9 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
         if(doTaskselect==null){
             //如果做任务表不存在则插入
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            dotask.setDotime(df.format(new Date()));
+            dotaskMapper.alterDotaskTable();
             int dotaskRes=dotaskMapper.insertDoTask(dotask);//插入做任务表
             dotaskID = dotask.getDtid();
             //插入做任务表失败返回-1
@@ -412,6 +435,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
 
         sb.append(0+"#");
+        doTaskDetailMapperr.alterDotaskDetailTable();
         for(int i=0;i<labelId.length;i++){
             doTaskDetail.setLabelid(labelId[i]);
             int dotask_detRes = doTaskDetailMapperr.insertDoTaskDetail(doTaskDetail);
@@ -434,6 +458,9 @@ public class DoTaskServiceImpl implements IDoTaskService{
 
         if(isDtInstance==null){
             //如果做任务表不存在则插入
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            dtInstance.setDotime(df.format(new Date()));
+            dtInstanceMapper.alterDtInstanceTable();
             int dtInstanceRes=dtInstanceMapper.insert(dtInstance);//插入做任务表
             dtInstId = dtInstance.getDtInstid();
             //插入做任务表失败返回-1
@@ -491,6 +518,7 @@ public class DoTaskServiceImpl implements IDoTaskService{
         StringBuffer sb=new StringBuffer();
 
         sb.append(0+"#");
+        dtdItemSortingMapper.alterDtdItemSortingTable();
         for(int i=0;i<itemIds.length;i++){
             int dtdItemRelationRes = dtdItemSortingMapper.insertSortingItem(dtInstId,itemIds[i],newIndexs[i]);
             if(dtdItemRelationRes != 1 && dtdItemRelationRes != 2){

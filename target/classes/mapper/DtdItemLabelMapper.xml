@@ -31,4 +31,8 @@
         ON DUPLICATE KEY UPDATE labeltype = values(labeltype)
     </insert>
 
+
+    <update id="alterDtdItemLabelTable">
+        ALTER TABLE dtd_item_label AUTO_INCREMENT =1
+    </update>
 </mapper>

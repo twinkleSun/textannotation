@@ -62,4 +62,5 @@ public interface DtdItemRelationMapper {
     int insertRelationListByManyToMany(@Param("dtInstId")int dtInstId, @Param("aListItemId")int aListItemId, @Param("bListItemId")int bListItemId);
 
 
+    int alterDtdItemRelationTable();
 }
