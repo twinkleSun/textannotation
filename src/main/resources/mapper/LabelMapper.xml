@@ -2,44 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.annotation.dao.LabelMapper">
 
-    <insert id="insertLabel" useGeneratedKeys="true" keyProperty="lid" parameterType="com.annotation.model.Label">
-        insert into label (labelname) values (#{labelname})
-    </insert>
+    <!--BaseResultMap-->
+    <resultMap id="BaseResultMap" type="com.annotation.model.Label" >
+        <id column="lid" property="lid" jdbcType="INTEGER" />
+        <result column="labelname" property="labelname" jdbcType="VARCHAR" />
+    </resultMap>
 
-    <select id="selectLabel" resultType="com.annotation.model.Label">
+    <!--根据标签名称选择标签-->
+    <select id="selectLabelByLabelname" resultMap="BaseResultMap">
         SELECT * FROM label WHERE labelname = #{labelname}
     </select>
 
-    <!--<resultMap id="taskLabelMapper" type="java.util.List">-->
-        <!--<id column="id" property="tid"></id>-->
-        <!--<collection property="labelList" ofType="Label" javaType="java.util.List">-->
-            <!--<id column="lid" property="lid"></id>-->
-            <!--<result column="labelname" property="labelname"></result>-->
-        <!--</collection>-->
-    <!--</resultMap>-->
+    <!--插入标签-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="lid" parameterType="com.annotation.model.Label" >
+        insert into label (labelname)values (#{labelname,jdbcType=VARCHAR})
+    </insert>
 
-    <select id="selectLabelByTaskid" parameterType="Integer" resultType="com.annotation.model.Label">
-        SELECT l.lid lid,l.labelname labelname FROM task t INNER JOIN task_label tl ON t.tid=tl.taskid
-        INNER JOIN label l on tl.labelid = l.lid WHERE t.tid=#{taskid}
-    </select>
-
-    <select id="selectInstanceLabelByDocId" parameterType="Integer" resultType="com.annotation.model.Label">
-        SELECT l.lid,l.labelname FROM label l,task_label tl,task_document td
-        WHERE td.documentid=#{docId} AND td.taskid=tl.taskid AND l.lid=tl.labelid
-    </select>
-
-    <select id="selectItem1LabelByDocId" parameterType="Integer" resultType="com.annotation.model.Label">
-        SELECT l.lid,l.labelname FROM label l,insta_label tl,task_document td
-        WHERE td.documentid=#{docId} AND td.taskid=tl.taskid AND l.lid=tl.lebelid AND tl.lebelindex="1"
-    </select>
-
-    <select id="selectItem2LabelByDocId" parameterType="Integer" resultType="com.annotation.model.Label">
-        SELECT l.lid,l.labelname FROM label l,insta_label tl,task_document td
-        WHERE td.documentid=#{docId} AND td.taskid=tl.taskid AND l.lid=tl.lebelid AND  tl.lebelindex="2"
-    </select>
-
-
+    <!--设置数据库自增长-->
     <update id="alterLabelTable">
         ALTER TABLE label AUTO_INCREMENT =1
     </update>
+
+
+
+
+
+
+    <!--<select id="selectLabelByTaskid" parameterType="Integer" resultType="com.annotation.model.Label">-->
+        <!--SELECT l.lid lid,l.labelname labelname FROM task t INNER JOIN task_label tl ON t.tid=tl.taskid-->
+        <!--INNER JOIN label l on tl.labelid = l.lid WHERE t.tid=#{taskid}-->
+    <!--</select>-->
+
+
+
+
 </mapper>

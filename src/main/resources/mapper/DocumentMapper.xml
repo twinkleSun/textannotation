@@ -2,53 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.annotation.dao.DocumentMapper">
 
-  <insert id="insertDocument" useGeneratedKeys="true" keyProperty="did" parameterType="com.annotation.model.Document">
-    insert into document
-    (filename, filetype, filesize,relativepath, absolutepath, docuploadtime,doccomptime,docstatus,userid)
-    values
-    (#{filename}, #{filetype}, #{filesize},#{relativepath}, #{absolutepath}, #{docuploadtime}, #{doccomptime},#{docstatus},#{userid})
+  <!--BaseResultMap-->
+  <resultMap id="BaseResultMap" type="com.annotation.model.Document" >
+    <id column="did" property="did" jdbcType="INTEGER" />
+    <result column="filename" property="filename" jdbcType="VARCHAR" />
+    <result column="filetype" property="filetype" jdbcType="VARCHAR" />
+    <result column="filesize" property="filesize" jdbcType="INTEGER" />
+    <result column="relativepath" property="relativepath" jdbcType="VARCHAR" />
+    <result column="absolutepath" property="absolutepath" jdbcType="VARCHAR" />
+    <result column="docuploadtime" property="docuploadtime" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!--插入文件-->
+  <insert id="insert" useGeneratedKeys="true" keyProperty="did" parameterType="com.annotation.model.Document" >
+    insert into document (did, filename, filetype,
+    filesize, relativepath, absolutepath,
+    docuploadtime, user_id)
+    values (#{did,jdbcType=INTEGER}, #{filename,jdbcType=VARCHAR}, #{filetype,jdbcType=VARCHAR},
+    #{filesize,jdbcType=INTEGER}, #{relativepath,jdbcType=VARCHAR}, #{absolutepath,jdbcType=VARCHAR},
+    #{docuploadtime,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER})
   </insert>
 
-  <select id="selectDocumentByRelatedInfo" parameterType="map" resultType="com.annotation.model.Document">
-        select * from document where userid = #{userid} limit #{currIndex},#{pageSize}
-    </select>
+    <!--设置数据库自增长为1-->
+    <update id="alterDocumentTable">
+        ALTER TABLE document AUTO_INCREMENT =1
+    </update>
 
-  <select id="countDocNumByUserId" parameterType="Integer" resultType="Integer">
-    select count(*) from document where userid = #{userid}
-  </select>
 
-  <select id="selectDocumentByTaskid" parameterType="Integer" resultType="com.annotation.model.Document">
-        SELECT d.did,d.filename,d.filetype,d.filesize FROM task t INNER JOIN task_document td ON t.tid=td.taskid
-        INNER JOIN document d on td.documentid = d.did WHERE t.tid=#{taskid}
-  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from document
+    where did = #{did,jdbcType=INTEGER}
+  </delete>
 
-  <select id="selectDocumentById" parameterType="Integer" resultType="com.annotation.model.Document" >
-    select * from document where did = #{did}
-  </select>
 
-  <update id="updateDocumentById" parameterType="com.annotation.model.Document">
-    UPDATE Document
-    <trim prefix="set" suffixOverrides=",">
-      <if test="filename!=null">filename=#{filename},</if>
-      <if test="filetype!=null">filetype=#{filetype},</if>
-      <if test="filesize!=null">filesize=#{filesize},</if>
-      <if test="relativepath!=null">relativepath=#{relativepath},</if>
-      <if test="absolutepath!=null">absolutepath=#{absolutepath},</if>
-      <if test="docuploadtime!=null">docuploadtime=#{docuploadtime},</if>
-      <if test="doccomptime!=null">doccomptime=#{doccomptime},</if>
-      <if test="docstatus!=null">docstatus=#{docstatus},</if>
-      <if test="userid!=null">userid=#{userid},</if>
-    </trim>
-    WHERE did = #{did}
-  </update>
 
-  <update id="updateDocStatusByInstanceId">
-    UPDATE document SET docstatus = #{docStatus} where did=(select documentid from instance where insid=(select instance_id from dt_instance where dt_instid=#{instId}))
-  </update>
-  
-   <update id="alterDocumentTable">
-        ALTER TABLE Document AUTO_INCREMENT =1
-  </update>
+
 
 
 </mapper>

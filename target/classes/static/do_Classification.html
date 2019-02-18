@@ -12,7 +12,33 @@
     <link rel="stylesheet" type="text/css" href="plugins/css/tag.css" />
     <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
     <script src="plugins/js/jquery-2.1.4.min.js"></script>
+    <script src="plugins/layui/layui.js"></script>
+    <script src="js/do_Classification.js" ></script>
+
     <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="plugins/js/jquery.pagination.js"></script>
+    <style>
+        #pagination  {
+            margin: auto;
+            margin-left: 50px;
+        }
+
+        #pagination a {
+            margin: auto;
+            margin-left: 10px;
+        }
+        #pagination span {
+            margin: auto;
+            margin-left: 10px;
+        }
+
+
+        .layui-form-label{ width: 90px; }
+        /*.layui-input-block { margin-left: 90px; min-height: 36px }*/
+
+
+    </style>
+
 </head>
 <body>
 
@@ -113,51 +139,89 @@
     </div>
 </div>
 
-<div class="layui-row layui-col-space10" id="row-div-dotask" style="display: none">
-    <div class="layui-col-md6">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <div class="layui-row">
-                    <div class="layui-col-md8"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
-                    <div class="layui-col-md4">
-                        <input type="button" class="form-control" value="提交该段对应的标签" id="submit-paraLabel">
+
+
+<div class="layui-row layui-col-space2" id="row-div-dotask" style="display: none">
+
+    <div class="layui-row">
+        <div class="layui-col-md6 ">
+
+                <form class="layui-form">
+                    <div class="layui-form-item" >
+                        <label class="layui-form-label">文件列表</label>
+                        <div class="layui-col-md2" id="doc-div">
+
+                        </div>
+
+                        <label class="layui-form-label">完成状态</label>
+                        <div class="layui-col-md2" id="status-div">
+                            <select name="status" id="status" lay-filter="selectStatus">
+                                <option value="1" selected>全部</option>
+                                <option value="2">进行中</option>
+                            </select>
+                        </div>
+                        .
+                        <div class="layui-col-md1">
+                            <input type="button" class="layui-btn layui-btn-normal" value="确定" id="select-docStatus">
+                        </div>
+                    </div>
+                </form>
+
+
+        </div>
+
+        <div class="layui-col-md6">
+            <input type="button" class="btn-primary" value="确定">
+            <input type="button" class="layui-btn-normal" value="结束这个文档" id="complete-doc">
+            <input type="button" class="btn-primary" value="结束这段" id="complete-para">
+        </div>
+    </div>
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+
+                    <div class="layui-row">
+                        <div class="layui-col-md8"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
+                        <div class="layui-col-md4">
+                            <input type="button" class="form-control" value="提交该段对应的标签" id="submit-paraLabel">
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="panel-body" style="max-height: 500px;overflow:auto" id="div-para">
+                    <p id="p-para" class="layui-form-text" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;">
+
+                    </p>
+                </div>
+                <div class="panel-footer" id="div-para-footer" >
+                    <div class="Pagination" id="pagination">
                     </div>
                 </div>
-
             </div>
-            <div class="panel-body" style="max-height: 500px;overflow:auto" id="div-para">
-                <p id="p-para" class="layui-form-text" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;">
+        </div>
+        <div class="layui-col-md6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
 
-                </p>
-            </div>
-            <div class="panel-footer" id="div-para-footer" >
-                <!--<a id="link1" style="color: #0d96f2" onclick="tt(this.id)">1</a>-->
-                <!--<a id="link2" style="color: #0d96f2" onclick="tt(this.id)">2</a>-->
+                    <h3 class="panel-title"><span>标签</span></h3>
+                </div>
+                <div class="panel-body" style="max-height: 500px;overflow:auto">
+                    <ul class="list-group" id="ul-label-list">
+
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    <div class="layui-col-md6">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title"><span>标签</span></h3>
-            </div>
-            <div class="panel-body" style="max-height: 500px;overflow:auto">
-                <ul class="list-group" id="ul-label-list">
 
-                </ul>
-            </div>
-        </div>
-
-
-
-    </div>
-</div>
 
 </div>
 
 
 
-<script src="js/do_Classification.js" ></script>
+
 <script type="text/javascript">
 
     $(function () { $('#taskInfoPanel').collapse('show')});

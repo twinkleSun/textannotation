@@ -13,32 +13,6 @@ import java.util.List;
 @Repository
 public interface InstanceMapper {
 
-    int deleteByPrimaryKey(Integer insid);
-
-    int insert(Instance record);
-
-    Instance selectByPrimaryKey(Integer insid);
-
-    List<Instance> selectAll();
-
-    int updateByPrimaryKey(Instance record);
-
-    /**
-     * 根据文件id获取所有的instance和item
-     * 包括已经做好的
-     * @param docId
-     * @param userId
-     * @return
-     */
-    List<InstanceItemEntity> selectInstanceItem(@Param("docId")Integer docId, @Param("userId")Integer userId);
-
-    /**
-     * 根据文件id获取所有的instance和item
-     * 文本关系标注
-     * @param docId
-     * @return
-     */
-    List<InstanceListitemEntity> selectInstanceListitem(@Param("docId")Integer docId, @Param("userId")Integer userId);
 
     /**
      * 设置数据库自增长为1
@@ -46,15 +20,26 @@ public interface InstanceMapper {
      */
     int alterInstanceTable();
 
-
     /**
-     * 根据文件id获取所有的instance和item
-     * 包括已经做好的
-     * @param docId
-     * @param userId
+     *
+     * @param record
      * @return
      */
-    List<InstanceItemEntity> selectSortingInstanceItem(@Param("docId")Integer docId, @Param("userId")Integer userId);
+    int insert(Instance record);
+
+    int[] selectInstanceByDocId(Integer docId);
+
+    int deleteByDocId(Integer docId);
+
+    int deleteByPrimaryKey(Integer insid);
+
+
+    int countTotalPart(Integer tid);
+
+    int countInstanceNum(Integer countParaNum);
+
+
+
 
 
 }

@@ -11,11 +11,35 @@
     <link rel="stylesheet" type="text/css" href="plugins/css/tag.css" />
     <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
     <script src="plugins/js/jquery-2.1.4.min.js"></script>
+    <script src="plugins/layui/layui.js"></script>
     <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="plugins/js/jquery.pagination.js"></script>
     <!--<link rel="stylesheet" href="plugins/layui/css/layui.css">-->
     <!--<style type="text/css">-->
         <!--#p-para ::selection { color:red;}-->
     <!--</style>-->
+
+    <style>
+        #pagination  {
+            margin: auto;
+            margin-left: 50px;
+        }
+
+        #pagination a {
+            margin: auto;
+            margin-left: 10px;
+        }
+        #pagination span {
+            margin: auto;
+            margin-left: 10px;
+        }
+
+
+        .layui-form-label{ width: 90px; }
+        /*.layui-input-block { margin-left: 90px; min-height: 36px }*/
+
+
+    </style>
 </head>
 <body>
 
@@ -36,7 +60,7 @@
                     </a>
                 </h4>
             </div>
-            <div class="ayui-col-md1">
+            <div class="layui-col-md1">
                 <input type="button" class="btn-default" id="input-dotask" value="我要做任务">
             </div>
         </div>
@@ -121,6 +145,40 @@
 </div>
 
 <div class="layui-row layui-col-space10" id="row-div-dotask" style="display: none">
+
+    <div class="layui-row">
+        <div class="layui-col-md6 ">
+
+            <form class="layui-form">
+                <div class="layui-form-item" >
+                    <label class="layui-form-label">文件列表</label>
+                    <div class="layui-col-md2" id="doc-div">
+
+                    </div>
+
+                    <label class="layui-form-label">完成状态</label>
+                    <div class="layui-col-md2" id="status-div">
+                        <select name="status" id="status" lay-filter="selectStatus">
+                            <option value="1" selected>全部</option>
+                            <option value="2">进行中</option>
+                        </select>
+                    </div>
+                    .
+                    <div class="layui-col-md1">
+                        <input type="button" class="layui-btn layui-btn-normal" value="确定" id="select-docStatus">
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+
+        <div class="layui-col-md6">
+            <input type="button" class="layui-btn-normal" value="结束这个文档" id="complete-doc">
+            <input type="button" class="btn-primary" value="结束这段" id="complete-para">
+        </div>
+    </div>
+
     <div class="layui-col-md6">
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -138,8 +196,8 @@
                 </p>
             </div>
             <div class="panel-footer" id="div-para-footer" >
-                <!--<a id="link1" style="color: #0d96f2" onclick="tt(this.id)">1</a>-->
-                <!--<a id="link2" style="color: #0d96f2" onclick="tt(this.id)">2</a>-->
+                <div class="Pagination" id="pagination">
+                </div>
             </div>
         </div>
     </div>
@@ -149,81 +207,13 @@
                 <h3 class="panel-title"><span>标签</span></h3>
             </div>
             <div class="panel-body" id="labellist-div-panel" style="max-height: 500px;overflow:auto">
-                <!--<div class="row">-->
-                    <!--<div class="col-lg-3">-->
-                        <!--<label class="layui-form-label-col">你选择的标签是：</label>-->
-                    <!--</div>-->
-                    <!--<div class="col-lg-6">-->
-                        <!--<label class="layui-form-label-col" id="label-selected"></label>-->
-                    <!--</div>-->
-                    <!--<div class="col-lg-3">-->
-                        <!--<input type="button" class="layui-btn layui-btn-normal" id="label_button" value="提交这个label">-->
-                    <!--</div>-->
-                <!--</div>-->
 
-                <!--<div class="panel panel-success">-->
-                    <!--<div class="panel-heading">-->
-                        <!--<h4 class="panel-title">-->
-                            <!--<a data-toggle="collapse" data-parent="#accordion"-->
-                               <!--href="#collapseTwo2">-->
-                                <!--<img class="notAns" src="./images/notAns.png" id="label-list-img-test">-->
-
-                            <!--</a>测试标签-->
-                        <!--</h4>-->
-                    <!--</div>-->
-
-                    <!--<div id="collapseTwo2" class="panel-collapse collapse">-->
-                        <!--<div class="panel-body">-->
-                            <!--<ul class="list-group">-->
-                                <!--<li class="list-group-item">-->
-                                    <!--<div class="row">-->
-                                        <!--<div class="col-lg-10">-->
-                                            <!--<label>haha</label>-->
-                                        <!--</div>-->
-                                        <!--<div class="col-lg-1">-->
-                                            <!--<img class="okAns" src="./images/ok.png" >-->
-                                        <!--</div>-->
-                                        <!--<div class="col-lg-1">-->
-                                            <!--<img class="delAns" src="./images/delete.png" >-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</li>-->
-                                <!--<li class="list-group-item">免费 Window 空间托管</li>-->
-                                <!--<li class="list-group-item">图像的数量</li>-->
-                                <!--<li class="list-group-item">24*7 支持</li>-->
-                                <!--<li class="list-group-item">每年更新成本</li>-->
-                            <!--</ul>-->
-                            <!--&lt;!&ndash;<p id ="label-p-ans-test"></p>&ndash;&gt;-->
-
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
-        <!--<div class="panel panel-default">-->
-
-
-        <!--</div>-->
-
-
 
     </div>
 </div>
 
-
-
-<!--<div class="layui-row">-->
-
-    <!--&lt;!&ndash;todo:右边&ndash;&gt;-->
-    <!--<div class="layui-col-md6">-->
-        <!--<div class="layui-row grid-demo" >-->
-
-
-            <!--<br>-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
 
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

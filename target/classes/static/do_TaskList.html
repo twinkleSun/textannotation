@@ -60,7 +60,6 @@
 
                 </div>
 
-
             </div>
         </div>
     </div>
@@ -75,11 +74,10 @@
 <script>
     layui.use(['table'],function(){
 
-
         var table = layui.table;
         table.render({
             elem: '#test',
-            url: '/task/getAllTask',
+            url: '/task/all',
             toolbar: true,
             title: '用户文件表',
             totalRow: true,
@@ -87,11 +85,13 @@
                 {field: 'dataindex',  title: '序号',fixed: 'left',type:'numbers'},
                 {field: 'title', title: '任务名'},
                 {field: 'description', title: '任务描述'},
-                {field: 'otherinfo', title: '任务备注'},
-                {field: 'type', title: '类型', sort: true},
+                {field: 'typeName', title: '类型', sort: true},
+                {field: 'pubUserName', title: '发布者', sort: true},
+                {field: 'taskcompstatus', title: '任务状态', sort: true},
                 {field: 'createtime', title: '创建时间', sort: true},
                 {field: 'deadline', title: '截止时间', sort: true},
-                {field: 'taskcompstatus', title: '任务状态', sort: true},
+                {field: 'attendnum', title: '参与人数', sort: true,width:100},
+                {field: 'viewnum', title: '浏览次数', sort: true,width:100},
                 {field: 'option', title: '操作',sort: true,align:'center',toolbar:'#optionDemo'}
             ]]
             , page: true
@@ -115,7 +115,7 @@
 
                     var taskid=data.tid;
 
-                    var taskType=data.type;
+                    var taskType=data.typeName;
 
                     var url="";
 
@@ -129,7 +129,7 @@
                         });
 
                         parent.element.tabChange('home-tabs', taskid);
-
+                        parent.element.tabDelete('home-tabs', "all");
                     }else if(taskType=="信息抽取"){
                         url ="./do_Extraction.html?taskid="+taskid;
 
@@ -141,8 +141,9 @@
                         });
 
                         parent.element.tabChange('home-tabs', taskid);
+                        parent.element.tabDelete('home-tabs', "all");
                     }else if(taskType=="文本关系类别标注"){
-                        url="./do_Instance_Item.html?taskid="+taskid;
+                        url="./do_Relation.html?taskid="+taskid;
 
                         parent.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
 
@@ -152,9 +153,10 @@
                         });
 
                         parent.element.tabChange('home-tabs', taskid);
+                        parent.element.tabDelete('home-tabs', "all");
                     }else if(taskType.indexOf("文本配对标注")!=-1){
 
-                        url="./do_Instance_ListItem.html?taskid="+taskid;
+                        url="./do_Pairing.html?taskid="+taskid;
 
                         var title="";
                         if(taskType=="文本配对标注#一对一"){
@@ -173,6 +175,7 @@
                         });
 
                         parent.element.tabChange('home-tabs', taskid);
+                        parent.element.tabDelete('home-tabs', "all");
                     }else if(taskType=="文本排序"){
                         url="do_OneSorting.html?taskid="+taskid;
 
@@ -184,6 +187,7 @@
                         });
 
                         parent.element.tabChange('home-tabs', taskid);
+                        parent.element.tabDelete('home-tabs', "all");
                     }else if(taskType=="文本类比排序"){
                         url="do_TwoSorting.html?taskid="+taskid;
 
@@ -195,6 +199,7 @@
                         });
 
                         parent.element.tabChange('home-tabs', taskid);
+                        parent.element.tabDelete('home-tabs', "all");
                     }
                     console.log(url);
 

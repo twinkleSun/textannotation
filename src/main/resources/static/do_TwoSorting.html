@@ -10,9 +10,8 @@
     <!--<link rel="stylesheet" href="plugins/css/sortapp.css">-->
     <link rel="stylesheet" href="plugins/layui/css/layui.css">
     <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
-
-
     <script src="plugins/js/jquery-2.1.4.min.js"></script>
+    <script src="plugins/layui/layui.js"></script>
     <script src="plugins/bootstrap/bootstrap.min.js"></script>
     <script src="js/do_TwoSorting.js" ></script>
     <script src="plugins/js/Sortable.js"></script>
@@ -114,21 +113,6 @@
                     <input type="button" class="btn btn-primary" value="结束任务" id="btn-dotask">
                 </div>
             </div>
-            <!--<div id="op-button" style="display: none">-->
-                <!--<div class="layui-col-md1">-->
-                    <!--<input type="button" class="btn btn-warning" value="后退一步" id="backOneStep">-->
-                <!--</div>-->
-                <!--<div class="layui-col-md1">-->
-                    <!--<input type="button" class="btn btn-success" value="提交这部分" id="submit-instance">-->
-
-                <!--</div>-->
-                <!--<div class="layui-col-md1">-->
-                    <!--<input type="button" class="btn btn-primary" value="确认这部分已经全部完成" id="submit-instAll">-->
-
-                <!--</div>-->
-            <!--</div>-->
-
-
 
         </div>
 
@@ -205,6 +189,39 @@
 </div>
 
 <div class="layui-row" id="div-doTask" >
+    <div class="layui-row">
+        <div class="layui-col-md6 ">
+
+            <form class="layui-form">
+                <div class="layui-form-item" >
+                    <label class="layui-form-label">文件列表</label>
+                    <div class="layui-col-md2" id="doc-div">
+
+                    </div>
+
+                    <label class="layui-form-label">完成状态</label>
+                    <div class="layui-col-md2" id="status-div">
+                        <select name="status" id="status" lay-filter="selectStatus">
+                            <option value="1" selected>全部</option>
+                            <option value="2">进行中</option>
+                        </select>
+                    </div>
+                    .
+                    <div class="layui-col-md1">
+                        <input type="button" class="layui-btn layui-btn-normal" value="确定" id="select-docStatus">
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+
+        <div class="layui-col-md6">
+
+            <input type="button" class="btn btn-warning" value="结束这个文档" id="complete-doc">
+            <input type="button" class="btn btn-success" value="结束这段" id="complete-instance">
+        </div>
+    </div>
     <div class="layui-col-md1">
         <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="200" id="ul-nav">
 

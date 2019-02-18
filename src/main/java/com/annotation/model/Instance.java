@@ -1,56 +1,36 @@
 package com.annotation.model;
 
 public class Instance {
-    private Integer insid;
+    private Integer instid;
 
-    private String insindex;
+    private Integer instindex;
 
-    private String insstatus;
-
-    private String inscomptime;
-
-    private Integer documentid;
+    private Integer documentId;
 
     private Integer labelnum;
 
-    public Integer getInsid() {
-        return insid;
+    public Integer getInstid() {
+        return instid;
     }
 
-    public void setInsid(Integer insid) {
-        this.insid = insid;
+    public void setInstid(Integer instid) {
+        this.instid = instid;
     }
 
-    public String getInsindex() {
-        return insindex;
+    public Integer getInstindex() {
+        return instindex;
     }
 
-    public void setInsindex(String insindex) {
-        this.insindex = insindex == null ? null : insindex.trim();
+    public void setInstindex(Integer instindex) {
+        this.instindex = instindex;
     }
 
-    public String getInsstatus() {
-        return insstatus;
+    public Integer getDocumentId() {
+        return documentId;
     }
 
-    public void setInsstatus(String insstatus) {
-        this.insstatus = insstatus == null ? null : insstatus.trim();
-    }
-
-    public String getInscomptime() {
-        return inscomptime;
-    }
-
-    public void setInscomptime(String inscomptime) {
-        this.inscomptime = inscomptime == null ? null : inscomptime.trim();
-    }
-
-    public Integer getDocumentid() {
-        return documentid;
-    }
-
-    public void setDocumentid(Integer documentid) {
-        this.documentid = documentid;
+    public void setDocumentId(Integer documentId) {
+        this.documentId = documentId;
     }
 
     public Integer getLabelnum() {

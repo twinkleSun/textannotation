@@ -5,9 +5,9 @@ public class Item {
 
     private String itemcontent;
 
-    private String itemindex;
+    private Integer itemindex;
 
-    private Integer instanceid;
+    private Integer instanceId;
 
     private Integer labelnum;
 
@@ -27,20 +27,20 @@ public class Item {
         this.itemcontent = itemcontent == null ? null : itemcontent.trim();
     }
 
-    public String getItemindex() {
+    public Integer getItemindex() {
         return itemindex;
     }
 
-    public void setItemindex(String itemindex) {
-        this.itemindex = itemindex == null ? null : itemindex.trim();
+    public void setItemindex(Integer itemindex) {
+        this.itemindex = itemindex;
     }
 
-    public Integer getInstanceid() {
-        return instanceid;
+    public Integer getInstanceId() {
+        return instanceId;
     }
 
-    public void setInstanceid(Integer instanceid) {
-        this.instanceid = instanceid;
+    public void setInstanceId(Integer instanceId) {
+        this.instanceId = instanceId;
     }
 
     public Integer getLabelnum() {

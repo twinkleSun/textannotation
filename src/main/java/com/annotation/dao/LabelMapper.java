@@ -14,12 +14,42 @@ import java.util.List;
 @Repository
 public interface LabelMapper {
 
+
     /**
-     * 插入标签
-     * @param label
+     * 根据标签名称选择标签
+     * @param labelname
      * @return
      */
-    int insertLabel(Label label);
+    Label selectLabelByLabelname(String labelname);
+
+
+    /**
+     * 插入标签
+     * @param record
+     * @return
+     */
+    int insert(Label record);
+
+
+    /**
+     * 设置数据库自增长
+     * @return
+     */
+    int alterLabelTable();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 查找根据标签名查找标签
@@ -33,28 +63,9 @@ public interface LabelMapper {
      * @param id
      * @return
      */
-    List<Label> selectLabelByTaskid(Integer id);
+    //List<Label> selectLabelByTaskid(Integer id);
 
-    /**
-     * 根据文件ID查询instance对应的label
-     * @param docId
-     * @return
-     */
-    List<Label> selectInstanceLabelByDocId(int docId);
 
-    /**
-     * 根据文件ID查询item1对应的label
-     * @param docId
-     * @return
-     */
-    List<Label> selectItem1LabelByDocId(int docId);
 
-    /**
-     * 根据文件ID查询item2对应的label
-     * @param docId
-     * @return
-     */
-    List<Label> selectItem2LabelByDocId(int docId);
 
-    int alterLabelTable();
 }

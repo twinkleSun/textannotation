@@ -81,18 +81,18 @@
         var table = layui.table;
         table.render({
             elem: '#test',
-            url: '/task/getTaskIPartIn?dtstatus='+dtstatus,
+            url: '/dtask/status?dtstatus='+dtstatus,
             toolbar: true,
             title: '用户文件表',
             totalRow: true,
             cols: [[
                 {field: 'dataindex',  title: '序号',fixed: 'left',type:'numbers'},
-                {field: 'username', title: '用户名',width:100 , edit: 'text'},
-                {field: 'dtstatus', title: '任务状态', width:100 ,edit: 'text'},
-                {field: 'type', title: '任务类型', width:100 ,edit: 'text'},
-                {field: 'lastLogInTime', title: '用户上次登陆时间', edit: 'text',sort: true},
-                {field: 'dotime', title: '开始时间', edit: 'text',sort: true},
-                {field: 'comptime', title: '完成时间', edit: 'text',sort: true},
+                {field: 'title', title: '任务名',width:100 , edit: 'text'},
+                {field: 'description', title: '任务描述', width:100 ,edit: 'text'},
+                {field: 'typeName', title: '任务类型', width:100 ,edit: 'text'},
+                {field: 'deadline', title: '截止时间', edit: 'text',sort: true},
+                {field: 'attendnum', title: '参与人数', edit: 'text',sort: true},
+                {field: 'dpercent', title: '完成进度', edit: 'text',sort: true},
                 {field: 'option', title: '操作',width:200 ,align:'center',toolbar:'#optionDemo'}
             ]]
             , page: true

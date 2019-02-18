@@ -1,7 +1,6 @@
 package com.annotation.model.entity;
 
 import com.annotation.model.Document;
-import com.annotation.model.Label;
 
 import java.util.List;
 import java.util.Map;
@@ -9,24 +8,29 @@ import java.util.Map;
 /**
  * Created by twinkleStar on 2018/12/23.
  */
+
+/**
+ * 信息抽取和分类返回的任务详情
+ * 返回了文件列表和标签列表
+ */
 public class TaskInfoEntity {
 
     private Integer tid;
     private String title;
     private String description;
+    private String typeName;
     private String createtime;
     private String deadline;
-    private String taskcomptime;
     private String taskcompstatus;
     private String otherinfo;
-    private String username;
-    private Integer userid;
-    private String type;
-//    private List<Label> labelList;
-    private List<Document> documentList;
-    private List<Map<String,Object>> labelList;
+    private Integer userId;
+    private Integer viewnum;
+    private Integer attendnum;
+    private String pubUserName;
 
-    private static final long serialVersionUID = 1L;
+//  private List<Label> labelList;
+    private List<Map<String,Object>> documentList;//文件列表
+    private List<Map<String,Object>> labelList;//标签列表
 
     public Integer getTid() {
         return tid;
@@ -49,6 +53,13 @@ public class TaskInfoEntity {
         this.description = description == null ? null : description.trim();
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+    public void setTypeName(String typeName) {
+        this.typeName = typeName == null ? null : typeName.trim();
+    }
+
     public String getCreatetime() {
         return createtime;
     }
@@ -63,19 +74,13 @@ public class TaskInfoEntity {
         this.deadline = deadline == null ? null : deadline.trim();
     }
 
-    public String getTaskcomptime() {
-        return taskcomptime;
-    }
-    public void setTaskcomptime(String taskcomptime) {
-        this.taskcomptime = taskcomptime == null ? null : taskcomptime.trim();
-    }
-
     public String getTaskcompstatus() {
         return taskcompstatus;
     }
     public void setTaskcompstatus(String taskcompstatus) {
         this.taskcompstatus = taskcompstatus == null ? null : taskcompstatus.trim();
     }
+
     public String getOtherinfo() {
         return otherinfo;
     }
@@ -83,28 +88,34 @@ public class TaskInfoEntity {
         this.otherinfo = otherinfo == null ? null : otherinfo.trim();
     }
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUserId() {
+        return userId;
     }
-    public void setUserid(Integer userid) {
-        this.userid = userid;
-    }
-
-    public String getType() {
-        return type;
-    }
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUsername(){
-        return username;
+    public Integer getViewnum() {
+        return viewnum;
     }
-    public void setUsername(String username){
-        this.username=username;
+    public void setViewnum(Integer viewnum) {
+        this.viewnum = viewnum;
     }
-    public List<Document> getDocumentList(){return documentList;}
-    public void setDocumentList(List<Document> documentList){this.documentList=documentList;}
+
+    public Integer getAttendnum() {
+        return attendnum;
+    }
+    public void setAttendnum(Integer attendnum) {
+        this.attendnum = attendnum;
+    }
+
+    public String getPubUserName(){return pubUserName;}
+    public void setPubUserName(String pubUserName){
+        this.pubUserName=pubUserName;
+    }
+
+    public List<Map<String,Object>> getDocumentList(){return documentList;}
+    public void setDocumentList(List<Map<String,Object>> documentList){this.documentList=documentList;}
 
     public List<Map<String,Object>> getLabelList(){
         return labelList;

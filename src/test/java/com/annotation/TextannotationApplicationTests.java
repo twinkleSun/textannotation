@@ -6,16 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.NumberFormat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TextannotationApplicationTests {
 
-//    @Test
-//    public void test() {
-//	    String path="F:\test.doc";
-//        String absPath=path.replaceAll("\\\\","\\\\\\\\");
-//		System.out.println(absPath);
-//	}
+    @Test
+    public void test() {
+        NumberFormat nf=NumberFormat.getPercentInstance();
+        nf.setMinimumFractionDigits(2);
+        int a=1;
+        int b=10;
+
+        double m=(double)a/b;
+        System.out.println(m);
+        String dpercent= nf.format(0.1);
+        System.out.println(dpercent);
+
+	}
 //	@Autowired
 //	IUserService iUserService;
 //	@Test

@@ -3,13 +3,13 @@
  */
 $(function () {
     $.ajax({
-        url: "/user/getUserinfo",
+        url: "/user",
         type: "get",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: "json",
         success: function (data) {
-            var username =data.data.userInfo.username;
+            var username =data.data.username;
             $("#username").append(username);//console.log(username);
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -18,8 +18,8 @@ $(function () {
 
     $("#userlogout").click(function() {
         $.ajax({
-            url: "/user/logout",
-            type: "get",
+            url: "/user/session",
+            type: "delete",
             traditional: true,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "text",

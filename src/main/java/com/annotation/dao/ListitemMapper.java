@@ -10,9 +10,27 @@ import java.util.List;
 @Repository
 public interface ListitemMapper {
 
-    int deleteByPrimaryKey(Integer liid);
 
+    /**
+     *
+     * @return
+     */
+    int alterListitemTable();
+
+    /**
+     *
+     * @param record
+     * @return
+     */
     int insert(Listitem record);
+
+
+
+
+    int deleteByPrimaryKey(Integer ltid);
+
+    int deleteByInstId(Integer instId);
+
 
     Listitem selectByPrimaryKey(Integer liid);
 
@@ -20,5 +38,5 @@ public interface ListitemMapper {
 
     int updateByPrimaryKey(Listitem record);
 
-    int alterListitemTable();
+
 }

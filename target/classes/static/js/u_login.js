@@ -1,10 +1,8 @@
 /**
  * Created by lenovo on 2018/12/4.
  */
-
 $(function(){
     $("#login-submit").click(function() {
-
         var username = $("#username").val();
         var password = $("#password").val();
 
@@ -12,17 +10,16 @@ $(function(){
             username: username,
             password: password
         };
-        //console.log(user);
+
         $.ajax({
-            url: "/user/login",
-            type: "post",
+            url: "/user/session",
+            type: "POST",
             traditional: true,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "json",
             data: user,
             success: function (data) {
-                console.log(data);
-                if(data.status=="0"){
+                if(data.status=="200"){
                     location.href = "/u_homepage.html";
                 }else{
                     alert(data.msg);
@@ -37,11 +34,7 @@ $(function(){
 
     });
 
-
-
-
     $("#register-submit").click(function() {
-
         var usernamer = $("#usernamer").val();
         var passwordr = $("#passwordr").val();
         var emailr = $("#emailr").val();
@@ -51,17 +44,16 @@ $(function(){
             password: passwordr,
             email:emailr
         };
-        console.log(user);
+
         $.ajax({
-            url: "/user/register",
+            url: "/user",
             type: "post",
             traditional: true,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "json",
             data: user,
             success: function (data) {
-                console.log(data);
-                if(data.status=="0"){
+                if(data.status=="200"){
                     alert("请重新登陆");
                     $("#login-form").show();
                     $("#register-form").hide();

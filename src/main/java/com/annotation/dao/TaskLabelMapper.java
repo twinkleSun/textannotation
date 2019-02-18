@@ -14,12 +14,20 @@ import java.util.List;
 @Repository
 public interface TaskLabelMapper {
 
+
+    List<TaskLabel> selectAll();
+
     /**
-     * 插入任务-标签关系表
-     * @param taskLabel
+     *
+     * @param record
      * @return
      */
-    int insertTaskLabel(TaskLabel taskLabel);
+    int insert(TaskLabel record);
 
-    List<TaskLabel> selectLabelsByTaskid(int tid);
+
+
+    int deleteByTid(Integer tid);
+
+
+    //List<TaskLabel> selectLabelsByTaskid(int tid);
 }

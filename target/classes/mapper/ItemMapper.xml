@@ -2,25 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.annotation.dao.ItemMapper" >
 
-  <resultMap id="BaseResultMap" type="com.annotation.model.Item" >
-    <id column="itid" property="itid" jdbcType="INTEGER" />
-    <result column="itemcontent" property="itemcontent" jdbcType="VARCHAR" />
-    <result column="itemindex" property="itemindex" jdbcType="VARCHAR" />
-    <result column="instanceid" property="instanceid" jdbcType="INTEGER" />
-    <result column="labelnum" property="labelnum" jdbcType="INTEGER" />
+  <resultMap id="BaseResultMap" type="com.annotation.model.Item">
+    <id column="itid" jdbcType="INTEGER" property="itid" />
+    <result column="itemcontent" jdbcType="VARCHAR" property="itemcontent" />
+    <result column="itemindex" jdbcType="INTEGER" property="itemindex" />
+    <result column="instance_id" jdbcType="INTEGER" property="instanceId" />
+    <result column="labelnum" jdbcType="INTEGER" property="labelnum" />
   </resultMap>
+
+  <!--插入-->
+  <insert id="insert" parameterType="com.annotation.model.Item" >
+    insert into item (itid, itemcontent, itemindex,
+    instance_id, labelnum)
+    values (#{itid,jdbcType=INTEGER}, #{itemcontent,jdbcType=VARCHAR}, #{itemindex,jdbcType=INTEGER},
+    #{instanceId,jdbcType=INTEGER}, #{labelnum,jdbcType=INTEGER})
+  </insert>
+
+  <!--自增长-->
+  <update id="alterItemTable">
+    ALTER TABLE item AUTO_INCREMENT =1
+  </update>
+
+
+
+
+  <delete id="deleteByInstId" parameterType="java.lang.Integer" >
+    delete from item
+    where instance_id = #{instId,jdbcType=INTEGER}
+  </delete>
+
+
+
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from item
     where itid = #{itid,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.annotation.model.Item" >
-    insert into item (itid, itemcontent, itemindex, 
-      instanceid, labelnum)
-    values (#{itid,jdbcType=INTEGER}, #{itemcontent,jdbcType=VARCHAR}, #{itemindex,jdbcType=VARCHAR}, 
-      #{instanceid,jdbcType=INTEGER}, #{labelnum,jdbcType=INTEGER})
-  </insert>
+
 
   <update id="updateByPrimaryKey" parameterType="com.annotation.model.Item" >
     update item
@@ -43,7 +63,5 @@
   </select>
 
 
-  <update id="alterItemTable">
-    ALTER TABLE item AUTO_INCREMENT =1
-  </update>
+
 </mapper>

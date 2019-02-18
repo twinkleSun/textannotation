@@ -1,26 +1,22 @@
 package com.annotation.model;
 
 public class Listitem {
-    private Integer liid;
+    private Integer ltid;
 
     private String litemcontent;
 
-    private String listindex;
+    private Integer listIndex;
 
-    private String litemindex;
+    private Integer litemindex;
 
-    private String litemstatus;
+    private Integer instanceId;
 
-    private String litemcomptime;
-
-    private Integer instanceid;
-
-    public Integer getLiid() {
-        return liid;
+    public Integer getLtid() {
+        return ltid;
     }
 
-    public void setLiid(Integer liid) {
-        this.liid = liid;
+    public void setLtid(Integer ltid) {
+        this.ltid = ltid;
     }
 
     public String getLitemcontent() {
@@ -31,43 +27,27 @@ public class Listitem {
         this.litemcontent = litemcontent == null ? null : litemcontent.trim();
     }
 
-    public String getListindex() {
-        return listindex;
+    public Integer getListIndex() {
+        return listIndex;
     }
 
-    public void setListindex(String listindex) {
-        this.listindex = listindex == null ? null : listindex.trim();
+    public void setListIndex(Integer listIndex) {
+        this.listIndex = listIndex;
     }
 
-    public String getLitemindex() {
+    public Integer getLitemindex() {
         return litemindex;
     }
 
-    public void setLitemindex(String litemindex) {
-        this.litemindex = litemindex == null ? null : litemindex.trim();
+    public void setLitemindex(Integer litemindex) {
+        this.litemindex = litemindex;
     }
 
-    public String getLitemstatus() {
-        return litemstatus;
+    public Integer getInstanceId() {
+        return instanceId;
     }
 
-    public void setLitemstatus(String litemstatus) {
-        this.litemstatus = litemstatus == null ? null : litemstatus.trim();
-    }
-
-    public String getLitemcomptime() {
-        return litemcomptime;
-    }
-
-    public void setLitemcomptime(String litemcomptime) {
-        this.litemcomptime = litemcomptime == null ? null : litemcomptime.trim();
-    }
-
-    public Integer getInstanceid() {
-        return instanceid;
-    }
-
-    public void setInstanceid(Integer instanceid) {
-        this.instanceid = instanceid;
+    public void setInstanceId(Integer instanceId) {
+        this.instanceId = instanceId;
     }
 }

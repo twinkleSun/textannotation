@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by twinkleStar on 2018/12/19.
@@ -31,20 +30,22 @@ public class LabelController {
      * @param taskid
      * @return
      */
-    @RequestMapping(value = "getLabelByTask", method = RequestMethod.GET)
-    @ResponseBody
-    public JSONObject getLabelByTask(HttpServletRequest request, HttpServletResponse httpServletResponse,
-                                     HttpSession httpSession, int taskid) {
-        List<Label> labels = iLabelService.queryLabelByTaskId(taskid);
-        JSONObject rs =new JSONObject();
-        if(labels!=null){
-            rs.put("label",labels);
-            rs.put("status",0);
-            rs.put("msg","查询成功");
-        }else{
-            rs.put("status",-1);
-            rs.put("msg","查询失败");
-        }
-        return rs;
-    }
+//    @RequestMapping(value = "getLabelByTask", method = RequestMethod.GET)
+//    @ResponseBody
+//    public JSONObject getLabelByTask(HttpServletRequest request, HttpServletResponse httpServletResponse,
+//                                     HttpSession httpSession, int taskid) {
+//        List<Label> labels = iLabelService.queryLabelByTaskId(taskid);
+//        JSONObject rs =new JSONObject();
+//        if(labels!=null){
+//            rs.put("label",labels);
+//            rs.put("status",0);
+//            rs.put("msg","查询成功");
+//        }else{
+//            rs.put("status",-1);
+//            rs.put("msg","查询失败");
+//        }
+//        return rs;
+//    }
+//
+
 }

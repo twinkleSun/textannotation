@@ -9,6 +9,8 @@
 var taskInfo;//任务相关信息
 var labelList;//label的列表
 var documentList=new Array;//文件列表
+var docStatus="全部";
+
 
 /**
  * 做任务必传的值
@@ -66,6 +68,19 @@ $(function () {
     });
 
 
+    $("#select-docStatus").click(function(){
+        ajaxDocContent(docId);
+    });
+
+    $("#complete-doc").click(function(){
+        ajaxCompleteDoc(docId);
+    });
+
+    $("#complete-para").click(function(){
+        ajaxCompletePara(docId);
+    });
+
+
     /**
      * ajaxdoTask提交事件
      */
@@ -81,24 +96,14 @@ $(function () {
                 ajaxLabelNum++;
 
             }
-            // if(ajaxTag!=0){
-            //     alert("有标签添加失败");
-            // }else{
-            //     ajaxDocContent(docId);
-            // }
         }
 
         var doTaskData={
-            dtid:"",
-            userid:"",
-            taskid :taskId,
-            dotime:"",
-            comptime:"",
-            dtstatus:"进行中",
-            contentid:paraId[curParaIndex],
+            taskId :taskId,
+            docId:docId,
+            paraId:paraId[curParaIndex],
             labelId:ajaxLabelId,
-            conbegin:-1,
-            conend:-1
+            dtId:0
         };
         //console.log(doTaskData);
         /**
@@ -172,11 +177,12 @@ function footerIndex(obj) {
  */
 function ajaxTaskInfo(taskId) {
     var taskid={
-        tid:taskId
+        tid:taskId,
+        typeId:2
     };
 
     $.ajax({
-        url: "task/getTaskInfo",
+        url: "task/detail",
         type: "get",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -204,21 +210,58 @@ function ajaxTaskInfo(taskId) {
              * 处理文件列表
              */
             var taskFileListHtml="";
+            var docSelectHtml='<select name="doc" id="doc" lay-filter="selectDoc"> ';
             for(var i=0;i<documentList.length;i++){
                 var taskFileHtml="";
+                //console.log(documentList.length);
                 if(documentList[i].filetype==".txt"){
-                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="taskFileId(this.id)"><img src="images/TXT.png">'
+                    taskFileHtml= '<p><a id="taskfile-'+i+'" onclick="taskFileId(this.id)"><img src="images/TXT.png">'
                         +documentList[i].filename+'</a></p>';
                 }else if(documentList[i].filetype==".doc"){
-                    taskFileListHtml=  '<p><a id="taskfile-'+i+'" onclick="taskFileId(this.id)"><img src="images/DOC.png">'
+                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="taskFileId(this.id)"><img src="images/DOC.png">'
                         +documentList[i].filename+'</a></p>';
                 }else if(documentList[i].filetype==".docx"){
-                    taskFileListHtml=  '<p><a id="taskfile-'+i+'" onclick="taskFileId(this.id)"><img src="images/DOCX.png">'
+                    taskFileHtml= '<p><a id="taskfile-'+i+'" onclick="taskFileId(this.id)"><img src="images/DOCX.png">'
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
+                if(i==0){
+                    var docSelect=  '<option value="'+documentList[i].did+'" selected>' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }else{
+                    var docSelect=  '<option value="'+documentList[i].did+'">' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }
+
             }
+
+            docSelectHtml=docSelectHtml+ '</select>';
+            $("#doc-div").html(docSelectHtml);
             $("#taskFiles").append(taskFileListHtml);
+
+            layui.use(['form', 'layedit'], function() {
+
+                var form = layui.form;
+                form.on('select(selectDoc)', function(data){
+
+                    docId=data.value;
+
+
+                });
+
+                form.on('select(selectStatus)', function(data){
+                    docStatus=data.elem[data.elem.selectedIndex].text;
+
+                });
+
+
+            });
+
+
 
 
             /**
@@ -233,11 +276,20 @@ function ajaxTaskInfo(taskId) {
             }
             $("#taskLabels").append(labelListHtml);
 
+            /**
+             * 处理获取文件列表选择框和状态选择框
+             */
+
+
+
+
 
             /**
              * 获取文件内容，提前加载
              */
             ajaxDocContent(docId);
+
+
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -254,16 +306,23 @@ function ajaxTaskInfo(taskId) {
  */
 function ajaxDocContent(docId) {
     var docid={
-        docId: docId
+        docId: docId,
+        status:docStatus,
+        taskId:taskId
     };
     $.ajax({
-        url: "content/getContent",
+        url: "/classify",
         type: "get",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: "json",
         data:docid,
         success: function (data) {
+
+            console.log(data.data);
+            if(data.data.length==0){
+                alert("该文档已经全部完成,请查看其他文档或进行其他任务");
+            }
 
             /**
              * 左边文件内容的显示处理
@@ -276,7 +335,7 @@ function ajaxDocContent(docId) {
                 paraContent[i]=data.data[i].paracontent;//每段内容
 
                 paraLabelAlreadyDone[i]=data.data[i].alreadyDone;
-                paraId[i]=data.data[i].cid;//console.log(paraId[i]);//每段内容的ID
+                paraId[i]=data.data[i].pid;//console.log(paraId[i]);//每段内容的ID
 
                 var panel_footer="";
                 if(i==curParaIndex){
@@ -289,23 +348,57 @@ function ajaxDocContent(docId) {
                         +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
                 }
 
-                // panel_footer= '\xa0\xa0\xa0\xa0<a class="layui-form-label" id="panel-footer-index-'+i+'" style="color: #0d96f2" onclick="footerIndex(this.id)">'
-                //     + (i+1)
-                //     +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
 
                 panel_footer_index[i]="panel-footer-index-"+i;//页脚a标签对应的ID
 
                 div_footer=div_footer+panel_footer;
             }
             div_footer=div_footer+'</div>';
+            $("#p-para").html(paraContent[curParaIndex]);
 
-            $("#p-para").html(paraContent[curParaIndex]);//显示第1段内容
-            $("#div-para-footer").html(div_footer);//显示页脚
+            //$("#div-para-footer").html(div_footer);//显示页脚
 
             /**
              * 调用label处理函数
              */
             labelHtml(labelList);
+
+
+
+            $('.Pagination').pagination({
+                pageCount: paraIndex,
+                coping: true,
+                mode:'fixed',
+                count:6,
+                homePage: '首页',
+                endPage: '末页',
+                prevContent: '上页',
+                nextContent: '下页',
+                callback: function (api) {
+                    //console.log(api.getCurrent());
+
+                    curParaIndex=api.getCurrent()-1;
+                    $("#p-para").html(paraContent[curParaIndex]);//显示第1段内容
+
+                    var curParaIndexNum =parseInt(curParaIndex);
+                    $("#span-index").html("第"+(curParaIndexNum+1)+"段");//设置内容面板的标题
+                    $("#p-para").html(paraContent[curParaIndex]);//设置内容
+
+                    labelHtml(labelList);
+
+                    for(var i=0;i<labelLength;i++){
+                        if(para_label[curParaIndexNum][i]>-1) {
+                            $("#" + label_list_img[i]).attr("src", "./images/isAnsBlue.png");
+                            $("#" + label_list_img[i]).removeClass("notAns").addClass("isAns");
+                        }
+
+                    }
+
+                }
+            });
+
+
+
 
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -326,7 +419,7 @@ function labelHtml(labelList) {
     var tmpLabelId=new Array;
 
     for(var i=0;i<paraLabelAlreadyDone[curParaIndex].length;i++){
-        tmpLabelId[i]=paraLabelAlreadyDone[curParaIndex][i].labelid;
+        tmpLabelId[i]=paraLabelAlreadyDone[curParaIndex][i].label_id;
     }
     console.log(paraLabelAlreadyDone[curParaIndex]);
 
@@ -388,7 +481,7 @@ function labelHtml(labelList) {
 function ajaxdoTaskInfo(doTaskData) {
 
     $.ajax({
-        url: "dotask/addClassifyTask",
+        url: "/classify",
         type: "post",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -411,4 +504,49 @@ function ajaxdoTaskInfo(doTaskData) {
     });
 
 
+};
+
+function ajaxCompleteDoc(docId) {
+    var docid={
+        docId: docId,
+        taskId:taskId
+    };
+    $.ajax({
+        url: "/dpara/doc/status",
+        type: "post",
+        traditional: true,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: "json",
+        data:docid,
+        success: function (data) {
+            console.log(data);
+
+        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+
+        },
+    });
+};
+
+function ajaxCompletePara(docId) {
+    var docid={
+        docId: docId,
+        taskId:taskId,
+        paraId:paraId[curParaIndex]
+    };
+    $.ajax({
+        url: "/dpara/status",
+        type: "post",
+        traditional: true,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: "json",
+        data:docid,
+        success: function (data) {
+            console.log(data);
+
+        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+
+        },
+    });
 };

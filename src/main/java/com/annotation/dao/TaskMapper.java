@@ -5,10 +5,8 @@ import com.annotation.model.entity.TaskInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by twinkleStar on 2018/12/9.
@@ -18,26 +16,39 @@ import java.util.Objects;
 public interface TaskMapper {
 
     /**
-     * 插入任务
-     * @param task
+     * 设置数据库自增长
      * @return
      */
-    int insertTask(Task task);
+    int alterTaskTable();
+
+    /**
+     * 插入任务
+     * @param record
+     * @return
+     */
+    int insert(Task record);
 
     /**
      * 分页查询
-     * todo:任务返回发布者的用户名
      * @param data
      * @return
      */
-    List<Task> selectTaskByRelatedInfo(Map<String,Object> data);
+    List<Task> selectMyPubTask(Map<String,Object> data);
+
+    int countNumOfMyPubTask(Integer userId);
+
+    int deleteByPrimaryKey(Integer tid);
+
+
+
+
 
     /**
      * 计算用户发布的任务总数
      * @param userid
      * @return
      */
-    Integer countTaskNumByUserid(int userid);
+//    Integer countTaskNumByUserid(int userid);
 
     /**
      * 获取所有的任务
@@ -49,7 +60,6 @@ public interface TaskMapper {
 
     /**
      * 根据taskid查询task
-     * todo：也返回任务的发布者姓名
      * @param taskid
      * @return
      */
@@ -62,18 +72,21 @@ public interface TaskMapper {
      */
     int updateById(Task task);
 
-    /**
-     * 分页查询
-     * todo:也返回任务的发布者姓名
-     * @return
-     */
-    List<Task> selectAllTask(Map<String,Object> data);
 
     /**
-     * 计算所有任务的数量
+     * 分页查询所有可以做的任务
+     * @param data
      * @return
      */
-    Integer countAllTaskNum();
+    List<Task> selectTotalTaskOfUndo(Map<String,Object> data);
+
+    /**
+     * 计算所有可以做的任务的数量
+     * @return
+     */
+    int countNumOfTaskUndo();
+
+
 
     /**
      * 信息抽取和分类调用接口
@@ -83,6 +96,16 @@ public interface TaskMapper {
      * @return
      */
     TaskInfoEntity selectTaskInfoWithDocLabel(Integer tid);
+
+
+    /**
+     * 文本关系类别标注调用接口
+     * 该类任务只返回了文件和三种label
+     * @param tid
+     * @return
+     */
+    TaskInfoEntity selectTaskInfoWithDocInstanceLabel(Integer tid);
+
 
     /**
      * 文本关系类别标注调用接口
@@ -108,11 +131,5 @@ public interface TaskMapper {
      */
     String selectUserName(Integer tid);
 
-
-    /**
-     * 设置数据库自增长为1
-     * @return
-     */
-    int alterTaskTable();
 
 }

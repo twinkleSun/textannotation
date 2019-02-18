@@ -80,7 +80,7 @@
         var table = layui.table;
         table.render({
             elem: '#test',
-            url: '/task/getTasklist',
+            url: '/task/my/pub',
             toolbar: true,
             title: '用户文件表',
             totalRow: true,
@@ -89,7 +89,7 @@
                 {field: 'title', title: '任务名', edit: 'text'},
                 {field: 'description', title: '任务描述', edit: 'text'},
                 {field: 'otherinfo', title: '任务备注', edit: 'text'},
-                {field: 'type', title: '类型', edit: 'text',sort: true},
+                {field: 'typeName', title: '类型', edit: 'text',sort: true},
                 {field: 'createtime', title: '创建时间', edit: 'text',sort: true},
                 {field: 'deadline', title: '截止时间', edit: 'text',sort: true},
                 {field: 'taskcompstatus', title: '任务状态', edit: 'text',sort: true},
@@ -117,10 +117,10 @@
 
 
                     var taskid=data.tid;
-                    var Tasktype=data.type;
+                    var Tasktype=data.typeName;
                     console.log(Tasktype);
 
-                    var url = "my_detailTaskStatus.html?taskid="+taskid+"&taskType="+Tasktype;
+                    var url = "my_myPubTask_detail.html?taskid="+taskid+"&taskType="+Tasktype;
                     parent.layui.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
 
                         title: '<img src="images/fenleiTab.png">进度详情' //用于演示
@@ -177,6 +177,131 @@
 //                    });
 
                 });
+
+            }
+
+            if(obj.event === 'deletebtn'){
+                //layer.msg('ID：'+ data.id + ' 的查看操作');
+                //console.log(data.tid);
+
+                var layer=layui.layer;
+                layer.open({
+                    type:1,
+                    offset: '100px',
+                    content:'确定删除这个任务吗？该任务所有信息不会被保存？',
+                    btn:['确定','取消'],
+                    yes:function(index,layero)
+                    {
+                        //index为当前层索引
+                        //layero 为 弹出层对象
+                        //在回调函数末尾添加 “return false”可以禁止点击该按钮关闭弹出层
+                        layui.use(['jquery', 'layer'], function(){
+                            var $ = layui.$ //重点处
+                                ,layer = layui.layer;
+
+
+                            var taskId=parseInt(data.tid);
+                            var taskType=data.typeName;
+                            var typeId;
+                            console.log(taskType);
+
+                            if(taskType=="分类"){
+                                typeId=2;
+                            }else if(taskType=="信息抽取"){
+
+                                typeId=1;
+                            }else if(taskType=="文本关系类别标注"){
+                                typeId=3;
+                            }else if(taskType.indexOf("文本配对标注")!=-1){
+                                typeId=4;
+
+                            }else if(taskType=="文本排序"){
+                                typeId=5;
+                            }else if(taskType=="文本类比排序"){
+                                typeId=6;
+                            }
+                            //后面就跟你平时使用jQuery一样
+
+
+
+                            $(function(){
+
+
+                                //console.log(data);
+
+                                var delInfo={
+                                    taskId:taskId,
+                                    typeId:typeId
+                                };
+                                console.log(delInfo);
+                                $.ajax({
+                                    url: "/task/"+taskId+"/"+typeId,
+                                    type: "delete",
+                                    traditional: true,
+                                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                                    dataType: "json",
+
+                                    success: function (res) {
+
+                                        console.log(res);
+                                        if(res.code==0){
+                                            table.reload('test', {
+                                                page: {
+                                                    curr: 1 //重新从第 1 页开始
+                                                }
+                                            });
+                                        }else{
+                                            alert(res.msg);
+                                        }
+
+
+//                                layui.use('table', function() {
+//                                    var table = layui.table;
+//                                    table.init();
+//                                });
+
+//                                layui.use('layer',function(){
+//                                    var layer=layui.layer;
+//                                    layer.open({
+//                                        type:0,
+//                                        area: '200px',
+//                                        content:strContent
+//                                    })
+//                                });
+
+                                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                                    },
+                                });
+                            });
+
+                        });
+                        layer.close(layer.index);
+
+                    },
+                    btn2:function(index,layero){//按钮二回到
+                        return true;
+                    },
+
+                    cancel:function(){//右上角关闭毁回调
+                        //return false;
+                    }
+                })
+
+//                layer.alert('墨绿风格，点击确认看深蓝', {
+//                    skin: 'layui-layer-molv' //样式类名  自定义样式
+//                    ,closeBtn: 1    // 是否显示关闭按钮
+//                    ,anim: 1 //动画类型
+//                    ,btn: ['重要','奇葩'] //按钮
+//                    ,icon: 6    // icon
+//                    ,yes:function(){
+//
+//                    }
+//                    ,btn2:function(){
+//                        layer.msg('按钮2')
+//                    }});
+
+
 
             }
         });

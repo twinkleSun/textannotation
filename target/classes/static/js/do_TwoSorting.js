@@ -22,6 +22,7 @@ var curInstanceIndex=0;//当前的instanceIndex
  */
 var taskId;//从页面跳转中获取
 var docId;//从documentList中获取
+var docStatus="全部";
 
 /**
  * 存放ID
@@ -55,9 +56,17 @@ $(function () {
 
     });
 
-    // var itemId=[39,37];
-    // var newIndex=[1,2];
-    //console.log(doTaskData);
+    $("#complete-doc").click(function(){
+        ajaxCompleteDoc(docId);
+    });
+
+    $("#complete-instance").click(function(){
+        ajaxCompleteInstance(docId);
+    });
+
+    $("#select-docStatus").click(function(){
+        ajaxDocSortingInstanceItem(docId);
+    });
 
 
     var itemId=new Array;
@@ -74,13 +83,9 @@ $(function () {
             }
 
             var doTaskData={
-                dtInstid:"",
-                userId:"",
                 taskId :taskId,
-                dotime:"",
-                comptime:"",
-                dtstatus:"进行中",
-                instanceId:instanceItem[curInstanceIndex].insid,
+                docId:docId,
+                instanceId:instanceItem[curInstanceIndex].instid,
                 itemIds:itemId,
                 newIndex:newIndex
             };
@@ -103,11 +108,12 @@ $(function () {
  */
 function ajaxTaskInfo(taskId) {
     var taskid={
-        tid:taskId
+        tid:taskId,
+        typeId:6
     };
 
     $.ajax({
-        url: "task/getTaskInfo",
+        url: "task/detail",
         type: "get",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -138,6 +144,7 @@ function ajaxTaskInfo(taskId) {
              * 处理文件列表
              */
             var taskFileListHtml="";
+            var docSelectHtml='<select name="doc" id="doc" lay-filter="selectDoc"> ';
             for(var i=0;i<documentList.length;i++){
                 var taskFileHtml="";
                 if(documentList[i].filetype==".txt"){
@@ -151,8 +158,36 @@ function ajaxTaskInfo(taskId) {
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
+
+
+                if(i==0){
+                    var docSelect=  '<option value="'+documentList[i].did+'" selected>' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }else{
+                    var docSelect=  '<option value="'+documentList[i].did+'">' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }
             }
             $("#taskFiles").append(taskFileListHtml);
+            docSelectHtml=docSelectHtml+ '</select>';
+            $("#doc-div").html(docSelectHtml);
+
+            layui.use(['form', 'layedit'], function() {
+
+                var form = layui.form;
+                form.on('select(selectDoc)', function(data){
+                    docId=data.value;
+                });
+
+                form.on('select(selectStatus)', function(data){
+                    docStatus=data.elem[data.elem.selectedIndex].text;
+                });
+
+            });
 
             ajaxDocSortingInstanceItem(docId);
 
@@ -172,10 +207,11 @@ function ajaxTaskInfo(taskId) {
 function ajaxDocSortingInstanceItem(docId) {
     var docid={
         docId: docId,
-        userid:""
+        status:docStatus,
+        taskId:taskId
     };
     $.ajax({
-        url: "instance/getSortingInstanceItem",
+        url: "sorting",
         type: "get",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -263,7 +299,7 @@ function curInstanceId(obj) {
 function addSortingTask(doTaskData) {
 
     $.ajax({
-        url: "dotask/addSortingTask",
+        url: "sorting",
         type: "post",
         traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -306,7 +342,7 @@ function paintSortingContent(itemList,alreadyDone) {
     if(alreadyDone.length>0){
 
         for(var i=0;i<alreadyDone.length;i++){
-            alreadyItemId[i]=alreadyDone[i].item_id;
+            alreadyItemId[i]=alreadyDone[i].itemId;
             alreadyNewIndex[i]=alreadyDone[i].newindex;
         }
 
@@ -355,6 +391,51 @@ function paintSortingContent(itemList,alreadyDone) {
     var leftHtml= rightItem[0];
     $("#left-sorting").html(leftHtml);
 
-}
+};
+
+function ajaxCompleteDoc(docId) {
+    var docid={
+        docId: docId,
+        taskId:taskId
+    };
+    $.ajax({
+        url: "/dinstance/doc/status",
+        type: "post",
+        traditional: true,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: "json",
+        data:docid,
+        success: function (data) {
+            console.log(data);
+
+        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+
+        },
+    });
+};
+
+function ajaxCompleteInstance(docId) {
+    var docid={
+        docId: docId,
+        taskId:taskId,
+        instanceId:instanceItem[curInstanceIndex].instid
+    };
+    $.ajax({
+        url: "/dinstance/status",
+        type: "post",
+        traditional: true,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: "json",
+        data:docid,
+        success: function (data) {
+            console.log(data);
+
+        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+
+        },
+    });
+};
 
 
