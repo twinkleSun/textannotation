@@ -109,6 +109,14 @@ public class DtPairingServiceImpl implements IDtPairingService {
                 dTaskId=dTask.getTkid();
             }
 
+            Task task=taskMapper.selectTaskById(taskId);
+            task.setAttendnum(task.getAttendnum()+1);
+            int taskRes=taskMapper.updateById(task);
+            if(taskRes<0){
+//                responseEntity=responseUtil.judgeResult(4005);
+//                return responseEntity;
+            }
+
 
         }
 
@@ -137,13 +145,7 @@ public class DtPairingServiceImpl implements IDtPairingService {
             }
 
 
-            Task task=taskMapper.selectTaskById(taskId);
-            task.setAttendnum(task.getAttendnum()+1);
-            int taskRes=taskMapper.updateById(task);
-            if(taskRes<0){
-//                responseEntity=responseUtil.judgeResult(4005);
-//                return responseEntity;
-            }
+
 
         }
 

@@ -499,6 +499,7 @@ public class DocumentServiceImpl implements IDocumentService {
                 //Instance插入成功
                 int instId=instance.getInstid();//插入成功的文件ID
                 //文件内容，用#分隔了
+                listitemMapper.alterListitemTable();
                 int addItemRes =addListItem(instId,itemArr);
                 //文件内容插入失败
                 if(addItemRes !=0){

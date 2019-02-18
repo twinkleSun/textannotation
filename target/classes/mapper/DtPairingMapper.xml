@@ -14,7 +14,7 @@
         insert into dt_pairing (dt_id, a_litemid,b_litemid)
         SELECT #{dtid}, #{aListItemId}, #{bListItemId} FROM DUAL
         WHERE NOT EXISTS (SELECT dtd_id FROM dt_pairing WHERE dt_id = #{dtid} and
-        a_litemid = #{aListItemId} OR b_litemid = #{bListItemId})
+        (a_litemid = #{aListItemId} OR b_litemid = #{bListItemId}))
     </insert>
 
 
