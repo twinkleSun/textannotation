@@ -78,7 +78,9 @@ $(function () {
      */
     $("#input-dotask").click(function(){
         $("#row-div-dotask").show();
+        $("#div-dotaskbtn").hide();
         $('#taskInfoPanel').collapse('hide');
+
 
     });
 
@@ -314,7 +316,7 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
             /**
              * 处理文件列表
              */
@@ -326,10 +328,10 @@ function ajaxTaskInfo(taskId) {
                     taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/TXT.png">'
                         +documentList[i].filename+'</a></p>';
                 }else if(documentList[i].filetype==".doc"){
-                    taskFileListHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/DOC.png">'
+                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/DOC.png">'
                         +documentList[i].filename+'</a></p>';
                 }else if(documentList[i].filetype==".docx"){
-                    taskFileListHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/DOCX.png">'
+                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/DOCX.png">'
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
@@ -433,7 +435,7 @@ function ajaxDocContent(docId){
 
                 alreadyDone[i]=data.data[i].alreadyDone;//每段已经做了的信息抽取的值
 
-                console.log(alreadyDone);
+                //console.log(alreadyDone);
                 paraId[i]=data.data[i].pid;//console.log(paraId[i]);//每段内容的ID
 
 
@@ -596,7 +598,7 @@ function ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str) {
                 /**
                  * 每段文本的内容变为标记成功后的内容
                  */
-                paraContent[curParaIndex]=str;console.log(str);
+                paraContent[curParaIndex]=str;//console.log(str);
                 alert("添加成功");
                 $("#"+li_img_ok[curLabelIndex][addLiNum]).attr("src","./images/blank.PNG");
                 $("#"+li_img_ok[curLabelIndex][addLiNum]).removeAttr("onclick");
@@ -691,7 +693,7 @@ function getParaStartEnd(paraStr,paraLabelId,testNum,strLen,addLiNum){
  * @param obj
  */
 function ajaxtaskFileId(obj){
-    console.log(obj);
+    //console.log(obj);
 
     var i=obj.substring(9,obj.length);
     var docId=documentList[parseInt(i)].did;

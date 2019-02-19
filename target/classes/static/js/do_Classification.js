@@ -63,6 +63,7 @@ $(function () {
      */
     $("#input-dotask").click(function(){
         $("#row-div-dotask").show();
+        $("#div-dotaskbtn").hide();
         $('#taskInfoPanel').collapse('hide');
 
     });
@@ -205,7 +206,7 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
             /**
              * 处理文件列表
              */

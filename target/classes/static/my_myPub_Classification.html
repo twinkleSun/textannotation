@@ -20,7 +20,7 @@
     <style>
         #pagination  {
             margin: auto;
-            margin-left: 50px;
+            text-align: center;
         }
 
         #pagination a {
@@ -46,7 +46,7 @@
 <div class="panel panel-success">
     <div class="panel-heading">
         <div class="layui-row">
-            <div class="layui-col-md11">
+            <div class="layui-col-md12">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion"
                        href="#taskInfoPanel">
@@ -55,9 +55,7 @@
                     </a>
                 </h4>
             </div>
-            <div class="layui-col-md1">
-                <input type="button" class="btn-default" id="input-dotask" value="我要做任务">
-            </div>
+
         </div>
 
     </div>
@@ -141,10 +139,10 @@
 
 
 
-<div class="layui-row layui-col-space2" id="row-div-dotask" style="display: none">
+<div class="layui-row layui-col-space2" >
 
     <div class="layui-row">
-        <div class="layui-col-md6 ">
+        <div class="layui-col-md12">
 
                 <form class="layui-form">
                     <div class="layui-form-item" >
@@ -166,31 +164,20 @@
                         </div>
                     </div>
                 </form>
-
-
         </div>
 
-        <div class="layui-col-md6">
-            <input type="button" class="btn-primary" value="确定">
-            <input type="button" class="layui-btn-normal" value="结束这个文档" id="complete-doc">
-            <input type="button" class="btn-primary" value="结束这段">
-        </div>
     </div>
     <div class="layui-row layui-col-space10">
-        <div class="layui-col-md6">
+        <div class="layui-col-md8">
             <div class="panel panel-success">
                 <div class="panel-heading">
 
                     <div class="layui-row">
-                        <div class="layui-col-md8"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
-                        <div class="layui-col-md4">
-                            <input type="button" class="form-control" value="提交该段对应的标签" id="submit-paraLabel">
-                        </div>
-
+                        <div class="layui-col-md12"><h3 class="panel-title"><span id="span-index">段落内容：</span></h3></div>
                     </div>
 
                 </div>
-                <div class="panel-body" style="max-height: 500px;overflow:auto" id="div-para">
+                <div class="panel-body" style="max-height: 350px;overflow:auto" id="div-para">
                     <p id="p-para" class="layui-form-text" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;">
 
                     </p>
@@ -201,11 +188,10 @@
                 </div>
             </div>
         </div>
-        <div class="layui-col-md6">
+        <div class="layui-col-md4">
             <div class="panel panel-success">
                 <div class="panel-heading">
-
-                    <h3 class="panel-title"><span>标签</span></h3>
+                    <h3 class="panel-title"><span>标签：</span></h3>
                 </div>
                 <div class="panel-body" style="max-height: 500px;overflow:auto">
                     <ul class="list-group" id="ul-label-list">

@@ -50,8 +50,8 @@ $(function () {
      * 同时将任务详细信息折叠面板设为hide
      */
     $("#btn-dotask").click(function(){
-        // $("#op-dotask").hide();
-        // $("#op-button").show();
+        $("#div-dotaskbtn").hide();
+        $("#div-btn-hide").show();
         $('#taskInfoPanel').collapse('hide');
 
     });
@@ -138,7 +138,7 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
 
             /**
              * 处理文件列表

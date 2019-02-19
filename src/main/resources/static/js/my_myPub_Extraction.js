@@ -82,11 +82,11 @@ $(function () {
      * 点击我要做任务显示的面板，
      * 同时将任务详细信息折叠面板设为hide
      */
-    $("#input-dotask").click(function(){
-        $("#row-div-dotask").show();
-        $('#taskInfoPanel').collapse('hide');
-
-    });
+    // $("#input-dotask").click(function(){
+    //     $("#row-div-dotask").show();
+    //     $('#taskInfoPanel').collapse('hide');
+    //
+    // });
 
 
     $("#select-docStatus").click(function(){
@@ -101,27 +101,27 @@ $(function () {
     /**
      * 鼠标选定文本事件
      */
-    $('#p-para').mouseup(function(){
-        var txt = window.getSelection?window.getSelection():document.selection.createRange().text;
-
-        //var as =window.getSelection().anchorOffset;console.log(as);
-        //var fs =window.getSelection().focusOffset-1;console.log(fs);
-        //label_ul_li_start[curLabelIndex][curLiDiv]=as;
-        //label_ul_li_end[curLabelIndex][curLiDiv]=fs;
-
-        $("#"+li_ans_div[curLabelIndex][li_img_num[curLabelIndex]]).text(txt);
-
-        // var parentP = window.getSelection().baseNode.parentNode;
-        // var parentP2 = window.getSelection().focusNode.childNodes;
-
-        // console.log(parentP);
-        // console.log(parentP2[1].innerHTML);
-        // var firstIndex = parentP.innerText.indexOf(tarStr);
-        // var lastIndex = parentP.innerText.indexOf(tarStr) + tarStr.length;
-        // console.log(firstIndex);
-        // console.log(lastIndex);
-
-    });
+    // $('#p-para').mouseup(function(){
+    //     var txt = window.getSelection?window.getSelection():document.selection.createRange().text;
+    //
+    //     //var as =window.getSelection().anchorOffset;console.log(as);
+    //     //var fs =window.getSelection().focusOffset-1;console.log(fs);
+    //     //label_ul_li_start[curLabelIndex][curLiDiv]=as;
+    //     //label_ul_li_end[curLabelIndex][curLiDiv]=fs;
+    //
+    //     $("#"+li_ans_div[curLabelIndex][li_img_num[curLabelIndex]]).text(txt);
+    //
+    //     // var parentP = window.getSelection().baseNode.parentNode;
+    //     // var parentP2 = window.getSelection().focusNode.childNodes;
+    //
+    //     // console.log(parentP);
+    //     // console.log(parentP2[1].innerHTML);
+    //     // var firstIndex = parentP.innerText.indexOf(tarStr);
+    //     // var lastIndex = parentP.innerText.indexOf(tarStr) + tarStr.length;
+    //     // console.log(firstIndex);
+    //     // console.log(lastIndex);
+    //
+    // });
 
     // $("#label-list-img-test").click(function () {
     //
@@ -142,142 +142,142 @@ $(function () {
  * 显示隐藏自己要做的label
  * @param obj
  */
-function imgClick(obj) {
-    var i=obj.substring(15,obj.length);
-    curLabelIndex=i;
-
-    if($("#"+label_list_img[i]).hasClass("isAns")){
-
-        $("#"+label_list_img[i]).attr("src","./images/notAns.png");
-        $("#"+label_list_img[i]).addClass("notAns").removeClass("isAns");
-        curLabelIndex=0;
-
-    }else{
-        /**
-         * 把其他的label全部隐藏
-         */
-        for(var j=0;j<labelLength;j++){
-            $("#"+label_list_img[j]).attr("src","./images/notAns.png");
-            $("#"+label_list_img[j]).removeClass("isAns").addClass("notAns");
-            $("#"+label_ans_div[j]).collapse('hide');
-        }
-
-        $("#"+label_list_img[i]).attr("src","./images/isAns.png");
-        $("#"+label_list_img[i]).removeClass("notAns").addClass("isAns");
-        $("#"+label_ans_div[i]).collapse('show');
-    }
-
-};
+// function imgClick(obj) {
+//     var i=obj.substring(15,obj.length);
+//     curLabelIndex=i;
+//
+//     if($("#"+label_list_img[i]).hasClass("isAns")){
+//
+//         $("#"+label_list_img[i]).attr("src","./images/notAns.png");
+//         $("#"+label_list_img[i]).addClass("notAns").removeClass("isAns");
+//         curLabelIndex=0;
+//
+//     }else{
+//         /**
+//          * 把其他的label全部隐藏
+//          */
+//         for(var j=0;j<labelLength;j++){
+//             $("#"+label_list_img[j]).attr("src","./images/notAns.png");
+//             $("#"+label_list_img[j]).removeClass("isAns").addClass("notAns");
+//             $("#"+label_ans_div[j]).collapse('hide');
+//         }
+//
+//         $("#"+label_list_img[i]).attr("src","./images/isAns.png");
+//         $("#"+label_list_img[i]).removeClass("notAns").addClass("isAns");
+//         $("#"+label_ans_div[i]).collapse('show');
+//     }
+//
+// };
 
 /**
  * 点击ok添加新的li
  * @param obj
  */
-function imgOkClick(obj) {
-
-    var addLiNum= li_img_num[curLabelIndex];//当前的Li的index
-
-    /**
-     * 鼠标选中一段文本，点击添加后对选中的文本样式进行改变
-     * @type {Selection}
-     */
-    var selection = window.getSelection(); //console.log(selection);
-    var range = selection.getRangeAt(0);//返回索引对应的选区中的 DOM 范围。
-    var txt = window.getSelection?window.getSelection():document.selection.createRange().text;
-
-    /**
-     * 可以根据用户选中的颜色标记文本
-     * @type {string}
-     */
-    // var testcolor="#"+$("#"+label_color[curLabelIndex]).val();//console.log(testcolor);
-    var span = document.createElement("span");
-    span.style.fontSize = "20px";
-    // span.style.color=testcolor;
-    span.style.color=labelList[curLabelIndex].color;
-    span.id="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum);
-    span.appendChild(document.createTextNode(txt));
-    // console.log(document.createTextNode(txt));
-    selection.deleteFromDocument();//从文档中删除选区中的文本
-    range.insertNode(span);//将你要添加的格式添加到DOM范围里
-
-    /**
-     * 传给递归函数的值
-     * @type {jQuery}
-     */
-    var str=$("#p-para").html();
-    var strid="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum);
-    var testNum=0;//这是添加的span的前面文本内容字数
-    var strLen=$("#"+li_ans_div[curLabelIndex][addLiNum]).html().length;//console.log("strLen="+strLen);
-
-    /**
-     * 调用递归函数获取index
-     * @type {*}
-     */
-    var recurisonRes=getParaStartEnd(str,strid,testNum,strLen,addLiNum);  //console.log(recurisonRes);
-    if(recurisonRes==-1){
-        alert("请鼠标选中文本后再点击添加!");
-    }else{
-        var doTaskData={
-            taskId :taskId,
-            docId:docId,
-            paraId:paraId[curParaIndex],
-            labelId:labelList[curLabelIndex].lid,
-            indexBegin:label_ul_li_start[curLabelIndex][addLiNum],
-            indexEnd:label_ul_li_end[curLabelIndex][addLiNum]
-        };
-        console.log(doTaskData);
-
-        /**
-         * 调用上传任务接口
-         */
-        ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str);
-    }
-
-};
+// function imgOkClick(obj) {
+//
+//     var addLiNum= li_img_num[curLabelIndex];//当前的Li的index
+//
+//     /**
+//      * 鼠标选中一段文本，点击添加后对选中的文本样式进行改变
+//      * @type {Selection}
+//      */
+//     var selection = window.getSelection(); //console.log(selection);
+//     var range = selection.getRangeAt(0);//返回索引对应的选区中的 DOM 范围。
+//     var txt = window.getSelection?window.getSelection():document.selection.createRange().text;
+//
+//     /**
+//      * 可以根据用户选中的颜色标记文本
+//      * @type {string}
+//      */
+//     // var testcolor="#"+$("#"+label_color[curLabelIndex]).val();//console.log(testcolor);
+//     var span = document.createElement("span");
+//     span.style.fontSize = "20px";
+//     // span.style.color=testcolor;
+//     span.style.color=labelList[curLabelIndex].color;
+//     span.id="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum);
+//     span.appendChild(document.createTextNode(txt));
+//     // console.log(document.createTextNode(txt));
+//     selection.deleteFromDocument();//从文档中删除选区中的文本
+//     range.insertNode(span);//将你要添加的格式添加到DOM范围里
+//
+//     /**
+//      * 传给递归函数的值
+//      * @type {jQuery}
+//      */
+//     var str=$("#p-para").html();
+//     var strid="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum);
+//     var testNum=0;//这是添加的span的前面文本内容字数
+//     var strLen=$("#"+li_ans_div[curLabelIndex][addLiNum]).html().length;//console.log("strLen="+strLen);
+//
+//     /**
+//      * 调用递归函数获取index
+//      * @type {*}
+//      */
+//     var recurisonRes=getParaStartEnd(str,strid,testNum,strLen,addLiNum);  //console.log(recurisonRes);
+//     if(recurisonRes==-1){
+//         alert("请鼠标选中文本后再点击添加!");
+//     }else{
+//         var doTaskData={
+//             taskId :taskId,
+//             docId:docId,
+//             paraId:paraId[curParaIndex],
+//             labelId:labelList[curLabelIndex].lid,
+//             indexBegin:label_ul_li_start[curLabelIndex][addLiNum],
+//             indexEnd:label_ul_li_end[curLabelIndex][addLiNum]
+//         };
+//         console.log(doTaskData);
+//
+//         /**
+//          * 调用上传任务接口
+//          */
+//         ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str);
+//     }
+//
+// };
 
 /**
  * 对每个label->ul->li的内容进行移除
  * @param obj
  */
-function imgDelClick(obj) {
-
-    var delLiLength=curLabelIndex.length+12;//console.log(delLiLength);
-    var delLiStr =obj.substring(delLiLength,obj.length);//console.log(delLiStr);
-    var delLiNum =parseInt(delLiStr); //console.log(delLiNum);
-    $("#"+li_ans_div[curLabelIndex][delLiNum]).html("");
-
-};
+// function imgDelClick(obj) {
+//
+//     var delLiLength=curLabelIndex.length+12;//console.log(delLiLength);
+//     var delLiStr =obj.substring(delLiLength,obj.length);//console.log(delLiStr);
+//     var delLiNum =parseInt(delLiStr); //console.log(delLiNum);
+//     $("#"+li_ans_div[curLabelIndex][delLiNum]).html("");
+//
+// };
 
 /**
  * 对每个标签的第一个li的内容进行处理
  * @param obj  -->用不到这个参数
  */
-function imgDeleteClick(obj) {
-    $("#"+li_ans_div[curLabelIndex][0]).html("");
-};
+// function imgDeleteClick(obj) {
+//     $("#"+li_ans_div[curLabelIndex][0]).html("");
+// };
 
 /**
  * 页脚1，2，3对应的点击事件
  * @param obj
  */
-function footerIndex(obj) {
-    $("#"+obj).css("color","red");
-
-
-    $("#"+panel_footer_index[curParaIndex]).css("color","#0d96f2");
-
-    var aIndex=obj.substring(19,obj.length);//console.log("当前的段落索引为："+aIndex);
-    curParaIndex=aIndex;//当前段落的索引
-    var curParaIndexNum =parseInt(curParaIndex);
-    $("#span-index").html("第"+(curParaIndexNum+1)+"段");//设置内容面板的标题
-    console.log(paraContent[curParaIndex]);
-    $("#p-para").html(paraContent[curParaIndex]);//设置内容
-
-    if(paraContent[curParaIndex].indexOf("<span")==-1){
-        paintAlreadyDone2();
-    }
-
-};
+// function footerIndex(obj) {
+//     $("#"+obj).css("color","red");
+//
+//
+//     $("#"+panel_footer_index[curParaIndex]).css("color","#0d96f2");
+//
+//     var aIndex=obj.substring(19,obj.length);//console.log("当前的段落索引为："+aIndex);
+//     curParaIndex=aIndex;//当前段落的索引
+//     var curParaIndexNum =parseInt(curParaIndex);
+//     $("#span-index").html("第"+(curParaIndexNum+1)+"段");//设置内容面板的标题
+//     console.log(paraContent[curParaIndex]);
+//     $("#p-para").html(paraContent[curParaIndex]);//设置内容
+//
+//     if(paraContent[curParaIndex].indexOf("<span")==-1){
+//         paintAlreadyDone2();
+//     }
+//
+// };
 
 // $("#link1").click(function(){
 //     console.log("hha");
@@ -317,7 +317,7 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
             /**
              * 处理文件列表
              */
@@ -373,10 +373,7 @@ function ajaxTaskInfo(taskId) {
 
                 var form = layui.form;
                 form.on('select(selectDoc)', function(data){
-
                     docId=data.value;
-
-
                 });
 
                 form.on('select(selectStatus)', function(data){
@@ -437,7 +434,7 @@ function ajaxDocContent(docId){
 
                 alreadyDone[i]=data.data[i].alreadyDone;//每段已经做了的信息抽取的值
 
-                console.log(alreadyDone);
+                //console.log(alreadyDone);
                 paraId[i]=data.data[i].pid;//console.log(paraId[i]);//每段内容的ID
 
 
@@ -496,14 +493,6 @@ function ajaxDocContent(docId){
             });
 
 
-
-
-
-
-
-
-
-
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
 
@@ -527,53 +516,37 @@ function labelHtml(labelList){
             +'<div class="panel-heading">'
                 +'<h4 class="panel-title">'
                     +'<a data-toggle="collapse" data-parent="#accordion" href="#'+label_ans_div[i]+'">'
-                        +'<img class="notAns" src="./images/notAns.png" id="label-list-img-'+i+'" onclick="imgClick(this.id)">'
+                        +'<span style="color: '+labelList[i].color+'">标签' +(i+1)+'：'+
+            '</span>'
                      +'</a>'+labelList[i].labelname
                 +'</h4>'
             +'</div>'
-            +'<div id="label-ans-div-'+i+'" class="panel-collapse collapse">'
-                +'<div class="panel-body">'
-                    +'<ul class="list-group" id="label-ans-ul-'+i+'">'
-                        +'<li class="list-group-item" id="label-ans-li-'+i+'-0">'
-                            +'<div class="row">'
-                                +'<div class="col-lg-10" id="li-ans-div-'+i+'-0">'
-                                +'</div>'
-                                +'<div class="col-lg-1">'
-                                    +'<img class="okAns" src="./images/ok.png" id="li-img-ok-'+i+'-0" onclick="imgOkClick(this.id)">'
-                                +'</div>'
-                                +'<div class="col-lg-1">'
-                                    +'<img class="delAns" src="./images/delete.png" id="li-img-del-'+i+'-0" onclick="imgDeleteClick(this.id)">'
-                                +'</div>'
-                            +'</div>'
-                        +'</li>'
-                    +'</ul>'
-                +'</div>'
-            +'</div>'
+
         +'</div>';
 
-        label_html =label_html+list_html;
-        label_list_img[i]="label-list-img-"+i;
-        label_ans_ul[i]="label-ans-ul-"+i;
-        label_color[i]="label-color-"+i;
+         label_html =label_html+list_html;
+        // label_list_img[i]="label-list-img-"+i;
+        // label_ans_ul[i]="label-ans-ul-"+i;
+        // label_color[i]="label-color-"+i;
+        //
+        // label_ans_li[i]=new Array;
+        // label_ans_li[i][0]= "label-ans-li-"+i+"-0";
+        //
+        // li_img_ok[i]=new Array;
+        // li_img_ok[i][0] ="li-img-ok-"+i+"-0";
+        //
+        // li_img_del[i]=new Array;
+        // li_img_del[i][0] ="li-img-del-"+i+"-0";
+        //
+        // li_ans_div[i]=new Array;
+        // li_ans_div[i][0]= "li-ans-div-"+i+"-0";
+        //
+        // label_ul_li_start[i]=new Array;
+        // label_ul_li_end[i]=new Array;
+        // label_ul_li_span[i]=new Array;
+        // label_ul_li_span[i][0] ="label-ul-li-span-"+i+"-0";
 
-        label_ans_li[i]=new Array;
-        label_ans_li[i][0]= "label-ans-li-"+i+"-0";
-
-        li_img_ok[i]=new Array;
-        li_img_ok[i][0] ="li-img-ok-"+i+"-0";
-
-        li_img_del[i]=new Array;
-        li_img_del[i][0] ="li-img-del-"+i+"-0";
-
-        li_ans_div[i]=new Array;
-        li_ans_div[i][0]= "li-ans-div-"+i+"-0";
-
-        label_ul_li_start[i]=new Array;
-        label_ul_li_end[i]=new Array;
-        label_ul_li_span[i]=new Array;
-        label_ul_li_span[i][0] ="label-ul-li-span-"+i+"-0";
-
-        li_img_num[i]=0;
+        // li_img_num[i]=0;
     }
 
     $("#labellist-div-panel").append(label_html);
@@ -584,63 +557,63 @@ function labelHtml(labelList){
  * 做任务上传自己的标签
  * @param doTaskData
  */
-function ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str) {
-
-    $.ajax({
-        url: "extraction",
-        type: "post",
-        traditional: true,
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        dataType: "json",
-        data:doTaskData,
-        success: function (data) {
-            //console.log(data);
-            if(data.status=="0"){
-
-                /**
-                 * 每段文本的内容变为标记成功后的内容
-                 */
-                paraContent[curParaIndex]=str;console.log(str);
-                alert("添加成功");
-                $("#"+li_img_ok[curLabelIndex][addLiNum]).attr("src","./images/blank.PNG");
-                $("#"+li_img_ok[curLabelIndex][addLiNum]).removeAttr("onclick");
-                $("#"+li_img_del[curLabelIndex][addLiNum]).attr("src","./images/labelsuccess.png");
-                $("#"+li_img_del[curLabelIndex][addLiNum]).removeAttr("onclick");
-
-
-                li_img_num[curLabelIndex]++;
-                /**
-                 * 提交一个li之后，添加一个li
-                 */
-                var addLi= '<li class="list-group-item" id="label-ans-li-'+curLabelIndex+'-'+(addLiNum+1)+'">'
-                    +'<div class="row">'
-                    +'<div class="col-lg-10" id="li-ans-div-'+curLabelIndex+'-'+(addLiNum+1)+'">'
-                    +'</div>'
-                    +'<div class="col-lg-1">'
-                    +'<img class="okAns" src="./images/ok.png" id="li-img-ok-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgOkClick(this.id)">'
-                    +'</div>'
-                    +'<div class="col-lg-1">'
-                    +'<img class="delAns" src="./images/delete.png" id="li-img-del-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgDelClick(this.id)">'
-                    +'</div>'
-                    +'</div>'
-                    +'</li>';
-                label_ans_li[curLabelIndex][addLiNum+1]= "label-ans-li-"+curLabelIndex+"-"+(addLiNum+1);
-                li_ans_div[curLabelIndex][addLiNum+1]= "li-ans-div-"+curLabelIndex+"-"+(addLiNum+1);
-                li_img_ok[curLabelIndex][addLiNum+1] ="li-img-ok-"+curLabelIndex+"-"+(addLiNum+1);
-                label_ul_li_span[curLabelIndex][addLiNum+1] ="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum+1);
-                li_img_del[curLabelIndex][addLiNum+1] ="li-img-del-"+curLabelIndex+"-"+(addLiNum+1);
-
-                $("#"+label_ans_ul[curLabelIndex]).append(addLi);
-            }
-
-
-        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-        },
-    });
-
-
-};
+// function ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str) {
+//
+//     $.ajax({
+//         url: "extraction",
+//         type: "post",
+//         traditional: true,
+//         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+//         dataType: "json",
+//         data:doTaskData,
+//         success: function (data) {
+//             //console.log(data);
+//             if(data.status=="0"){
+//
+//                 /**
+//                  * 每段文本的内容变为标记成功后的内容
+//                  */
+//                 paraContent[curParaIndex]=str;console.log(str);
+//                 alert("添加成功");
+//                 $("#"+li_img_ok[curLabelIndex][addLiNum]).attr("src","./images/blank.PNG");
+//                 $("#"+li_img_ok[curLabelIndex][addLiNum]).removeAttr("onclick");
+//                 $("#"+li_img_del[curLabelIndex][addLiNum]).attr("src","./images/labelsuccess.png");
+//                 $("#"+li_img_del[curLabelIndex][addLiNum]).removeAttr("onclick");
+//
+//
+//                 li_img_num[curLabelIndex]++;
+//                 /**
+//                  * 提交一个li之后，添加一个li
+//                  */
+//                 var addLi= '<li class="list-group-item" id="label-ans-li-'+curLabelIndex+'-'+(addLiNum+1)+'">'
+//                     +'<div class="row">'
+//                     +'<div class="col-lg-10" id="li-ans-div-'+curLabelIndex+'-'+(addLiNum+1)+'">'
+//                     +'</div>'
+//                     +'<div class="col-lg-1">'
+//                     +'<img class="okAns" src="./images/ok.png" id="li-img-ok-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgOkClick(this.id)">'
+//                     +'</div>'
+//                     +'<div class="col-lg-1">'
+//                     +'<img class="delAns" src="./images/delete.png" id="li-img-del-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgDelClick(this.id)">'
+//                     +'</div>'
+//                     +'</div>'
+//                     +'</li>';
+//                 label_ans_li[curLabelIndex][addLiNum+1]= "label-ans-li-"+curLabelIndex+"-"+(addLiNum+1);
+//                 li_ans_div[curLabelIndex][addLiNum+1]= "li-ans-div-"+curLabelIndex+"-"+(addLiNum+1);
+//                 li_img_ok[curLabelIndex][addLiNum+1] ="li-img-ok-"+curLabelIndex+"-"+(addLiNum+1);
+//                 label_ul_li_span[curLabelIndex][addLiNum+1] ="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum+1);
+//                 li_img_del[curLabelIndex][addLiNum+1] ="li-img-del-"+curLabelIndex+"-"+(addLiNum+1);
+//
+//                 $("#"+label_ans_ul[curLabelIndex]).append(addLi);
+//             }
+//
+//
+//         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+//
+//         },
+//     });
+//
+//
+// };
 
 /**
  * 获取被选中的文本的startIndex和endIndex
@@ -653,42 +626,42 @@ function ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str) {
  * @param addLiNum
  * @returns {*}
  */
-function getParaStartEnd(paraStr,paraLabelId,testNum,strLen,addLiNum){
-    // console.log("---------------------------------------start")
-    // console.log("paraStr="+paraStr);
-    // console.log("paraLabelId="+paraLabelId);
-    // console.log("strLen="+strLen);
-
-    var num1=paraStr.indexOf("<");//console.log("num1="+num1);
-    var num2=paraStr.indexOf(">");//console.log("num2="+num2);
-    var str1=paraStr.substring(num1,num2+1);//console.log("str1="+str1);
-    var str2=paraStr.substring(0,num1)+paraStr.substring(num2+1);//console.log("str2="+str2);
-
-    if(num1<0 || num2<0){
-        /**
-         * 没有往页面里插入span成功的情况，容易造成死循环
-         */
-        return -1;
-    }else if(str1.indexOf(paraLabelId)!=-1){
-        // console.log("num1段落="+paraStr.substring(0,num1));
-        testNum=paraStr.substring(0,num1).length; //console.log("testNum="+testNum);
-
-        /**
-         * 设置被选中的str 的startIndex,endIndex
-         * @type {*}
-         */
-        label_ul_li_start[curLabelIndex][addLiNum]=testNum+1;//todo:+1
-        label_ul_li_end[curLabelIndex][addLiNum]=testNum+strLen;
-
-        return 1;
-
-    }else{
-        return getParaStartEnd(str2,paraLabelId,testNum,strLen,addLiNum);
-    }
-
-
-
-}
+// function getParaStartEnd(paraStr,paraLabelId,testNum,strLen,addLiNum){
+//     // console.log("---------------------------------------start")
+//     // console.log("paraStr="+paraStr);
+//     // console.log("paraLabelId="+paraLabelId);
+//     // console.log("strLen="+strLen);
+//
+//     var num1=paraStr.indexOf("<");//console.log("num1="+num1);
+//     var num2=paraStr.indexOf(">");//console.log("num2="+num2);
+//     var str1=paraStr.substring(num1,num2+1);//console.log("str1="+str1);
+//     var str2=paraStr.substring(0,num1)+paraStr.substring(num2+1);//console.log("str2="+str2);
+//
+//     if(num1<0 || num2<0){
+//         /**
+//          * 没有往页面里插入span成功的情况，容易造成死循环
+//          */
+//         return -1;
+//     }else if(str1.indexOf(paraLabelId)!=-1){
+//         // console.log("num1段落="+paraStr.substring(0,num1));
+//         testNum=paraStr.substring(0,num1).length; //console.log("testNum="+testNum);
+//
+//         /**
+//          * 设置被选中的str 的startIndex,endIndex
+//          * @type {*}
+//          */
+//         label_ul_li_start[curLabelIndex][addLiNum]=testNum+1;//todo:+1
+//         label_ul_li_end[curLabelIndex][addLiNum]=testNum+strLen;
+//
+//         return 1;
+//
+//     }else{
+//         return getParaStartEnd(str2,paraLabelId,testNum,strLen,addLiNum);
+//     }
+//
+//
+//
+// }
 
 /**
  * 查看文件内容

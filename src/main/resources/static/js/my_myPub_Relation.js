@@ -78,6 +78,9 @@ $(function () {
         $('#taskInfoPanel').collapse('hide');
 
     });
+    $("#select-docStatus").click(function(){
+        ajaxDocInstanceItem(docId);
+    });
 
 
     $("#submit-item").click(function(){
@@ -171,11 +174,12 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
             /**
              * 处理文件列表
              */
             var taskFileListHtml="";
+            var docSelectHtml='<select name="doc" id="doc" lay-filter="selectDoc"> ';
             for(var i=0;i<documentList.length;i++){
                 var taskFileHtml="";
                 if(documentList[i].filetype==".txt"){
@@ -189,22 +193,38 @@ function ajaxTaskInfo(taskId) {
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
+
+                if(i==0){
+                    var docSelect=  '<option value="'+documentList[i].did+'" selected>' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }else{
+                    var docSelect=  '<option value="'+documentList[i].did+'">' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }
             }
             $("#taskFiles").append(taskFileListHtml);
+            docSelectHtml=docSelectHtml+ '</select>';
+            $("#doc-div").html(docSelectHtml);
 
 
-            /**
-             * 处理标签
-             */
-            // var labelListHtml="";
-            // for(var i=0;i<labelList.length;i++){
-            //     var labelInfoHtml='<span class="text-info" style="font-size: 18px;">' +
-            //         labelList[i].labelname +'、'+
-            //         '</span>';
-            //     labelListHtml=labelListHtml+labelInfoHtml;
-            // }
-            // $("#taskLabels").append(labelListHtml);
 
+
+            layui.use(['form', 'layedit'], function() {
+
+                var form = layui.form;
+                form.on('select(selectDoc)', function(data){
+                    docId=data.value;
+                });
+
+                form.on('select(selectStatus)', function(data){
+                    docStatus=data.elem[data.elem.selectedIndex].text;
+                });
+
+            });
 
             /**
              * 获取文件内容，提前加载
@@ -389,7 +409,7 @@ function paintLabelHtml(instanceLabel,item1Label,item2Label) {
      * 写入instance的标签
      * @type {string}
      */
-    var instanceHtml='<h4 style="line-height:18pt">';
+    var instanceHtml='<h4 style="line-height:10pt">';
     for(var i=0;i<instanceLabel.length;i++){
         instanceLabel[i].chosen=0;
         if(tmpInstanceAlready.indexOf(instanceLabel[i].lid)!=-1){
@@ -398,7 +418,7 @@ function paintLabelHtml(instanceLabel,item1Label,item2Label) {
                 '</span>';
             instanceHtml=instanceHtml+tmpHtml;
         }else{
-            var tmpHtml=' <span class="label label-default" id="instance-label-'+i+'" flag="0" ilabeltype="instance" onclick="changeLabelColor(this.id)" >' +
+            var tmpHtml=' <span class="label label-default" id="instance-label-'+i+'" flag="0" ilabeltype="instance" >' +
                 instanceLabel[i].labelname +
                 '</span>';
             instanceHtml=instanceHtml+tmpHtml;
@@ -422,7 +442,7 @@ function paintLabelHtml(instanceLabel,item1Label,item2Label) {
                 '</span>';
             item1Html=item1Html+tmpHtml;
         }else{
-            var tmpHtml=' <span class="label label-default" id="item1-label-'+i+'" flag="0" ilabeltype="item1" onclick="changeLabelColor(this.id)">' +
+            var tmpHtml=' <span class="label label-default" id="item1-label-'+i+'" flag="0" ilabeltype="item1">' +
                 item1Label[i].labelname +
                 '</span>';
             item1Html=item1Html+tmpHtml;
@@ -436,7 +456,7 @@ function paintLabelHtml(instanceLabel,item1Label,item2Label) {
      * 写入item2的标签
      * @type {string}
      */
-    var item2Html='<h4 style="line-height:18pt">';
+    var item2Html='<h4 style="line-height:10pt">';
     for(var i=0;i<item2Label.length;i++){
         item2Label[i].chosen=0;
         if(tmpItem2Already.indexOf(item2Label[i].lid)!=-1){
@@ -445,7 +465,7 @@ function paintLabelHtml(instanceLabel,item1Label,item2Label) {
                 '</span>';
             item2Html=item2Html+tmpHtml;
         }else{
-            var tmpHtml=' <span class="label label-default" id="item2-label-'+i+'" flag="0" ilabeltype="item2" onclick="changeLabelColor(this.id)">' +
+            var tmpHtml=' <span class="label label-default" id="item2-label-'+i+'" flag="0" ilabeltype="item2">' +
                 item2Label[i].labelname +
                 '</span>';
             item2Html=item2Html+tmpHtml;

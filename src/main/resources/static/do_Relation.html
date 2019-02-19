@@ -16,6 +16,7 @@
     <!--<link rel="stylesheet" href="lib/layui/css/layui.css">-->
 
     <style>
+        .layui-form-label{ width: 90px; }
         /* Custom Styles */
         ul.nav-tabs{
             width: 100px;
@@ -68,9 +69,12 @@
                     </a>
                 </h4>
             </div>
-            <div class="layui-col-md1">
-                <input type="button" class="btn btn-info" id="input-dotask" value="我要做任务">
+            <div  id="div-dotaskbtn">
+                <div class="layui-col-md1">
+                    <input type="button" class="btn btn-info" id="input-dotask" value="我要做任务">
+                </div>
             </div>
+
         </div>
 
     </div>
@@ -147,14 +151,16 @@
 
 <div class="layui-row " id="div-instance-item" style="display: none">
 
-
     <div class="layui-row">
-        <div class="layui-col-md6 ">
+        <div class="layui-col-md1">
+        .
+        </div>
 
+        <div class="layui-col-md6">
             <form class="layui-form">
                 <div class="layui-form-item" >
                     <label class="layui-form-label">文件列表</label>
-                    <div class="layui-col-md2" id="doc-div">
+                    <div class="layui-col-md4" id="doc-div">
 
                     </div>
 
@@ -167,7 +173,7 @@
                     </div>
                     .
                     <div class="layui-col-md1">
-                        <input type="button" class="layui-btn layui-btn-normal" value="确定" id="select-docStatus">
+                        <input type="button" class="layui-btn layui-btn-primary" value="查看" id="select-docStatus">
                     </div>
                 </div>
             </form>
@@ -175,12 +181,14 @@
 
         </div>
 
-        <div class="layui-col-md6">
-
-            <input type="button" class="btn btn-warning" value="结束这个文档" id="complete-doc">
-            <input type="button" class="btn btn-success" value="结束这段" id="complete-instance">
+        <div class="layui-col-md5">
+            <input type="button" class="btn btn-success" value="提交所选标签" id="submit-item">
+            <input type="button" class="btn btn-info" value="结束该段" id="complete-instance">
+            <input type="button" class="btn btn-warning" value="结束该文档" id="complete-doc">
+            <span class="layui-word-aux">确认结束后不可再修改</span>
         </div>
     </div>
+
 
     <div class="layui-row ">
         <div class="layui-col-md1">
@@ -189,24 +197,9 @@
             </ul>
         </div>
         <div class="layui-col-md11">
+
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <!--<table class="table">-->
-                    <!--<tr>-->
-                    <!--<td>-->
-                    <!--<div class="layui-col-md1">-->
-                    <!--<h5>可选标签:</h5>-->
-                    <!--</div>-->
-                    <!--<div class="layui-col-md9" id="instance-label-div">-->
-                    <!--</div>-->
-
-                    <!--<div class="layui-col-md2">-->
-                    <!--<input class="btn btn-success" type="button" value="提交该段标签" id="submit-item">-->
-                    <!--</div>-->
-
-                    <!--</td>-->
-                    <!--</tr>-->
-                    <!--</table>-->
 
                     <div class="layui-row">
                         <div class="layui-col-md1">
@@ -215,7 +208,7 @@
                         <div class="layui-col-md10" id="instance-label-div">
                         </div>
                         <div class="layui-col-md1">
-                            <input class="btn btn-success" type="button" value="提交该段" id="submit-item">
+
                         </div>
                     </div>
 

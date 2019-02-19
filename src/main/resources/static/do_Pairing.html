@@ -18,6 +18,7 @@
 
     <!--左边导航的样式-->
     <style>
+        .layui-form-label{ width: 90px; }
         /* Custom Styles */
         ul.nav-tabs{
             width: 100px;
@@ -61,7 +62,7 @@
 <div class="panel panel-success">
     <div class="panel-heading">
         <div class="layui-row">
-            <div class="layui-col-md8">
+            <div class="layui-col-md11">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion"
                        href="#taskInfoPanel">
@@ -70,27 +71,11 @@
                     </a>
                 </h4>
             </div>
-            <div id="op-dotask">
-                <div class="layui-col-md3"></div>
-                <div class="layui-col-md1">
+            <div id="div-dotaskbtn">
+                <div class="layui-col-md1" >
                     <input type="button" class="btn btn-primary" value="我要做任务" id="btn-dotask">
                 </div>
             </div>
-            <div id="op-button" style="display: none">
-                <div class="layui-col-md1">
-                    <input type="button" class="btn btn-warning" value="后退一步" id="backOneStep">
-                </div>
-                <div class="layui-col-md1">
-                    <input type="button" class="btn btn-success" value="提交这部分" id="submit-instance">
-
-                </div>
-                <div class="layui-col-md1">
-                    <input type="button" class="btn btn-primary" value="确认这部分已经全部完成" id="submit-instAll">
-
-                </div>
-            </div>
-
-
 
         </div>
 
@@ -179,12 +164,15 @@
 <div class="layui-row" id="div-doTask">
 
     <div class="layui-row">
-        <div class="layui-col-md6 ">
+        <div class="layui-col-md1">
+            .
+        </div>
+        <div class="layui-col-md6">
 
             <form class="layui-form">
                 <div class="layui-form-item" >
                     <label class="layui-form-label">文件列表</label>
-                    <div class="layui-col-md2" id="doc-div">
+                    <div class="layui-col-md4" id="doc-div">
 
                     </div>
 
@@ -197,7 +185,7 @@
                     </div>
                     .
                     <div class="layui-col-md1">
-                        <input type="button" class="layui-btn layui-btn-normal" value="确定" id="select-docStatus">
+                        <input type="button" class="layui-btn layui-btn-primary" value="查看" id="select-docStatus">
                     </div>
                 </div>
             </form>
@@ -205,10 +193,14 @@
 
         </div>
 
-        <div class="layui-col-md6">
-            <input type="button" class="btn-primary" value="确定">
-            <input type="button" class="btn btn-success" value="结束这个文档" id="complete-doc">
-            <input type="button" class="btn btn-success" value="结束这段" id="complete-instance">
+        <div class="layui-col-md5" id="div-btn-hide" style="display: none;">
+            <input type="button" class="btn btn-info" value="后退一步" id="backOneStep">
+            <input type="button" class="btn btn-success" value="提交这部分" id="submit-instance">
+            <input type="button" class="btn btn-warning" value="结束本段" id="complete-instance">
+            <input type="button" class="btn btn-warning" value="结束该文档" id="complete-doc">
+            <span class="layui-word-aux">确认结束后不可再修改</span>
+
+
         </div>
     </div>
 

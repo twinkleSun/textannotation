@@ -11,11 +11,12 @@
     <link rel="stylesheet" type="text/css" href="plugins/css/tag.css" />
     <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
     <script src="plugins/js/jquery-2.1.4.min.js"></script>
+    <script src="plugins/layui/layui.js"></script>
     <script src="plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="js/my_myPub_Relation.js" ></script>
     <!--<link rel="stylesheet" href="lib/layui/css/layui.css">-->
 
     <style>
+        .layui-form-label{ width: 90px; }
         /* Custom Styles */
         ul.nav-tabs{
             width: 100px;
@@ -67,9 +68,6 @@
                         任务相关信息
                     </a>
                 </h4>
-            </div>
-            <div class="layui-col-md1">
-                <input type="button" class="btn btn-info" id="input-dotask" value="我要做任务">
             </div>
         </div>
 
@@ -137,14 +135,7 @@
                             <h6 class="panel-title"><p id="pubUserName"></p></h6>
                         </div>
                     </div>
-                    <!--<div class="row">-->
-                        <!--<div class="layui-col-md2">-->
-                            <!--<h5 class="panel-title">任务描述:</h5>-->
-                        <!--</div>-->
-                        <!--<div class="layui-col-md10" id="taskLabels">-->
 
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
 
@@ -152,64 +143,72 @@
     </div>
 </div>
 
-<div class="layui-row layui-col-space10" id="div-instance-item" style="display: none">
-    <div class="layui-col-md1">
-        <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="200" id="ul-nav">
+<div class="layui-row " id="div-instance-item">
 
-        </ul>
-    </div>
-    <div class="layui-col-md11">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <!--<table class="table">-->
-                    <!--<tr>-->
-                        <!--<td>-->
-                            <!--<div class="layui-col-md1">-->
-                                <!--<h5>可选标签:</h5>-->
-                            <!--</div>-->
-                            <!--<div class="layui-col-md9" id="instance-label-div">-->
-                            <!--</div>-->
+    <div class="layui-row">
+        <div class="layui-col-md1">
+            .
+        </div>
 
-                            <!--<div class="layui-col-md2">-->
-                                <!--<input class="btn btn-success" type="button" value="提交该段标签" id="submit-item">-->
-                            <!--</div>-->
+        <div class="layui-col-md11">
+            <form class="layui-form">
+                <div class="layui-form-item" >
+                    <label class="layui-form-label">文件列表</label>
+                    <div class="layui-col-md4" id="doc-div">
 
-                        <!--</td>-->
-                    <!--</tr>-->
-                <!--</table>-->
-
-                <div class="layui-row">
-                    <div class="layui-col-md1">
-                        <h5>可选标签:</h5>
                     </div>
-                    <div class="layui-col-md10" id="instance-label-div">
+
+                    <label class="layui-form-label">完成状态</label>
+                    <div class="layui-col-md2" id="status-div">
+                        <select name="status" id="status" lay-filter="selectStatus">
+                            <option value="1" selected>全部</option>
+                            <option value="2">进行中</option>
+                        </select>
                     </div>
+                    .
                     <div class="layui-col-md1">
-                        <input class="btn btn-success" type="button" value="提交该段" id="submit-item">
+                        <input type="button" class="layui-btn layui-btn-primary" value="查看" id="select-docStatus">
                     </div>
                 </div>
+            </form>
+        </div>
+
+    </div>
 
 
-            </div>
-            <div class="panel-body">
-                <div class="layui-row">
+    <div class="layui-row ">
+        <div class="layui-col-md1">
+            <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="200" id="ul-nav">
 
-                    <div class="layui-col-md12">
-                        <div class="layui-row">
+            </ul>
+        </div>
+        <div class="layui-col-md11">
+
+            <div class="panel panel-success">
+                <div class="panel-heading">
+
+                    <div class="layui-row">
+                        <div class="layui-col-md1">
+                            <h5>可选标签:</h5>
+                        </div>
+                        <div class="layui-col-md10" id="instance-label-div">
+                        </div>
+                        <div class="layui-col-md1">
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="panel-body">
+                    <div class="layui-row">
+
+                        <!--<div class="layui-col-md12">-->
+                        <div class="layui-row layui-col-space10">
                             <div class="layui-col-md6">
                                 <div class="panel panel-default">
 
                                     <table class="table">
-
-                                        <!--<tr>-->
-                                            <!--<td><div class="col-lg-2">-->
-                                                <!--<h5>任务要求:</h5>-->
-                                                <!--</div>-->
-                                                <!--<div class="col-lg-10" id="item1-label-chosen-div">-->
-                                                    <!--<h5>该段文本只可以选择几个标签</h5>-->
-                                                <!--</div>-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
                                         <tr>
                                             <td>
                                                 <div class="layui-col-md2">
@@ -222,8 +221,6 @@
 
                                     </table>
                                     <div class="panel-body" style="max-height: 500px;overflow:auto" >
-
-
                                         <form class="form-horizontal">
                                             <div class="form-group">
                                                 <p class="layui-col-md12" style="font-size: 18px;letter-spacing: 2px;text-indent: 20px;" id="p-item-0"></p>
@@ -238,15 +235,6 @@
 
                                     <table class="table">
 
-                                        <!--<tr> <div class="col-lg-2">-->
-                                            <!--<h4>标签:</h4>-->
-                                        <!--</div>-->
-                                            <!--<div class="col-lg-10" id="item2-label-div">-->
-
-                                            <!--</div>-->
-
-                                            <!--</h4>-->
-                                        <!--</tr>-->
                                         <tr>
                                             <td>
                                                 <div class="layui-col-md2">
@@ -270,26 +258,17 @@
                                 </div>
                             </div>
                         </div>
+                        <!--</div>-->
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
+
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="js/my_myPub_Relation.js" ></script>
 <script type="text/javascript">
 
     $(function () { $('#taskInfoPanel').collapse('show')});

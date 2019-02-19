@@ -61,15 +61,19 @@ $(function ($) {
      * 任务列表跳转时获得参数，形如http://localhost:8080/doTask3.html?taskid=7
      * @type {string}
      */
-    var loc = location.href; //console.log("loc===="+loc);
+    var loc = location.href; console.log("loc===="+loc);
     var index = loc.indexOf('?');
     var str = loc.substring(index + 1);
     var arr = str.split('&');
     var taskidArr=arr[0].split("=");
-    taskId = taskidArr[1];
+    taskId = taskidArr[1];console.log(taskId);
     var userIdArr=arr[1].split("=");
-    userId = userIdArr[1];
+    userId = userIdArr[1];console.log(userId);
 
+
+    $("#select-docStatus").click(function(){
+        ajaxDocInstanceItem(docId);
+    });
     /**
      * 对连线的li进行初始化
      * @param options
@@ -278,11 +282,12 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
             /**
              * 处理文件列表
              */
             var taskFileListHtml="";
+            var docSelectHtml='<select name="doc" id="doc" lay-filter="selectDoc"> ';
             for(var i=0;i<documentList.length;i++){
                 var taskFileHtml="";
                 if(documentList[i].filetype==".txt"){
@@ -296,9 +301,38 @@ function ajaxTaskInfo(taskId) {
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
+
+
+                if(i==0){
+                    var docSelect=  '<option value="'+documentList[i].did+'" selected>' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }else{
+                    var docSelect=  '<option value="'+documentList[i].did+'">' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }
             }
             $("#taskFiles").append(taskFileListHtml);
 
+            docSelectHtml=docSelectHtml+ '</select>';
+            $("#doc-div").html(docSelectHtml);
+
+
+            layui.use(['form', 'layedit'], function() {
+
+                var form = layui.form;
+                form.on('select(selectDoc)', function(data){
+                    docId=data.value;
+                });
+
+                form.on('select(selectStatus)', function(data){
+                    docStatus=data.elem[data.elem.selectedIndex].text;
+                });
+
+            });
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -429,11 +463,11 @@ function paintDoTask(listItem,alreadyDone) {
          */
         console.log("paint");
         if(listItem[i].listIndex=="1"){
-            var lt= '<li class="showitem" id="left-'+listItem[i].ltid+'" onclick="drawLeft(this.id)">'
+            var lt= '<li class="showitem" id="left-'+listItem[i].ltid+'" >'
                 +listItem[i].litemcontent+'</li>';
             left_Html=left_Html+lt;
         }else if(listItem[i].listIndex=="2"){
-            var rt='<li class="showitem" id="right-'+listItem[i].ltid+'" onclick="drawRight(this.id)">'
+            var rt='<li class="showitem" id="right-'+listItem[i].ltid+'" >'
                 +listItem[i].litemcontent+'</li>';
             right_Html=right_Html+rt;
         }
@@ -493,77 +527,77 @@ function paintDoTask(listItem,alreadyDone) {
  * 点击左边做任务面板的事件
  * @param obj
  */
-function drawLeft(obj) {
-    curLeftId=obj;
-    x1=$("#"+obj).attr("left");
-    x2=$("#"+obj).attr("top");
-
-    var listLen=listItem.length;
-    for(var i=0;i<listLen;i++){
-
-        if(listItem[i].listIndex==1){
-            var tempList= "left-"+listItem[i].ltid;
-            console.log(tempList);
-            $("#"+tempList).css("background-color","#5bc0de");
-        }
-
-    }
-    $("#"+obj).css("background-color","#F96");
-
-
-
-}
+// function drawLeft(obj) {
+//     curLeftId=obj;
+//     x1=$("#"+obj).attr("left");
+//     x2=$("#"+obj).attr("top");
+//
+//     var listLen=listItem.length;
+//     for(var i=0;i<listLen;i++){
+//
+//         if(listItem[i].listIndex==1){
+//             var tempList= "left-"+listItem[i].ltid;
+//             console.log(tempList);
+//             $("#"+tempList).css("background-color","#5bc0de");
+//         }
+//
+//     }
+//     $("#"+obj).css("background-color","#F96");
+//
+//
+//
+// }
 
 /**
  * 点击右边做任务面板的事件
  * @param obj
  */
-function drawRight(obj) {
-    curRightId=obj;
-
-    var tempObj={};
-    tempObj[curLeftId]=curRightId;
-
-    console.log(lineLR[curInstanceIndex]);
-    console.log(tempObj);
-
-    if(JSON.stringify(lineLRInit[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
-        alert("这条线已提交，请不要重复绘制");
-    }else if(JSON.stringify(lineLR[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
-        alert("这条线已绘制，请不要重复绘制");
-    }else {
-        y1=$("#"+obj).attr("left");
-        y2=$("#"+obj).attr("top");
-
-        var linewidth = 2, linestyle = "#0C6";//连线绘制--线宽，线色
-        var canvas = document.getElementById('canvas-front');
-        var context = canvas.getContext('2d');
-        context.lineWidth=linewidth;
-        context.strokeStyle = linestyle;
-
-        context.beginPath();
-        context.moveTo(x1, x2);
-        context.lineTo(y1, y2);
-        context.stroke();
-        context.restore();
-
-        lineLR[curInstanceIndex][tempNum[curInstanceIndex]]={};
-        lineLR[curInstanceIndex][tempNum[curInstanceIndex]][curLeftId]=curRightId;
-        tempNum[curInstanceIndex]++;
-        console.log("-------");
-        console.log(lineLR[curInstanceIndex]);
-
-        /**
-         * todo:取值调用接口
-         * todo:查看正在进行中的任务
-         * @type {Array}
-         */
-
-    }
-
-    $("#"+curLeftId).css("background-color","#5bc0de");
-
-};
+// function drawRight(obj) {
+//     curRightId=obj;
+//
+//     var tempObj={};
+//     tempObj[curLeftId]=curRightId;
+//
+//     console.log(lineLR[curInstanceIndex]);
+//     console.log(tempObj);
+//
+//     if(JSON.stringify(lineLRInit[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
+//         alert("这条线已提交，请不要重复绘制");
+//     }else if(JSON.stringify(lineLR[curInstanceIndex]).indexOf(JSON.stringify(tempObj))!=-1){
+//         alert("这条线已绘制，请不要重复绘制");
+//     }else {
+//         y1=$("#"+obj).attr("left");
+//         y2=$("#"+obj).attr("top");
+//
+//         var linewidth = 2, linestyle = "#0C6";//连线绘制--线宽，线色
+//         var canvas = document.getElementById('canvas-front');
+//         var context = canvas.getContext('2d');
+//         context.lineWidth=linewidth;
+//         context.strokeStyle = linestyle;
+//
+//         context.beginPath();
+//         context.moveTo(x1, x2);
+//         context.lineTo(y1, y2);
+//         context.stroke();
+//         context.restore();
+//
+//         lineLR[curInstanceIndex][tempNum[curInstanceIndex]]={};
+//         lineLR[curInstanceIndex][tempNum[curInstanceIndex]][curLeftId]=curRightId;
+//         tempNum[curInstanceIndex]++;
+//         console.log("-------");
+//         console.log(lineLR[curInstanceIndex]);
+//
+//         /**
+//          * todo:取值调用接口
+//          * todo:查看正在进行中的任务
+//          * @type {Array}
+//          */
+//
+//     }
+//
+//     $("#"+curLeftId).css("background-color","#5bc0de");
+//
+// };
 
 
 
@@ -571,11 +605,11 @@ function drawRight(obj) {
  * 点击左边做任务面板的事件
  * @param obj
  */
-function drawLeftBack(obj) {
-    curLeftId=obj;
-    x1=$("#"+obj).attr("left");
-    x2=$("#"+obj).attr("top");
-}
+// function drawLeftBack(obj) {
+//     curLeftId=obj;
+//     x1=$("#"+obj).attr("left");
+//     x2=$("#"+obj).attr("top");
+// }
 
 
 function drawLeftInit(obj){

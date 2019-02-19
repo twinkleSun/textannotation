@@ -45,7 +45,9 @@ $(function () {
     var userIdArr=arr[1].split("=");
     userId = userIdArr[1];
 
-
+    $("#select-docStatus").click(function(){
+        ajaxDocSortingInstanceItem(docId);
+    });
     /**
      *ajax获取task详细信息
      */
@@ -69,35 +71,35 @@ $(function () {
 
     var itemId=new Array;
     var newIndex=new Array;
-    $("#submit-sorting").click(function(){
-           var ulHtml=document.getElementById('right-sorting');
-           var rightLiLength=ulHtml.children.length;
-           if(rightLiLength!=itemList.length){
-               alert("请全部排序完成后再提交");
-           }else{
-               for(var i=0;i<rightLiLength;i++){
-                   newIndex[i]=i+1;
-                   itemId[i]=itemList[parseInt(ulHtml.children[i].getAttribute('drag-id'))].itid;
-               }
-
-               var doTaskData={
-                   taskId :taskId,
-                   docId:docId,
-                   instanceId:instanceItem[curInstanceIndex].instid,
-                   itemIds:itemId,
-                   newIndex:newIndex
-               };
-               addSortingTask(doTaskData);
-               //console.log(doTaskData);
-               // console.log(newIndex);
-               // console.log(itemId);
-               // console.log(itemList);
-
-           }
-
-           // console.log(rightLiLength);
-           // console.log(ulHtml.children[0].getAttribute('drag-id'));
-    });
+    // $("#submit-sorting").click(function(){
+    //        var ulHtml=document.getElementById('right-sorting');
+    //        var rightLiLength=ulHtml.children.length;
+    //        if(rightLiLength!=itemList.length){
+    //            alert("请全部排序完成后再提交");
+    //        }else{
+    //            for(var i=0;i<rightLiLength;i++){
+    //                newIndex[i]=i+1;
+    //                itemId[i]=itemList[parseInt(ulHtml.children[i].getAttribute('drag-id'))].itid;
+    //            }
+    //
+    //            var doTaskData={
+    //                taskId :taskId,
+    //                docId:docId,
+    //                instanceId:instanceItem[curInstanceIndex].instid,
+    //                itemIds:itemId,
+    //                newIndex:newIndex
+    //            };
+    //            addSortingTask(doTaskData);
+    //            //console.log(doTaskData);
+    //            // console.log(newIndex);
+    //            // console.log(itemId);
+    //            // console.log(itemList);
+    //
+    //        }
+    //
+    //        // console.log(rightLiLength);
+    //        // console.log(ulHtml.children[0].getAttribute('drag-id'));
+    // });
 });
 
 /**
@@ -136,12 +138,13 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
 
             /**
              * 处理文件列表
              */
             var taskFileListHtml="";
+            var docSelectHtml='<select name="doc" id="doc" lay-filter="selectDoc"> ';
             for(var i=0;i<documentList.length;i++){
                 var taskFileHtml="";
                 if(documentList[i].filetype==".txt"){
@@ -155,8 +158,36 @@ function ajaxTaskInfo(taskId) {
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
+
+                if(i==0){
+                    var docSelect=  '<option value="'+documentList[i].did+'" selected>' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }else{
+                    var docSelect=  '<option value="'+documentList[i].did+'">' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }
             }
             $("#taskFiles").append(taskFileListHtml);
+            docSelectHtml=docSelectHtml+ '</select>';
+            $("#doc-div").html(docSelectHtml);
+
+
+            layui.use(['form', 'layedit'], function() {
+
+                var form = layui.form;
+                form.on('select(selectDoc)', function(data){
+                    docId=data.value;
+                });
+
+                form.on('select(selectStatus)', function(data){
+                    docStatus=data.elem[data.elem.selectedIndex].text;
+                });
+
+            });
 
             ajaxDocSortingInstanceItem(docId);
 
@@ -198,7 +229,7 @@ function ajaxDocSortingInstanceItem(docId) {
             itemList= instanceItem[curInstanceIndex].itemList;
             alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
 
-            $("#right-sorting").html("");
+           // $("#right-sorting").html("");
 
             /**
              * 写入内容
@@ -254,7 +285,7 @@ function curInstanceId(obj) {
      * 重新加载右边的做任务界面
      */
 
-    $("#right-sorting").html("");
+    //$("#right-sorting").html("");
     itemList=instanceItem[curInstanceIndex].itemList;
     alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
 

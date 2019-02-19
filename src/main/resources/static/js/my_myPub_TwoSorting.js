@@ -62,6 +62,10 @@ $(function () {
 
     });
 
+    $("#select-docStatus").click(function(){
+        ajaxDocSortingInstanceItem(docId);
+    });
+    
     // var itemId=[39,37];
     // var newIndex=[1,2];
     //console.log(doTaskData);
@@ -136,12 +140,13 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
 
             /**
              * 处理文件列表
              */
             var taskFileListHtml="";
+            var docSelectHtml='<select name="doc" id="doc" lay-filter="selectDoc"> ';
             for(var i=0;i<documentList.length;i++){
                 var taskFileHtml="";
                 if(documentList[i].filetype==".txt"){
@@ -155,8 +160,36 @@ function ajaxTaskInfo(taskId) {
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
+
+
+                if(i==0){
+                    var docSelect=  '<option value="'+documentList[i].did+'" selected>' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }else{
+                    var docSelect=  '<option value="'+documentList[i].did+'">' +
+                        documentList[i].filename +
+                        '</option>';
+                    docSelectHtml=docSelectHtml+docSelect;
+                }
             }
             $("#taskFiles").append(taskFileListHtml);
+            docSelectHtml=docSelectHtml+ '</select>';
+            $("#doc-div").html(docSelectHtml);
+
+            layui.use(['form', 'layedit'], function() {
+
+                var form = layui.form;
+                form.on('select(selectDoc)', function(data){
+                    docId=data.value;
+                });
+
+                form.on('select(selectStatus)', function(data){
+                    docStatus=data.elem[data.elem.selectedIndex].text;
+                });
+
+            });
 
             ajaxDocSortingInstanceItem(docId);
 

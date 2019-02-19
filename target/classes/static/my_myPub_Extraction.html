@@ -23,7 +23,7 @@
     <style>
         #pagination  {
             margin: auto;
-            margin-left: 50px;
+            text-align: center;
         }
 
         #pagination a {
@@ -52,7 +52,7 @@
 <div class="panel panel-success">
     <div class="panel-heading">
         <div class="layui-row">
-            <div class="layui-col-md11">
+            <div class="layui-col-md12">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion"
                        href="#taskInfoPanel">
@@ -61,9 +61,7 @@
                     </a>
                 </h4>
             </div>
-            <div class="ayui-col-md1">
-                <input type="button" class="btn-default" id="input-dotask" value="我要做任务">
-            </div>
+
         </div>
     </div>
     <div id="taskInfoPanel" class="panel-collapse collapse">
@@ -145,10 +143,10 @@
     </div>
 </div>
 
-<div class="layui-row layui-col-space10" id="row-div-dotask" style="display: none">
+<div class="layui-row layui-col-space10" id="row-div-dotask">
 
     <div class="layui-row">
-        <div class="layui-col-md6 ">
+        <div class="layui-col-md12">
 
             <form class="layui-form">
                 <div class="layui-form-item" >
@@ -171,24 +169,16 @@
                 </div>
             </form>
 
-
         </div>
 
-        <div class="layui-col-md6">
-            <input type="button" class="btn-primary" value="确定">
-            <input type="button" class="layui-btn-normal" value="结束这个文档" id="complete-doc">
-            <input type="button" class="btn-primary" value="结束这段">
-        </div>
     </div>
 
-    <div class="layui-col-md6">
+    <div class="layui-col-md8">
         <div class="panel panel-success">
             <div class="panel-heading">
                 <div class="layui-row">
-                    <div class="layui-col-md10"><h3 class="panel-title"><span id="span-index">第1段</span></h3></div>
-                    <div class="layui-col-md2">
-                        <input type="button" class="btn-success" value="结束任务" id="submit-nextPara">
-                    </div>
+                    <div class="layui-col-md10"><h3 class="panel-title"><span id="span-index">段落内容</span></h3></div>
+
                 </div>
 
             </div>
@@ -203,7 +193,7 @@
             </div>
         </div>
     </div>
-    <div class="layui-col-md6" >
+    <div class="layui-col-md4" >
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title"><span>标签</span></h3>

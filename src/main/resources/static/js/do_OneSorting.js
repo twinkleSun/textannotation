@@ -52,6 +52,8 @@ $(function () {
     $("#btn-dotask").click(function(){
        // $("#op-dotask").hide();
        // $("#op-button").show();
+        $("#div-dotaskbtn").hide();
+        $("#div-btn-hide").show();
         $('#taskInfoPanel').collapse('hide');
 
     });
@@ -72,7 +74,7 @@ $(function () {
     var itemId=new Array;
     var newIndex=new Array;
     $("#submit-sorting").click(function(){
-           var ulHtml=document.getElementById('right-sorting');
+           var ulHtml=document.getElementById('left-sorting');
            var rightLiLength=ulHtml.children.length;
            if(rightLiLength!=itemList.length){
                alert("请全部排序完成后再提交");
@@ -138,7 +140,7 @@ function ajaxTaskInfo(taskId) {
             $("#taskOtherInfo").html(taskInfo.otherinfo);
             $("#taskCreateTime").html(taskInfo.createtime);
             $("#taskDeadline").html(taskInfo.deadline);
-            $("#pubUserName").html(data.pubUserName);
+            $("#pubUserName").html(taskInfo.pubUserName);
 
             /**
              * 处理文件列表
@@ -228,7 +230,7 @@ function ajaxDocSortingInstanceItem(docId) {
             itemList= instanceItem[curInstanceIndex].itemList;
             alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
 
-            $("#right-sorting").html("");
+            //$("#right-sorting").html("");
 
             /**
              * 写入内容
@@ -284,7 +286,7 @@ function curInstanceId(obj) {
      * 重新加载右边的做任务界面
      */
 
-    $("#right-sorting").html("");
+    //$("#right-sorting").html("");
     itemList=instanceItem[curInstanceIndex].itemList;
     alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
 
@@ -339,11 +341,11 @@ function paintSortingContent(itemList,alreadyDone) {
         }
 
         for(var i=0;i<itemList.length;i++){
-            console.log(alreadyItemId);
+            //console.log(alreadyItemId);
             if(alreadyItemId.indexOf(itemList[i].itid)!=-1){
 
                 itemList[i].itemindex=alreadyNewIndex[alreadyItemId.indexOf(itemList[i].itid)];
-                console.log(alreadyItemId.indexOf(itemList[i].itid));
+                //console.log(alreadyItemId.indexOf(itemList[i].itid));
             }
 
             leftItem[parseInt(itemList[i].itemindex)]='<li drag-id="'+i+'"><span class="drag-handle">&#9776;</span>' +

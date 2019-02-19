@@ -188,7 +188,7 @@ function imgOkClick(obj) {
      * 可以根据用户选中的颜色标记文本
      * @type {string}
      */
-    // var testcolor="#"+$("#"+label_color[curLabelIndex]).val();//console.log(testcolor);
+        // var testcolor="#"+$("#"+label_color[curLabelIndex]).val();//console.log(testcolor);
     var span = document.createElement("span");
     span.style.fontSize = "20px";
     // span.style.color=testcolor;
@@ -325,13 +325,13 @@ function ajaxTaskInfo(taskId) {
             for(var i=0;i<documentList.length;i++){
                 var taskFileHtml="";
                 if(documentList[i].filetype==".txt"){
-                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/TXT.png">'
+                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="../images/TXT.png">'
                         +documentList[i].filename+'</a></p>';
                 }else if(documentList[i].filetype==".doc"){
-                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/DOC.png">'
+                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="../images/DOC.png">'
                         +documentList[i].filename+'</a></p>';
                 }else if(documentList[i].filetype==".docx"){
-                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="images/DOCX.png">'
+                    taskFileHtml=  '<p><a id="taskfile-'+i+'" onclick="ajaxtaskFileId(this.id)"><img src="../images/DOCX.png">'
                         +documentList[i].filename+'</a></p>';
                 }
                 taskFileListHtml=taskFileListHtml+taskFileHtml;
@@ -523,31 +523,31 @@ function labelHtml(labelList){
 
         var list_html = '<div class="panel panel-success">'
             +'<div class="panel-heading">'
-                +'<h4 class="panel-title">'
-                    +'<a data-toggle="collapse" data-parent="#accordion" href="#'+label_ans_div[i]+'">'
-                        +'<img class="notAns" src="./images/notAns.png" id="label-list-img-'+i+'" onclick="imgClick(this.id)">'
-                     +'</a>'+labelList[i].labelname
-                +'</h4>'
+            +'<h4 class="panel-title">'
+            +'<a data-toggle="collapse" data-parent="#accordion" href="#'+label_ans_div[i]+'">'
+            +'<img class="notAns" src="../images/notAns.png" id="label-list-img-'+i+'" onclick="imgClick(this.id)">'
+            +'</a>'+labelList[i].labelname
+            +'</h4>'
             +'</div>'
             +'<div id="label-ans-div-'+i+'" class="panel-collapse collapse">'
-                +'<div class="panel-body">'
-                    +'<ul class="list-group" id="label-ans-ul-'+i+'">'
-                        +'<li class="list-group-item" id="label-ans-li-'+i+'-0">'
-                            +'<div class="row">'
-                                +'<div class="col-lg-10" id="li-ans-div-'+i+'-0">'
-                                +'</div>'
-                                +'<div class="col-lg-1">'
-                                    +'<img class="okAns" src="./images/ok.png" id="li-img-ok-'+i+'-0" onclick="imgOkClick(this.id)">'
-                                +'</div>'
-                                +'<div class="col-lg-1">'
-                                    +'<img class="delAns" src="./images/delete.png" id="li-img-del-'+i+'-0" onclick="imgDeleteClick(this.id)">'
-                                +'</div>'
-                            +'</div>'
-                        +'</li>'
-                    +'</ul>'
-                +'</div>'
+            +'<div class="panel-body">'
+            +'<ul class="list-group" id="label-ans-ul-'+i+'">'
+            +'<li class="list-group-item" id="label-ans-li-'+i+'-0">'
+            +'<div class="layui-row">'
+            +'<div class="layui-col-md10" id="li-ans-div-'+i+'-0">'
+            +'.</div>'
+            +'<div class="layui-col-md1">'
+            +'<img class="okAns" src="../images/ok.png" id="li-img-ok-'+i+'-0" onclick="imgOkClick(this.id)">'
             +'</div>'
-        +'</div>';
+            +'<div class="layui-col-md1">'
+            +'<img class="delAns" src="../images/delete.png" id="li-img-del-'+i+'-0" onclick="imgDeleteClick(this.id)">'
+            +'</div>'
+            +'</div>'
+            +'</li>'
+            +'</ul>'
+            +'</div>'
+            +'</div>'
+            +'</div>';
 
         label_html =label_html+list_html;
         label_list_img[i]="label-list-img-"+i;
@@ -615,10 +615,10 @@ function ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str) {
                     +'<div class="col-lg-10" id="li-ans-div-'+curLabelIndex+'-'+(addLiNum+1)+'">'
                     +'</div>'
                     +'<div class="col-lg-1">'
-                    +'<img class="okAns" src="./images/ok.png" id="li-img-ok-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgOkClick(this.id)">'
+                    +'<img class="okAns" src="../images/ok.png" id="li-img-ok-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgOkClick(this.id)">'
                     +'</div>'
                     +'<div class="col-lg-1">'
-                    +'<img class="delAns" src="./images/delete.png" id="li-img-del-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgDelClick(this.id)">'
+                    +'<img class="delAns" src="../images/delete.png" id="li-img-del-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgDelClick(this.id)">'
                     +'</div>'
                     +'</div>'
                     +'</li>';
