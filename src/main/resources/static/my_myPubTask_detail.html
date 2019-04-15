@@ -99,10 +99,10 @@
             cols: [[
                 {field: 'dataindex',  title: '序号',fixed: 'left',type:'numbers'},
                 {field: 'doUserName', title: '参与用户', edit: 'text'},
+                {field: 'typeName', title: '任务类型', edit: 'text',sort: true},
                 {field: 'dstatus', title: '任务状态', edit: 'text',sort: true},
                 {field: 'dpercent', title: '完成进度', edit: 'text'},
                 {field: 'dotime', title: '参与时间', edit: 'text'},
-                {field: 'dcomptime', title: '完成时间', edit: 'text',sort: true},
                 {field: 'option', title: '操作',width:200 ,align:'center',toolbar:'#optionDemo'}
             ]]
             , page: true
@@ -131,7 +131,7 @@
 
                     var url="";
 
-                    if(taskType=="分类"){
+                    if(taskType=="文本分类"){
                         url = "./my_myPub_Classification.html?taskid="+taskid+"&userId="+userId;
                         parent.layui.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
 

@@ -2,6 +2,7 @@ package com.annotation.service.impl;
 
 import com.annotation.dao.*;
 import com.annotation.model.*;
+import com.annotation.model.entity.LabelCountEntity;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.service.IDParagraphService;
@@ -34,6 +35,8 @@ public class DtClassifyServiceImpl implements IDtClassifyService {
     DParagraphMapper dParagraphMapper;
     @Autowired
     ParagraphMapper paragraphMapper;
+    @Autowired
+    DtuCommentMapper dtuCommentMapper;
 
 
     /**
@@ -99,6 +102,8 @@ public class DtClassifyServiceImpl implements IDtClassifyService {
             DtClassify dtClassify =new DtClassify();
             dtClassify.setDtId(dtid);
             dtClassify.setLabelId(labelId[i]);
+            dtClassify.setGoodlabel(0);
+            dtClassify.setBadlabel(0);
             int dtClassifyRes=dtClassifyMapper.insert(dtClassify);
             if(dtClassifyRes<0){
                 return 4004;
@@ -134,4 +139,46 @@ public class DtClassifyServiceImpl implements IDtClassifyService {
 //        }
 //        return 0;
 //    }
+
+
+   public DtClassify addComment(int dtdId,int cNum,int flag,int uId){
+       DtClassify dtClassify=dtClassifyMapper.selectByPrimaryKey(dtdId);
+        if(flag>0){
+            dtClassify.setGoodlabel(dtClassify.getGoodlabel()+cNum);
+            int res=dtClassifyMapper.updateByPrimaryKey(dtClassify);
+            if(cNum>0){
+
+                DtuComment dtuComment=new DtuComment();
+                dtuComment.setDtdId(dtdId);
+                dtuComment.setuId(uId);
+                dtuComment.setCnum(1);
+                int res2=dtuCommentMapper.insert(dtuComment);
+            }else{
+
+                int res3=dtuCommentMapper.deleteByDtdIdAndUId(dtdId,uId);
+            }
+        }else{
+            dtClassify.setBadlabel(dtClassify.getBadlabel()+cNum);
+            int res=dtClassifyMapper.updateByPrimaryKey(dtClassify);
+            if(cNum>0){
+
+                DtuComment dtuComment=new DtuComment();
+                dtuComment.setDtdId(dtdId);
+                dtuComment.setuId(uId);
+                dtuComment.setCnum(-1);
+                int res2=dtuCommentMapper.insert(dtuComment);
+            }else{
+
+                int res3=dtuCommentMapper.deleteByDtdIdAndUId(dtdId,uId);
+            }
+        }
+        DtClassify dtClassifyRes=dtClassifyMapper.selectByPrimaryKey(dtdId);
+        return dtClassifyRes;
+   }
+
+
+   public List<LabelCountEntity> queryAlreadyLabel(int tid){
+       List<LabelCountEntity> labelCountEntityList=dtClassifyMapper.selectLabelCount(tid);
+       return  labelCountEntityList;
+   }
 }

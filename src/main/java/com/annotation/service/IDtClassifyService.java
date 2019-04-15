@@ -1,5 +1,7 @@
 package com.annotation.service;
 
+import com.annotation.model.DtClassify;
+import com.annotation.model.entity.LabelCountEntity;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import com.annotation.model.entity.ResponseEntity;
 
@@ -30,6 +32,9 @@ public interface IDtClassifyService {
     int addClassify(int userId,int taskId,int docId,int paraId,int[] labelId);
 
 
+    DtClassify addComment(int dtdId, int cNum, int flag, int uId);
+
+    List<LabelCountEntity> queryAlreadyLabel(int tid);
 
     //int updateStatus(int userId,int docId,int taskId);
 }

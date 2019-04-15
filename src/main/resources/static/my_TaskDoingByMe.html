@@ -20,54 +20,54 @@
 
 <!--</blockquote>-->
 
-<div class="layui-collapse" lay-filter="test">
-    <div class="layui-colla-item">
-        <h2 class="layui-colla-title">根据条件搜索</h2>
-        <div class="layui-colla-content">
-            <div class="layui-row">
-                <div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">任务名:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="taskname">
-                    </div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">状态:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="taskstatus">
-                    </div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">类型:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="tasktype">
-                    </div>
-                    <div class="layui-col-md1">
-
-                    </div>
+<!--<div class="layui-collapse" lay-filter="test">-->
+    <!--<div class="layui-colla-item">-->
+        <!--<h2 class="layui-colla-title">根据条件搜索</h2>-->
+        <!--<div class="layui-colla-content">-->
+            <!--<div class="layui-row">-->
+                <!--<div>-->
                     <!--<div class="layui-col-md1">-->
-                    <!--<input type="text" class="layui-input" id="">-->
+                        <!--<label class="layui-form-label">任务名:</label>-->
                     <!--</div>-->
-                    <div class="layui-col-md1">
-                        .<input  type="button" class="layui-btn layui-btn-normal" id="sub-searchinfo" value="搜索">
-                    </div>
-                    <div class="layui-col-md3">
-                        .
-                    </div>
-                </div>
-                <div class="layui-col-md1">
-                    <img src="./images/addSmall.png" id="ttt"/>
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="taskname">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">状态:</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="taskstatus">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">类型:</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="tasktype">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
 
-                </div>
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<div class="layui-col-md1">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input type="text" class="layui-input" id="">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--.<input  type="button" class="layui-btn layui-btn-normal" id="sub-searchinfo" value="搜索">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md3">-->
+                        <!--.-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-col-md1">-->
+                    <!--<img src="./images/addSmall.png" id="ttt"/>-->
+
+                <!--</div>-->
 
 
-            </div>
-        </div>
-    </div>
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 
-</div>
+<!--</div>-->
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
 
@@ -122,7 +122,7 @@
 
                     var url="";
 
-                    if(taskType=="分类"){
+                    if(taskType=="文本分类"){
                         url = "./do_Classification.html?taskid="+taskid;
                         parent.layui.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
 
@@ -144,7 +144,7 @@
                         });
 
                         parent.layui.element.tabChange('home-tabs', taskid+"具体内容");
-                    }else if(taskType=="文本关系类别标注"){
+                    }else if(taskType=="文本关系"){
                         url="./do_Relation.html?taskid="+taskid;
 
                         parent.layui.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
@@ -211,7 +211,7 @@
 </script>
 <script type="text/html" id="optionDemo">
     <!--{{d.LAY_TABLE_INDEX+1}}-->
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="deletebtn">删除</a>
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="deletebtn">删除</a>-->
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detailcontent">继续做任务</a>
 </script>
 

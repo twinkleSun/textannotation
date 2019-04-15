@@ -5,6 +5,8 @@ import com.annotation.model.entity.ResponseEntity;
 import com.annotation.service.IDParagraphService;
 import com.annotation.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +29,7 @@ public class DParagraphController {
 
 
 
+    @Transactional
     @PostMapping("/doc/status")
     public ResponseEntity updateStatusByDocId(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse,
                                        int docId, int taskId) {
@@ -34,6 +37,7 @@ public class DParagraphController {
 
         int upRes=idParagraphService.updateStatusByDocId(user.getId(),docId,taskId);
         if(upRes==4010|| upRes==4011|| upRes==4012){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             ResponseEntity responseEntity=responseUtil.judgeResult(upRes);
             return responseEntity;
         }else{
@@ -47,6 +51,7 @@ public class DParagraphController {
 
 
 
+    @Transactional
     @PostMapping("/status")
     public ResponseEntity updateStatus(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse,
                                        int docId, int taskId,int paraId) {
@@ -54,6 +59,7 @@ public class DParagraphController {
 
         int upRes=idParagraphService.updateStatus(user.getId(),docId,taskId,paraId);
         if(upRes==4010|| upRes==4013|| upRes==4012){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             ResponseEntity responseEntity=responseUtil.judgeResult(upRes);
             return responseEntity;
         }else{

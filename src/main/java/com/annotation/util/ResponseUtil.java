@@ -119,6 +119,10 @@ public class ResponseUtil {
                 responseEntity.setStatus(2019);
                 responseEntity.setMsg("有文本字数超过限制");
                 break;
+            case 2020:
+                responseEntity.setStatus(2020);
+                responseEntity.setMsg("文件内容格式错误，请检查！");
+                break;
             case 3001:
                 responseEntity.setStatus(3001);
                 responseEntity.setMsg("添加任务失败，请检查");

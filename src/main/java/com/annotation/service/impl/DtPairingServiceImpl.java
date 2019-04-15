@@ -150,17 +150,17 @@ public class DtPairingServiceImpl implements IDtPairingService {
         }
 
         dtPairingMapper.alterDtPairingTable();
-        if(taskType.equals("文本配对标注#一对一")){
+        if(taskType.equals("文本配对#一对一")){
             String iRes=insertOneToOneRelations(dtid,aListItemId,bListItemId);
             if(!iRes.equals("0")){
                 return iRes;
             }
-        }else if(taskType.equals("文本配对标注#一对多")){
+        }else if(taskType.equals("文本配对#一对多")){
             String iRes=insertOneToManyRelations(dtid,aListItemId,bListItemId);
             if(!iRes.equals("0")){
                 return iRes;
             }
-        }else if(taskType.equals("文本配对标注#多对多")){
+        }else if(taskType.equals("文本配对#多对多")){
             String iRes=insertManyToManyRelations(dtid,aListItemId,bListItemId);
             if(!iRes.equals("0")){
                 return iRes;

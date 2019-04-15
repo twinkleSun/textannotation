@@ -1,12 +1,16 @@
 package com.annotation.service.impl;
 
 import com.annotation.dao.*;
+//import com.annotation.elasticsearch.document.TaskDoc;
+//import com.annotation.elasticsearch.repository.TaskDocRepository;
+
 import com.annotation.model.*;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.entity.TaskInfoEntity;
+import com.annotation.service.ILabelService;
 import com.annotation.service.ITaskService;
 import com.annotation.util.ResponseUtil;
-import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,13 +35,10 @@ public class TaskServiceImpl implements ITaskService{
     ParagraphMapper paragraphMapper;
     @Autowired
     InstanceMapper instanceMapper;
-
     @Autowired
     ItemMapper itemMapper;
     @Autowired
     ListitemMapper listitemMapper;
-
-
     @Autowired
     LabelMapper labelMapper;
     @Autowired
@@ -46,15 +47,12 @@ public class TaskServiceImpl implements ITaskService{
     InstanceLabelMapper instanceLabelMapper;
     @Autowired
     ResponseUtil responseUtil;
-
     @Autowired
     DTaskMapper dTaskMapper;
-
     @Autowired
     DParagraphMapper dParagraphMapper;
     @Autowired
     DInstanceMapper dInstanceMapper;
-
     @Autowired
     DtClassifyMapper dtClassifyMapper;
     @Autowired
@@ -65,9 +63,15 @@ public class TaskServiceImpl implements ITaskService{
     DtPairingMapper dtPairingMapper;
     @Autowired
     DtSortingMapper dtSortingMapper;
+//    @Autowired
+//    TaskDocRepository taskDocRepository;
+    @Autowired
+    ILabelService iLabelService;
 
-
-
+   public Label test(){
+       Label labelList=iLabelService.queryLabelByTaskId("1");
+       return labelList;
+   }
 
     /**
      * 插入文件-doc关系表
@@ -110,6 +114,8 @@ public class TaskServiceImpl implements ITaskService{
             return responseEntity;
         }
 
+        int esRes=saveTask(task);
+
         //任务表插入成功，继续插入关系表
         int taskDocRes=addTaskDoc(task.getTid(),docIds);
         if(taskDocRes!=0){
@@ -130,6 +136,7 @@ public class TaskServiceImpl implements ITaskService{
 //            }
 //        }
 
+        labelMapper.alterLabelTable();
         for(int i=0;i<labels.length;i++){
 
             //查询该标签是否已经存在
@@ -201,6 +208,8 @@ public class TaskServiceImpl implements ITaskService{
             responseEntity=responseUtil.judgeResult(3001);
             return responseEntity;
         }
+
+        int esRes=saveTask(task);
 
         //任务表插入成功，继续插入关系表
         int taskDocRes=addTaskDoc(task.getTid(),docIds);
@@ -352,10 +361,13 @@ public class TaskServiceImpl implements ITaskService{
         ResponseEntity responseEntity = new ResponseEntity();
 
         int taskRes=taskMapper.insert(task);//插入任务
+
         if(taskRes < 0){
             responseEntity=responseUtil.judgeResult(3001);
             return responseEntity;
         }
+
+        int esRes=saveTask(task);
 
         //任务表插入成功，继续插入关系表
         int taskDocRes=addTaskDoc(task.getTid(),docIds);
@@ -467,6 +479,8 @@ public class TaskServiceImpl implements ITaskService{
         task.setViewnum(task.getViewnum()+1);
         int updateViewnum =taskMapper.updateById(task);
 
+        saveTask(task);
+
         /**
          * 信息抽取和分类
          * task.getTypeName().equals("信息抽取")
@@ -513,8 +527,6 @@ public class TaskServiceImpl implements ITaskService{
 
         return taskInfoEntity;
     }
-
-
 
 
 
@@ -722,6 +734,35 @@ public class TaskServiceImpl implements ITaskService{
         }
 
         return 0;
+    }
+
+
+
+
+
+
+
+
+
+
+//todo:es插入，暂时省略
+    public int saveTask(Task task){
+//        TaskDoc taskDoc=new TaskDoc();
+//        taskDoc.setAttendnum(task.getAttendnum());
+//        taskDoc.setViewnum(task.getViewnum());
+//        taskDoc.setCreatetime(task.getCreatetime());
+//        taskDoc.setDeadline(task.getDeadline());
+//        taskDoc.setDescription(task.getDescription());
+//        taskDoc.setOtherinfo(task.getOtherinfo());
+//        taskDoc.setPubUserName(task.getPubUserName());
+//        taskDoc.setTitle(task.getTitle());
+//        taskDoc.setTid(task.getTid());
+//        taskDoc.setTypeName(task.getTypeName());
+//        taskDoc.setUserId(task.getUserId());
+//        taskDoc.setTaskcompstatus(task.getTaskcompstatus());
+//        taskDocRepository.save(taskDoc);
+        return 1;
+
     }
 
 //    /**

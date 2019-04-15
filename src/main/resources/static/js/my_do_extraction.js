@@ -526,7 +526,11 @@ function labelHtml(labelList){
             +'<h4 class="panel-title">'
             +'<a data-toggle="collapse" data-parent="#accordion" href="#'+label_ans_div[i]+'">'
             +'<img class="notAns" src="../images/notAns.png" id="label-list-img-'+i+'" onclick="imgClick(this.id)">'
-            +'</a>'+labelList[i].labelname
+            +'</a>'
+                +'<span style="color: '+labelList[i].color+'">'
+            +labelList[i].labelname+
+            '</span> '
+
             +'</h4>'
             +'</div>'
             +'<div id="label-ans-div-'+i+'" class="panel-collapse collapse">'

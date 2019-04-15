@@ -67,7 +67,11 @@
     </select>
 
     <select id="selectTaskById" parameterType="Integer" resultMap="BaseResultMap">
-        select * from task where tid = #{tid}
+        select t.tid, t.title, t.description,t.type_name, t.createtime, t.deadline,
+        t.taskcompstatus, t.otherinfo, t.user_id,t.viewnum, t.attendnum,
+        u.username pubUserName
+        from task t
+        INNER JOIN user u on u.id=t.user_id where tid = #{tid}
     </select>
 
 
@@ -107,7 +111,6 @@
             <if test="userId!=null">user_id=#{userId},</if>
             <if test="viewnum!=null">viewnum=#{viewnum},</if>
             <if test="attendnum!=null">attendnum=#{attendnum},</if>
-            <if test="pubUserName!=null">pubUserName=#{pubUserName},</if>
         </trim>
         WHERE tid = #{tid}
     </update>

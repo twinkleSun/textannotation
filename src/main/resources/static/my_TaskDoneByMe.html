@@ -20,54 +20,54 @@
 
 <!--</blockquote>-->
 
-<div class="layui-collapse" lay-filter="test">
-    <div class="layui-colla-item">
-        <h2 class="layui-colla-title">根据条件搜索</h2>
-        <div class="layui-colla-content">
-            <div class="layui-row">
-                <div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">任务名:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="taskname">
-                    </div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">状态:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="taskstatus">
-                    </div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">类型:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="tasktype">
-                    </div>
-                    <div class="layui-col-md1">
-
-                    </div>
+<!--<div class="layui-collapse" lay-filter="test">-->
+    <!--<div class="layui-colla-item">-->
+        <!--<h2 class="layui-colla-title">根据条件搜索</h2>-->
+        <!--<div class="layui-colla-content">-->
+            <!--<div class="layui-row">-->
+                <!--<div>-->
                     <!--<div class="layui-col-md1">-->
-                    <!--<input type="text" class="layui-input" id="">-->
+                        <!--<label class="layui-form-label">任务名:</label>-->
                     <!--</div>-->
-                    <div class="layui-col-md1">
-                        .<input  type="button" class="layui-btn layui-btn-normal" id="sub-searchinfo" value="搜索">
-                    </div>
-                    <div class="layui-col-md3">
-                        .
-                    </div>
-                </div>
-                <div class="layui-col-md1">
-                    <img src="./images/addSmall.png" id="ttt"/>
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="taskname">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">状态:</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="taskstatus">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">类型:</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="tasktype">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
 
-                </div>
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<div class="layui-col-md1">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input type="text" class="layui-input" id="">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--.<input  type="button" class="layui-btn layui-btn-normal" id="sub-searchinfo" value="搜索">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md3">-->
+                        <!--.-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-col-md1">-->
+                    <!--<img src="./images/addSmall.png" id="ttt"/>-->
+
+                <!--</div>-->
 
 
-            </div>
-        </div>
-    </div>
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 
-</div>
+<!--</div>-->
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
 
@@ -87,13 +87,13 @@
             totalRow: true,
             cols: [[
                 {field: 'dataindex',  title: '序号',fixed: 'left',type:'numbers'},
-                {field: 'title', title: '任务名',width:100 , edit: 'text'},
+                {field: 'title', title: '任务名',width:300 ,edit: 'text'},
                 {field: 'description', title: '任务描述', width:100 ,edit: 'text'},
                 {field: 'typeName', title: '任务类型', width:100 ,edit: 'text'},
-                {field: 'deadline', title: '截止时间', edit: 'text',sort: true},
-                {field: 'attendnum', title: '参与人数', edit: 'text',sort: true},
-                {field: 'dpercent', title: '完成进度', edit: 'text',sort: true},
-                {field: 'option', title: '操作',width:200 ,align:'center',toolbar:'#optionDemo'}
+                {field: 'deadline', title: '截止时间',width:180 ,sort: true},
+                {field: 'attendnum', title: '参与人数',width:100 , sort: true},
+                {field: 'dpercent', title: '完成进度', width:100 ,edit: 'text',sort: true},
+                {field: 'option', title: '操作',width:250 ,align:'center',toolbar:'#optionDemo'}
             ]]
             , page: true
             , response: {
@@ -107,6 +107,80 @@
         table.on('tool(test)', function(obj){
             var data = obj.data;
             //console.log(data);
+
+
+            if(obj.event === 'othersdetail'){
+                //layer.msg('ID：'+ data.id + ' 的查看操作');
+                //console.log(data.tid);
+                layui.use(['jquery', 'layer'], function(){
+                    var $ = layui.$ //重点处
+                        ,layer = layui.layer;
+
+
+                    console.log(data);
+                    var taskid=data.taskId;
+                    var Tasktype=data.typeName;
+                    console.log(Tasktype);
+
+                    var url = "my_myDoneTask_others.html?taskid="+taskid+"&taskType="+Tasktype;
+                    parent.layui.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
+
+                        title: '<img src="images/fenleiTab.png">进度详情' //用于演示
+                        ,content: '<iframe data-frameid="'+taskid+'" scrolling="auto" frameborder="0" src="'+url+'" style="width:100%;height:745px;"></iframe>'
+                        ,id: taskid
+                    });
+
+                    parent.layui.element.tabChange('home-tabs', taskid);
+
+                    //后面就跟你平时使用jQuery一样
+//                    $(function(){
+//
+//                        //console.log(data);
+//
+//
+//
+//
+//
+////                        var taskId={
+////                            taskid:taskid
+////                        };
+////                        $.ajax({
+////                            url: "/label/getLabelByTask",
+////                            type: "get",
+////                            traditional: true,
+////                            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+////                            dataType: "json",
+////                            data:taskId,
+////                            success: function (resdata) {
+////                                //console.log(resdata.label[0]);
+////
+////                                var dataLabels=resdata.label;
+////                                var strLength =dataLabels.length;
+////
+////                                var strContent="<p>标签内容：</p>" ;
+////                                for(var i=0;i<strLength;i++){
+////                                    //console.log(resdata.data[i]);
+////                                    strContent=strContent+"<p>"+"\xa0\xa0"+(i+1)+"、"+dataLabels[i].labelname+"</p>";
+////                                }
+////
+////                                layui.use('layer',function(){
+////                                    var layer=layui.layer;
+////                                    layer.open({
+////                                        type:0,
+////                                        area: '200px',
+////                                        content:strContent
+////                                    })
+////                                });
+////
+////                            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+////
+////                            },
+////                        });
+//                    });
+
+                });
+
+            }
             if(obj.event === 'detailcontent'){
                 //layer.msg('ID：'+ data.id + ' 的查看操作');
                 //console.log(data.tid);
@@ -121,7 +195,7 @@
 
                     var url="";
 
-                    if(taskType=="分类"){
+                    if(taskType=="文本分类"){
                         url = "./do_Classification.html?taskid="+taskid;
                         parent.layui.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
 
@@ -210,8 +284,9 @@
 </script>
 <script type="text/html" id="optionDemo">
     <!--{{d.LAY_TABLE_INDEX+1}}-->
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="deletebtn">删除</a>
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="deletebtn">删除</a>-->
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detailcontent">查看内容</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="othersdetail">查看其他用户</a>
 </script>
 
 <script>

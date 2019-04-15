@@ -25,10 +25,10 @@ public class LabelServiceImpl implements ILabelService {
      * @param taskid
      * @return
      */
-//    public List<Label> queryLabelByTaskId(int taskid){
-//        List<Label> labelList=labelMapper.selectLabelByTaskid(taskid);
-//        return labelList;
-//    }
+    public Label queryLabelByTaskId(String taskid){
+        Label labelList=labelMapper.selectLabelByLabelname(taskid);
+        return labelList;
+    }
 
 
 

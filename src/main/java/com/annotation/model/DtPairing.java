@@ -8,6 +8,24 @@ public class DtPairing {
     private Integer aLitemid;
 
     private Integer bLitemid;
+    private Integer goodlabel;
+    private Integer badlabel;
+
+    public Integer getGoodlabel() {
+        return goodlabel;
+    }
+
+    public void setGoodlabel(Integer goodlabel) {
+        this.goodlabel = goodlabel;
+    }
+
+    public Integer getBadlabel() {
+        return badlabel;
+    }
+
+    public void setBadlabel(Integer badlabel) {
+        this.badlabel = badlabel;
+    }
 
     public Integer getDtdId() {
         return dtdId;

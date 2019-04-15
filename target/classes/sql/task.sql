@@ -87,7 +87,7 @@ DROP TABLE IF EXISTS `instance_label`;
 CREATE TABLE `instance_label` (
   `task_id` int(11) NOT NULL COMMENT '任务ID',
   `labeltype` VARCHAR(11) NOT NULL COMMENT '标签类别：item1#item2#instance',
-  `label_id` INT(11) NOT NULL COMMENT '标签',
+  `label_id` INT(11) NOT NULL COMMENT '标签id',
   FOREIGN KEY (`label_id`) REFERENCES `label` (`lid`),
   FOREIGN KEY (`task_id`) REFERENCES `task` (`tid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

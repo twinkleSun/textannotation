@@ -5,8 +5,28 @@
     <id column="dtd_id" property="dtdId" jdbcType="INTEGER" />
     <result column="dt_id" property="dtId" jdbcType="INTEGER" />
     <result column="label_id" property="labelId" jdbcType="INTEGER" />
+      <result column="goodlabel" property="goodlabel" jdbcType="INTEGER" />
+      <result column="badlabel" property="badlabel" jdbcType="INTEGER" />
   </resultMap>
 
+
+    <resultMap id="labelCount" type="com.annotation.model.entity.LabelCountEntity" >
+        <id column="paragraph_id" property="paragraph_id" jdbcType="INTEGER" />
+        <collection property="labelCl" ofType="Map">
+            <result column="label_id" property="label_id" jdbcType="INTEGER" />
+            <result column="labelNum" property="labelNum" jdbcType="INTEGER" />
+        </collection>
+    </resultMap>
+
+    <select id="selectLabelCount" parameterType="Integer" resultMap="labelCount">
+         SELECT  dp.paragraph_id,dtc.label_id ,count(*) as labelNum
+            FROM d_task dt
+            left join d_paragraph dp on dt.tkid=dp.dtask_id
+            left join dt_classify dtc on dtc.dt_id=dp.dtid
+            where dt.task_id=#{tid}
+            group by dtc.label_id,dp.paragraph_id
+            order by dp.paragraph_id ;
+    </select>
 
     <!--分类查询文件的所有段落以及已经做了的标签-->
     <resultMap id="ClassifyParaLabelByDocId" type="com.annotation.model.entity.ParagraphLabelEntity">
@@ -19,6 +39,11 @@
         <result column="dtstatus" property="dtstatus" jdbcType="VARCHAR" />
         <collection property="alreadyDone" ofType="Map">
             <result column="label_id" property="label_id" jdbcType="INTEGER" />
+            <result column="dtd_id" property="dtd_id" jdbcType="INTEGER" />
+            <result column="goodlabel" property="goodlabel" jdbcType="INTEGER" />
+            <result column="badlabel" property="badlabel" jdbcType="INTEGER" />
+            <result column="u_id" property="u_id" jdbcType="INTEGER" />
+            <result column="cnum" property="cnum" jdbcType="INTEGER" />
         </collection>
     </resultMap>
 
@@ -33,11 +58,13 @@
 
     <select id="selectClassifyParaLabel" parameterType="Integer" resultMap="ClassifyParaLabelByDocId">
         select p.pid, p.paracontent, p.paraindex, p.document_id,
-        dtc.label_id,
-        dp.dotime,dp.comptime,dp.dtstatus
+        dtc.label_id,dtc.goodlabel,dtc.badlabel,dtc.dtd_id,
+        dp.dotime,dp.comptime,dp.dtstatus,
+        dtu.u_id,dtu.cnum
         from paragraph p
         left join d_paragraph dp on (dp.dtask_id=#{dTaskId} and p.pid=dp.paragraph_id)
         left join dt_classify dtc on dp.dtid =dtc.dt_id
+        left join dtu_comment dtu on dtu.dtd_id=dtc.dtd_id
         where p.document_id=#{docId}
         ORDER BY p.pid
     </select>
@@ -45,7 +72,7 @@
 
     <select id="selectClassifyWithStatus" parameterType="Map" resultMap="ClassifyParaLabelByDocId">
         select p.pid, p.paracontent, p.paraindex, p.document_id,
-        dtc.label_id,
+        dtc.label_id,dtc.dtd_id,
         dp.dotime,dp.comptime,dp.dtstatus
         from paragraph p
         left join d_paragraph dp on (dp.dtask_id=#{dTaskId} and p.pid=dp.paragraph_id)
@@ -56,7 +83,7 @@
 
     <select id="selectClassifyWithoutDocId" parameterType="Integer" resultMap="ClassifyParaLabelByDocId">
         select p.pid, p.paracontent, p.paraindex, p.document_id,
-        dtc.label_id,
+        dtc.label_id,dtc.dtd_id,
         dp.dotime,dp.comptime,dp.dtstatus
         from task_document td
         left join paragraph p on p.document_id =td.document_id
@@ -69,9 +96,10 @@
 
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="dtd_id" parameterType="com.annotation.model.DtClassify" >
-        insert into dt_classify (dtd_id, dt_id, label_id
+        insert into dt_classify (dtd_id, dt_id, label_id,goodlabel,badlabel
         )
-        values (#{dtdId,jdbcType=INTEGER}, #{dtId,jdbcType=INTEGER}, #{labelId,jdbcType=INTEGER}
+        values (#{dtdId,jdbcType=INTEGER}, #{dtId,jdbcType=INTEGER}, #{labelId,jdbcType=INTEGER},
+        #{goodlabel,jdbcType=INTEGER},#{badlabel,jdbcType=INTEGER}
         )
     </insert>
 
@@ -94,14 +122,19 @@
     where dtd_id = #{dtdId,jdbcType=INTEGER}
   </delete>
 
-  <update id="updateByPrimaryKey" parameterType="com.annotation.model.DtClassify" >
+    <update id="updateByPrimaryKey" parameterType="com.annotation.model.DtClassify">
     update dt_classify
     set dt_id = #{dtId,jdbcType=INTEGER},
-      label_id = #{labelId,jdbcType=INTEGER}
+      label_id = #{labelId,jdbcType=INTEGER},
+      goodlabel = #{goodlabel,jdbcType=INTEGER},
+      badlabel = #{badlabel,jdbcType=INTEGER}
     where dtd_id = #{dtdId,jdbcType=INTEGER}
   </update>
+
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select dtd_id, dt_id, label_id
+    select dtd_id, dt_id, label_id,goodlabel,badlabel
     from dt_classify
     where dtd_id = #{dtdId,jdbcType=INTEGER}
   </select>

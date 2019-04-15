@@ -14,7 +14,7 @@ public interface ILabelService {
      * @param taskid
      * @return
      */
-    //List<Label> queryLabelByTaskId(int taskid);
+    Label queryLabelByTaskId(String taskid);
 
 
 

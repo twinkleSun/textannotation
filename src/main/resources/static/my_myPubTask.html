@@ -20,54 +20,54 @@
 
 <!--</blockquote>-->
 
-<div class="layui-collapse" lay-filter="test">
-    <div class="layui-colla-item">
-        <h2 class="layui-colla-title">根据条件搜索</h2>
-        <div class="layui-colla-content">
-            <div class="layui-row">
-                <div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">任务名:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="taskname">
-                    </div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">状态:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="taskstatus">
-                    </div>
-                    <div class="layui-col-md1">
-                        <label class="layui-form-label">类型:</label>
-                    </div>
-                    <div class="layui-col-md1">
-                        <input type="text" class="layui-input" id="tasktype">
-                    </div>
-                    <div class="layui-col-md1">
-
-                    </div>
+<!--<div class="layui-collapse" lay-filter="test">-->
+    <!--<div class="layui-colla-item">-->
+        <!--<h2 class="layui-colla-title">根据条件搜索</h2>-->
+        <!--<div class="layui-colla-content">-->
+            <!--<div class="layui-row">-->
+                <!--<div>-->
                     <!--<div class="layui-col-md1">-->
-                    <!--<input type="text" class="layui-input" id="">-->
+                        <!--<label class="layui-form-label">任务名:</label>-->
                     <!--</div>-->
-                    <div class="layui-col-md1">
-                        .<input  type="button" class="layui-btn layui-btn-normal" id="sub-searchinfo" value="搜索">
-                    </div>
-                    <div class="layui-col-md3">
-                        .
-                    </div>
-                </div>
-                <div class="layui-col-md1">
-                    <img src="./images/addSmall.png" id="ttt"/>
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="taskname">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">状态:</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="taskstatus">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<label class="layui-form-label">类型:</label>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--<input type="text" class="layui-input" id="tasktype">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md1">-->
 
-                </div>
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<div class="layui-col-md1">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input type="text" class="layui-input" id="">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div class="layui-col-md1">-->
+                        <!--.<input  type="button" class="layui-btn layui-btn-normal" id="sub-searchinfo" value="搜索">-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md3">-->
+                        <!--.-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-col-md1">-->
+                    <!--<img src="./images/addSmall.png" id="ttt"/>-->
+
+                <!--</div>-->
 
 
-            </div>
-        </div>
-    </div>
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 
-</div>
+<!--</div>-->
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
 
@@ -87,14 +87,12 @@
             cols: [[
                 {field: 'dataindex',  title: '序号',fixed: 'left',type:'numbers'},
                 {field: 'title', title: '任务名', edit: 'text'},
-                {field: 'description', title: '任务描述', edit: 'text'},
-                {field: 'otherinfo', title: '任务备注', edit: 'text'},
                 {field: 'typeName', title: '类型', edit: 'text',sort: true},
                 {field: 'createtime', title: '创建时间', edit: 'text',sort: true},
-                {field: 'deadline', title: '截止时间', edit: 'text',sort: true},
-                {field: 'taskcompstatus', title: '任务状态', edit: 'text',sort: true},
-                {field: 'taskcomptime', title: '完成时间', edit: 'text',sort: true},
-                {field: 'option', title: '操作',width:150 ,align:'center',toolbar:'#optionDemo'}
+                {field: 'viewnum', title: '浏览次数', width:100,sort: true},
+                {field: 'attendnum', title: '参与人数',width:100, sort: true},
+                {field: 'taskcompstatus', title: '任务状态',width:80, sort: true},
+                {field: 'option', title: '操作',width:250 ,align:'center',toolbar:'#optionDemo'}
             ]]
             , page: true
             , response: {
@@ -205,14 +203,14 @@
                             var typeId;
                             console.log(taskType);
 
-                            if(taskType=="分类"){
+                            if(taskType=="文本分类"){
                                 typeId=2;
                             }else if(taskType=="信息抽取"){
 
                                 typeId=1;
                             }else if(taskType=="文本关系类别标注"){
                                 typeId=3;
-                            }else if(taskType.indexOf("文本配对标注")!=-1){
+                            }else if(taskType.indexOf("文本配对")!=-1){
                                 typeId=4;
 
                             }else if(taskType=="文本排序"){
@@ -304,6 +302,79 @@
 
 
             }
+
+
+            if(obj.event === 'detailres'){
+                //layer.msg('ID：'+ data.id + ' 的查看操作');
+                //console.log(data.tid);
+                layui.use(['jquery', 'layer'], function(){
+                    var $ = layui.$ //重点处
+                        ,layer = layui.layer;
+
+
+                    var taskid=data.tid;
+                    var userId=data.userId;
+                    console.log(data);
+
+                    var url = "my_myPub_Classification_count.html??taskid="+taskid+"&userId="+userId;
+                    parent.layui.element.tabAdd('home-tabs', {//从父页面添加tab选项卡，如果不指定id，选项卡id会自增
+
+                        title: '<img src="images/fenleiTab.png">结果预处理' //用于演示
+                        ,content: '<iframe data-frameid="'+taskid+'" scrolling="auto" frameborder="0" src="'+url+'" style="width:100%;height:745px;"></iframe>'
+                        ,id: taskid
+                    });
+
+                    parent.layui.element.tabChange('home-tabs', taskid);
+
+                    //后面就跟你平时使用jQuery一样
+//                    $(function(){
+//
+//                        //console.log(data);
+//
+//
+//
+//
+//
+////                        var taskId={
+////                            taskid:taskid
+////                        };
+////                        $.ajax({
+////                            url: "/label/getLabelByTask",
+////                            type: "get",
+////                            traditional: true,
+////                            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+////                            dataType: "json",
+////                            data:taskId,
+////                            success: function (resdata) {
+////                                //console.log(resdata.label[0]);
+////
+////                                var dataLabels=resdata.label;
+////                                var strLength =dataLabels.length;
+////
+////                                var strContent="<p>标签内容：</p>" ;
+////                                for(var i=0;i<strLength;i++){
+////                                    //console.log(resdata.data[i]);
+////                                    strContent=strContent+"<p>"+"\xa0\xa0"+(i+1)+"、"+dataLabels[i].labelname+"</p>";
+////                                }
+////
+////                                layui.use('layer',function(){
+////                                    var layer=layui.layer;
+////                                    layer.open({
+////                                        type:0,
+////                                        area: '200px',
+////                                        content:strContent
+////                                    })
+////                                });
+////
+////                            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+////
+////                            },
+////                        });
+//                    });
+
+                });
+
+            }
         });
     });
 </script>
@@ -311,6 +382,7 @@
     <!--{{d.LAY_TABLE_INDEX+1}}-->
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="deletebtn">删除</a>
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detailcontent">查看详情</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detailres">结果预处理</a>
 </script>
 
 <script>

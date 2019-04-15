@@ -178,4 +178,25 @@ public class DtSortingServiceImpl implements IDtSortingService {
         }
         return sb.toString();
     }
+
+
+public int[] insertSortingItem2(int dtid,int[] itemIds,int[] newIndexs){
+
+    int[] res=new int[itemIds.length];
+    dtSortingMapper.alterDtSortingTable();
+    DtSorting dtSorting=new DtSorting();
+    dtSorting.setDtId(dtid);
+    for(int i=0;i<itemIds.length;i++){
+        dtSorting.setItemId(itemIds[i]);
+        dtSorting.setNewindex(newIndexs[i]);
+        int dtdItemRelationRes = dtSortingMapper.insert(dtSorting);
+        if(dtdItemRelationRes != 1 && dtdItemRelationRes != 2){
+            res[i]=-1;
+        }else{
+            res[i]=1;
+        }
+
+    }
+    return res;
+}
 }

@@ -19,11 +19,11 @@
     </insert>
 
     <!--设置数据库自增长-->
+
+
     <update id="alterLabelTable">
         ALTER TABLE label AUTO_INCREMENT =1
     </update>
-
-
 
 
 

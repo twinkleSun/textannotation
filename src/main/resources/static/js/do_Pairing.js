@@ -74,6 +74,7 @@ $(function ($) {
     });
 
     $("#select-docStatus").click(function(){
+        curInstanceIndex=0;
         ajaxDocInstanceItem(docId);
     });
 
@@ -270,12 +271,12 @@ function ajaxTaskInfo(taskId) {
              * 获取文件内容，提前加载
              */
 
-            console.log(data);
+           // console.log(data);
             taskInfo=data.data; //console.log(taskInfo);
             documentList =data.data.documentList;//console.log(documentList);
             docId=documentList[0].did;//console.log(docId);
 
-            ajaxDocInstanceItem(docId);
+
             taskType=data.data.typeName;
 
             /**
@@ -324,6 +325,7 @@ function ajaxTaskInfo(taskId) {
             docSelectHtml=docSelectHtml+ '</select>';
             $("#doc-div").html(docSelectHtml);
 
+            ajaxDocInstanceItem(docId);
 
             layui.use(['form', 'layedit'], function() {
 
@@ -365,44 +367,111 @@ function ajaxDocInstanceItem(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            //console.log(data);
 
-            instanceItem=data.instanceItem; //console.log(instanceItem);
-            instanceLength=instanceItem.length;
-            listItem=instanceItem[curInstanceIndex].listitems;
-            alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
-            console.log(alreadyDone);
-
-            //curInstanceIndex=0;
-
-            lineLR[curInstanceIndex] = new Array;
-            tempNum[curInstanceIndex]=0;
-
-            tempNumInit[curInstanceIndex]=0;
-            lineLRInit[curInstanceIndex]=new Array;
-            /**
-             * 将第一部分内容写入dotask面板
-             */
-            paintDoTask(listItem,alreadyDone);
+            if(data.instanceItem=="" || data.instanceItem==null){
+                alert("该文档已经全部完成");
+            }else{
 
 
-            /**
-             * 左边ul导航点击定位
-             */
-            var ul_html="";
-            for(var i=0;i<instanceLength;i++){
-                var li_html="";
-                if(i==curInstanceIndex){
-                    li_html=' <li class="active" id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
-                        '第'+(i+1)+'部分'+'</a></li>';
-                }else{
-                    li_html=' <li  id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
-                        '第'+(i+1)+'部分'+'</a></li>';
+                instanceItem=data.instanceItem; //console.log(instanceItem);
+                instanceLength=instanceItem.length;
+                listItem=instanceItem[curInstanceIndex].listitems;
+                alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
+                //console.log(alreadyDone);
+
+                var sflag=0;
+                for(var i=0;i<instanceItem.length;i++){
+
+                    if(instanceItem[i].dtstatus=="已完成"){
+                        sflag++;
+                    }
                 }
-                ul_html=ul_html+li_html;
-                ul_li_instanceIndex[i]="li-"+i;
+                if(sflag==instanceItem.length){
+                    if(!($("#complete-doc").hasClass("disabled"))){
+                        $("#complete-doc").addClass("disabled");
+                        $("#complete-doc").attr("disabled","true");
+
+                    }
+
+                    if(!($("#complete-instance").hasClass("disabled"))){
+                        $("#complete-instance").addClass("disabled");
+                        $("#complete-instance").attr("disabled","true");
+                    }
+
+                    if(!($("#submit-instance").hasClass("disabled"))){
+                        $("#submit-instance").addClass("disabled");
+                        $("#submit-instance").attr("disabled","true");
+                    }
+                }else{
+                    if($("#complete-doc").hasClass("disabled")){
+                        $("#complete-doc").removeClass("disabled");
+                        $("#complete-doc").removeAttr("disabled");
+                    }
+                    if($("#complete-instance").hasClass("disabled")){
+                        $("#complete-instance").removeClass("disabled");
+                        $("#complete-instance").removeAttr("disabled");
+                    }
+                    if($("#submit-instance").hasClass("disabled")){
+                        $("#submit-instance").removeClass("disabled");
+                        $("#submit-instance").removeAttr("disabled");
+                    }
+                }
+
+                lineLR[curInstanceIndex] = new Array;
+                tempNum[curInstanceIndex]=0;
+
+                tempNumInit[curInstanceIndex]=0;
+                lineLRInit[curInstanceIndex]=new Array;
+                /**
+                 * 将第一部分内容写入dotask面板
+                 */
+                paintDoTask(listItem,alreadyDone);
+
+
+                if(instanceItem[curInstanceIndex].dtstatus=="已完成"){
+
+
+                    if(!($("#complete-instance").hasClass("disabled"))){
+                        $("#complete-instance").addClass("disabled");
+                        $("#complete-instance").attr("disabled","true");
+                    }
+
+                    if(!($("#submit-instance").hasClass("disabled"))){
+                        $("#submit-instance").addClass("disabled");
+                        $("#submit-instance").attr("disabled","true");
+                    }
+                }else{
+
+                    if($("#complete-instance").hasClass("disabled")){
+                        $("#complete-instance").removeClass("disabled");
+                        $("#complete-instance").removeAttr("disabled");
+                    }
+                    if($("#submit-instance").hasClass("disabled")){
+                        $("#submit-instance").removeClass("disabled");
+                        $("#submit-instance").removeAttr("disabled");
+                    }
+                }
+                /**
+                 * 左边ul导航点击定位
+                 */
+                var ul_html="";
+                for(var i=0;i<instanceLength;i++){
+                    var li_html="";
+                    if(i==curInstanceIndex){
+                        li_html=' <li class="active" id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
+                            '第'+(i+1)+'部分'+'</a></li>';
+                    }else{
+                        li_html=' <li  id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
+                            '第'+(i+1)+'部分'+'</a></li>';
+                    }
+                    ul_html=ul_html+li_html;
+                    ul_li_instanceIndex[i]="li-"+i;
+                }
+                $("#ul-nav").html(ul_html);
+
             }
-            $("#ul-nav").html(ul_html);
+
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -440,7 +509,33 @@ function curInstanceId(obj) {
     tempNumInit[curInstanceIndex]=0;
     listItem=instanceItem[curInstanceIndex].listitems;
     alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
-    console.log(alreadyDone);
+
+
+    if(instanceItem[curInstanceIndex].dtstatus=="已完成"){
+
+
+        if(!($("#complete-instance").hasClass("disabled"))){
+            $("#complete-instance").addClass("disabled");
+            $("#complete-instance").attr("disabled","true");
+        }
+
+        if(!($("#submit-instance").hasClass("disabled"))){
+            $("#submit-instance").addClass("disabled");
+            $("#submit-instance").attr("disabled","true");
+        }
+    }else{
+
+        if($("#complete-instance").hasClass("disabled")){
+            $("#complete-instance").removeClass("disabled");
+            $("#complete-instance").removeAttr("disabled");
+        }
+        if($("#submit-instance").hasClass("disabled")){
+            $("#submit-instance").removeClass("disabled");
+            $("#submit-instance").removeAttr("disabled");
+        }
+    }
+
+    //console.log(alreadyDone);
     paintDoTask(listItem,alreadyDone);
 }
 
@@ -710,7 +805,14 @@ function ajaxdoTaskInfo(doTaskData,fRes) {
         dataType: "json",
         data:doTaskData,
         success: function (data) {
-            ajaxDocInstanceItem(docId);
+            if(data.code==0){
+                alert("提交成功");
+                ajaxDocInstanceItem(docId);
+            }else{
+                alert("部分提交失败");
+                ajaxDocInstanceItem(docId);
+            }
+
             //console.log(data);
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -732,7 +834,13 @@ function ajaxCompleteDoc(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            if(data.status==0){
+                alert("该文档已经完成");
+                ajaxDocInstanceItem(docId);
+            }else{
+
+                alert("还有段落没有做");
+            }
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -755,7 +863,14 @@ function ajaxCompleteInstance(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            if(data.status==0){
+                alert("该段已经完成");
+                ajaxDocInstanceItem(docId);
+            }else{
+
+                alert("该段还没有做");
+            }
+
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 

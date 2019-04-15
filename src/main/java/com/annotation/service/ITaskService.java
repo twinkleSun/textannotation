@@ -115,7 +115,7 @@ public interface ITaskService {
 //    public List<Task> getAll();
 
 
-
+    int saveTask(Task task);
 
 
 

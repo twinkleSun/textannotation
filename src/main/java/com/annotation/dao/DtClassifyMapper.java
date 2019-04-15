@@ -1,6 +1,7 @@
 package com.annotation.dao;
 
 import com.annotation.model.DtClassify;
+import com.annotation.model.entity.LabelCountEntity;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -41,6 +42,8 @@ public interface DtClassifyMapper {
      * @return
      */
     List<ParagraphLabelEntity> selectClassifyWithoutDocId(@Param("tid") Integer tid, @Param("userId")Integer userId);
+
+    List<LabelCountEntity> selectLabelCount(@Param("tid") Integer tid);
 
 
 

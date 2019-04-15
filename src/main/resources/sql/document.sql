@@ -82,7 +82,7 @@ CREATE TABLE `listitem` (
   `ltid` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'listitemID',
   `litemcontent` varchar(20000) DEFAULT NULL COMMENT 'listitem内容',
   `list_index` INT(11) NOT NULL COMMENT '取值1或2,属于第一个list还是第二个list',
-  `litemindex` INT(11) DEFAULT NULL COMMENT '取值1、2、3等,属于第几个item',
+  `litemindex` INT(11) DEFAULT NULL COMMENT '取值1、2、3等,属于第几个listitem',
   `instance_id` INT(11) DEFAULT NULL COMMENT '对应instanceID',
   PRIMARY KEY (`ltid`),
   FOREIGN KEY (`instance_id`) REFERENCES `instance` (`instid`)

@@ -86,6 +86,7 @@ $(function () {
     });
     
     $("#select-docStatus").click(function(){
+        curInstanceIndex=0;
         ajaxDocInstanceItem(docId);
     });
 
@@ -167,7 +168,7 @@ function ajaxTaskInfo(taskId) {
         data:taskid,
         success: function (data) {
 
-            console.log(data);
+           // console.log(data);
             taskInfo=data.data; //console.log(taskInfo);
             documentList =data.data.documentList;//console.log(documentList);
             docId=documentList[0].did;//console.log(docId);
@@ -274,16 +275,53 @@ function ajaxDocInstanceItem(docId) {
             item1Label=data.item1Label;
             item2Label=data.item2Label;
 
-            limitInstanceLabelNum=instanceItem[0].labelnum;
+            limitInstanceLabelNum=instanceItem[curInstanceIndex].labelnum;
 
             // curInstanceIndex=0;
             console.log(curInstanceIndex);
-            var itemList= instanceItem[0].itemList;
+            var itemList= instanceItem[curInstanceIndex].itemList;
 
             limitItem1LabelNum=itemList[0].labelnum;
             limitItem2LabelNum=itemList[1].labelnum;
 
+            var sflag=0;
+            for(var i=0;i<instanceItem.length;i++){
 
+                if(instanceItem[i].dtstatus=="已完成"){
+                    sflag++;
+                }
+            }
+
+            if(sflag==instanceItem.length){
+                if(!($("#complete-doc").hasClass("disabled"))){
+                    $("#complete-doc").addClass("disabled");
+                    $("#complete-doc").attr("disabled","true");
+
+                }
+
+                if(!($("#complete-instance").hasClass("disabled"))){
+                    $("#complete-instance").addClass("disabled");
+                    $("#complete-instance").attr("disabled","true");
+                }
+
+                if(!($("#submit-item").hasClass("disabled"))){
+                    $("#submit-item").addClass("disabled");
+                    $("#submit-item").attr("disabled","true");
+                }
+            }else{
+                if($("#complete-doc").hasClass("disabled")){
+                    $("#complete-doc").removeClass("disabled");
+                    $("#complete-doc").removeAttr("disabled");
+                }
+                if($("#complete-instance").hasClass("disabled")){
+                    $("#complete-instance").removeClass("disabled");
+                    $("#complete-instance").removeAttr("disabled");
+                }
+                if($("#submit-item").hasClass("disabled")){
+                    $("#submit-item").removeClass("disabled");
+                    $("#submit-item").removeAttr("disabled");
+                }
+            }
 
             /**
              * 写入内容
@@ -294,6 +332,32 @@ function ajaxDocInstanceItem(docId) {
             // $("#p-item-1").html(itemList[1].itemcontent);
 
             paintLabelHtml(instanceLabel,item1Label,item2Label);
+
+
+            if(instanceItem[curInstanceIndex].dtstatus=="已完成"){
+
+
+                if(!($("#complete-instance").hasClass("disabled"))){
+                    $("#complete-instance").addClass("disabled");
+                    $("#complete-instance").attr("disabled","true");
+                }
+
+                if(!($("#submit-item").hasClass("disabled"))){
+                    $("#submit-item").addClass("disabled");
+                    $("#submit-item").attr("disabled","true");
+                }
+            }else{
+
+                if($("#complete-instance").hasClass("disabled")){
+                    $("#complete-instance").removeClass("disabled");
+                    $("#complete-instance").removeAttr("disabled");
+                }
+                if($("#submit-item").hasClass("disabled")){
+                    $("#submit-item").removeClass("disabled");
+                    $("#submit-item").removeAttr("disabled");
+                }
+            }
+
 
             /**
              * 左边ul导航点击定位
@@ -330,8 +394,8 @@ function ajaxDocInstanceItem(docId) {
 function curInstanceId(obj) {
 
     $("#"+ul_li_instanceIndex[curInstanceIndex]).removeClass("active");
-    var i_Str=obj.substring(2);  console.log(i_Str);
-    curInstanceIndex=parseInt(i_Str);console.log(curInstanceIndex);
+    var i_Str=obj.substring(2);  //console.log(i_Str);
+    curInstanceIndex=parseInt(i_Str);//console.log(curInstanceIndex);
 
     /**
      * 重新绘制label
@@ -340,6 +404,29 @@ function curInstanceId(obj) {
 
     $("#"+ul_li_instanceIndex[curInstanceIndex]).addClass("active");
 
+    if(instanceItem[curInstanceIndex].dtstatus=="已完成"){
+
+
+        if(!($("#complete-instance").hasClass("disabled"))){
+            $("#complete-instance").addClass("disabled");
+            $("#complete-instance").attr("disabled","true");
+        }
+
+        if(!($("#submit-item").hasClass("disabled"))){
+            $("#submit-item").addClass("disabled");
+            $("#submit-item").attr("disabled","true");
+        }
+    }else{
+
+        if($("#complete-instance").hasClass("disabled")){
+            $("#complete-instance").removeClass("disabled");
+            $("#complete-instance").removeAttr("disabled");
+        }
+        if($("#submit-item").hasClass("disabled")){
+            $("#submit-item").removeClass("disabled");
+            $("#submit-item").removeAttr("disabled");
+        }
+    }
 
     paintContent(curInstanceIndex);
 
@@ -619,7 +706,13 @@ function ajaxCompleteDoc(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            if(data.status==0){
+                alert("该文本已经完成");
+                ajaxDocInstanceItem(docId);
+            }else{
+
+                alert("还有段落没有做");
+            }
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -642,7 +735,13 @@ function ajaxCompleteInstance(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            if(data.status==0){
+                alert("该段已经完成");
+                ajaxDocInstanceItem(docId);
+            }else{
+
+                alert("该段还没有做");
+            }
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 

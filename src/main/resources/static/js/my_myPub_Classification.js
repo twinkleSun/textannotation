@@ -259,17 +259,12 @@ function ajaxTaskInfo(taskId) {
 
                 var form = layui.form;
                 form.on('select(selectDoc)', function(data){
-
                     docId=data.value;
-
-
                 });
 
                 form.on('select(selectStatus)', function(data){
                     docStatus=data.elem[data.elem.selectedIndex].text;
-
                 });
-
 
             });
 
@@ -288,20 +283,11 @@ function ajaxTaskInfo(taskId) {
             }
             $("#taskLabels").append(labelListHtml);
 
-            /**
-             * 处理获取文件列表选择框和状态选择框
-             */
-
-
-
-
 
             /**
              * 获取文件内容，提前加载
              */
             ajaxDocContent(docId);
-
-
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -430,24 +416,51 @@ function labelHtml(labelList) {
     labelLength =labelList.length;
 
     var tmpLabelId=new Array;
-
+    var tmpGood=new Array;
+    var tmpBad=new Array;
+    var tmpDtdId=new Array;
     for(var i=0;i<paraLabelAlreadyDone[curParaIndex].length;i++){
         tmpLabelId[i]=paraLabelAlreadyDone[curParaIndex][i].label_id;
+        tmpGood[i]=paraLabelAlreadyDone[curParaIndex][i].goodlabel;
+        tmpBad[i]=paraLabelAlreadyDone[curParaIndex][i].badlabel;
+        //tmpDtdId[i]=paraLabelAlreadyDone[curParaIndex][i].dtd_id;
     }
     console.log(paraLabelAlreadyDone[curParaIndex]);
 
-    console.log(tmpLabelId.length);
+    console.log(tmpLabelId);
 
     if(tmpLabelId.length>0){
         var label_html="";
+
+
+
         for(var i=0;i<labelLength;i++){
             var list_html="";
             if(tmpLabelId.indexOf(labelList[i].lid)!=-1){
+                var tmpIndex=tmpLabelId.indexOf(labelList[i].lid);
                 console.log(tmpLabelId.indexOf(labelList[i].lid));
                 console.log(labelList[i].lid);
                 list_html ='<li class="list-group-item">'
+                    +'<div class="layui-row">'
+                    +'<div class="layui-col-md10">'
                     +'<img class="isAns" src="./images/isAns.png" id="label-list-img-'+i+'">'
                     +labelList[i].labelname
+                    +'</div>'
+                    +'<div class="layui-col-md1">'
+                    +'<span id="sg_'+tmpIndex+'">' +tmpGood[tmpIndex]
+                    +'</span>'
+
+                    +'<img class="notGood" src="./images/goodlabel.png" id="good_'+tmpIndex+'" onclick="goodfunc(this.id);">'
+                    +'</div>'
+
+                    +'<div class="layui-col-md1">'
+                    +'<span id="sb_'+tmpIndex+'">' +tmpBad[tmpIndex]
+                    +'</span>'
+
+                    +'<img class="notBad" src="./images/bad3.png" id="bad_'+tmpIndex+'" onclick="badfunc(this.id);">'
+                    +'</div>'
+
+                    +'</div>'
                     +'</li>';
             }else{
                 list_html ='<li class="list-group-item">'
@@ -487,7 +500,59 @@ function labelHtml(labelList) {
 
 };
 
+function goodfunc(obj) {
 
+   console.log(obj);
+   // $("#"+obj).attr("src","./images/goodlabel2.png");
+
+    var i=obj.substring(5,obj.length);
+    var curDtdIndex=parseInt(i);
+    var dtdId=paraLabelAlreadyDone[curParaIndex][curDtdIndex].dtd_id;
+    var flg=1;
+
+    if($("#"+obj).hasClass("notGood")){
+
+
+        $("#"+obj).attr("src","./images/goodlabel2.png");
+        $("#"+obj).addClass("isGood").removeClass("notGood");
+        var cNum=1;
+        ajaxComment(dtdId,cNum,flg,curDtdIndex);
+
+    }else{
+
+
+        $("#"+obj).attr("src","./images/goodlabel.png");
+        $("#"+obj).addClass("notGood").removeClass("isGood");
+        var cNum=-1;
+        ajaxComment(dtdId,cNum,flg,curDtdIndex);
+    }
+};
+
+function badfunc(obj) {
+    //console.log(obj);
+    //$("#"+obj).attr("src","./images/goodlabel2.png");
+
+    var i=obj.substring(4,obj.length);
+    var curDtdIndex=parseInt(i);
+    var dtdId=paraLabelAlreadyDone[curParaIndex][curDtdIndex].dtd_id;
+    var flg=-1;
+    if($("#"+obj).hasClass("notBad")){
+
+        $("#"+obj).attr("src","./images/bad4.png");
+        $("#"+obj).addClass("isBad").removeClass("notBad");
+
+        var cNum=1;
+        ajaxComment(dtdId,cNum,flg,curDtdIndex);
+    }else{
+        $("#"+obj).attr("src","./images/bad3.png");
+        $("#"+obj).addClass("notBad").removeClass("isBad");
+
+        var cNum=-1;
+        ajaxComment(dtdId,cNum,flg,curDtdIndex);
+    }
+
+
+};
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
@@ -501,6 +566,40 @@ function ajaxCompleteDoc(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
+            console.log(data);
+
+
+        }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+
+        },
+    });
+}
+
+
+function ajaxComment(dtdId,cNum,flg,curDtdIndex) {
+    var commentData={
+        dtdId: dtdId,
+        cNum:cNum,
+        flag:flg,
+        uId:userId
+    };
+    console.log(commentData);
+    $.ajax({
+        url: "/classify/ucomment",
+        type: "post",
+        traditional: true,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: "json",
+        data:commentData,
+        success: function (data) {
+            if(flg>0){
+                var sgood="sg_"+curDtdIndex;
+                $("#"+sgood).html(data.data.goodlabel);
+            }else{
+                var sbad="sb_"+curDtdIndex;
+                $("#"+sbad).html(data.data.badlabel);
+            }
             console.log(data);
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {

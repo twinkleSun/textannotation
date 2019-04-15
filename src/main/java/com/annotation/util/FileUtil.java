@@ -156,6 +156,11 @@ public class FileUtil {
 
         //获取文件内容：paragraph
         String docContent = parseDocContent(file);
+        if(!docContent.contains("#")){
+            ResponseEntity responseEntity=responseUtil.judgeResult(2020);
+            responseEntity.setMsg(filename+responseEntity.getMsg());
+            return responseEntity;
+        }
 
         /**
          * 检查每段内容大小

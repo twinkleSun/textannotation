@@ -56,7 +56,7 @@ $(function(){
              taskType4=data.elem[data.elem.selectedIndex].text;//console.log(taskType);
             // taskValue=data.value; //console.log(taskValue);
             //
-            // selectChangeOp(taskValue);
+            // selectChangeOp(taskaValue);
             // var $ = layui.$ //重点处
             //     ,layer = layui.layer;
 
@@ -89,9 +89,12 @@ $(function(){
 
             $("#type4-relation-div").hide();
 
-            var infoHtml='<p>提示：上传文件格式仅支持doc,docx,txt；文件内容段落之间请用“#”进行分隔，示例：</p>' +
+            var infoHtml='<p>提示：文本分类类型的标注任务适用于情感分析，垃圾邮件识别等领域。</p>' +
                 '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '&nbsp;&nbsp;&nbsp;&nbsp;这是一个测试段落1#这是一个测试段落2#</p>';
+                '&nbsp;&nbsp;&nbsp;&nbsp;上传文件格式仅支持doc,docx,txt；文档模板样例请查看示例图片。</p>';
+            // var infoHtml='<p>提示：上传文件格式仅支持doc,docx,txt；文件内容段落之间请用“#”进行分隔，示例：</p>' +
+            //     '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+            //     '&nbsp;&nbsp;&nbsp;&nbsp;这是一个测试段落1#这是一个测试段落2#</p>';
             $("#info-alert").html(infoHtml);
 
             var tagHtml=' <div class="layui-row" id="type12-div">' +
@@ -189,11 +192,17 @@ $(function(){
             tagItem1Content = new Array;//标签内容数组，#分隔，比如"a#b#c"
             tagItem2Content = new Array;//标签内容数组，#分隔，比如"a#b#c"
         }else if(taskValue=="4"){
-            var infoHtml='<p>提示：支持多文件上传，上传文件格式仅支持doc,docx,txt；文件内容段落instance之间请用“#”进行分隔，' +
-                '每段之间的item请用“----”分隔，示例：</p>' +
+            var infoHtml='<p>提示：文本配对类型的标注任务适用于文章相似度匹配、关键信息和检索信息匹配等领域。</p>' +
                 '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '&nbsp;&nbsp;&nbsp;&nbsp;这是段落1的测试item1&&&这是段落1的测试item1-----这是段落1的测试item2&&&这是段落1的测试item1#' +
-                '这是段落2的测试item1&&&这是段落1的测试item1-----这是段落2的测试item2&&&这是段落1的测试item1#</p>';
+                '&nbsp;&nbsp;&nbsp;&nbsp;上传文件格式仅支持doc,docx,txt；文档模板样例请查看示例图片。</p>'+
+                '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;请选择一对一、一对多或多对多类型</p>';
+
+            // var infoHtml='<p>提示：支持多文件上传，上传文件格式仅支持doc,docx,txt；文件内容段落instance之间请用“#”进行分隔，' +
+            //     '每段之间的item请用“----”分隔，示例：</p>' +
+            //     '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+            //     '&nbsp;&nbsp;&nbsp;&nbsp;这是段落1的测试item1&&&这是段落1的测试item1-----这是段落1的测试item2&&&这是段落1的测试item1#' +
+            //     '这是段落2的测试item1&&&这是段落1的测试item1-----这是段落2的测试item2&&&这是段落1的测试item1#</p>';
             $("#info-alert").html(infoHtml);
             $("#tag-div").html("");
 
@@ -282,7 +291,7 @@ $(function(){
         mformData.append("title",$("#title").val());
         mformData.append("description",$("#description").val());
         mformData.append("createtime",currenttime);
-        mformData.append("deadline",currenttime);
+        mformData.append("deadline",deadtime);
 
         mformData.append("taskcompstatus",taskstatusStr);
         mformData.append("otherinfo",$("#otherinfo").val());
@@ -741,26 +750,42 @@ function ajaxType12(mformData) {
         data: mformData,
         contentType: false,
         processData: false,//这个很有必要，不然不行
-        dataType: "text",
+        dataType: "json",
         mimeType: "multipart/form-data",
         success: function (data) {
+ //console.log(data.data);
+            if(data.status!=0){
+                //alert(data.msg);
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.open({
+                            type: 1,
+                            content: '<div style="padding:30px;line-height:40px;font-size: 20px;">'+data.msg+'</div>',
+                        })
+                    });
 
-            console.log(data);
-            layui.use('layer',function(){
-                var layer=layui.layer;
+                });
+            }else{
                 layui.use('layer',function(){
                     var layer=layui.layer;
-                    layer.open({
-                        type:1,
-                        content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
-                        '<br>你可以选择<a href="my_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
-                        '或前去<a href="do_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
-                        '也可以选择继续<a href="p_publishIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
-                    })
+                    layui.use('layer',function(){
+                        var layer=layui.layer;
+                        layer.open({
+                            type:1,
+                            content:'<div style="padding:30px;line-height:40px;font-size: 20px;"><i class="layui-icon" style="color:#5FB878 ;font-size: 26px;padding:1px;">&#x1005;</i>任务发布成功!' +
+                            '<br>你可以选择<a href="my_Homepage.html" target="_top" style="color: cornflowerblue;">查看任务列表</a>' +
+                            '或前去<a href="do_Homepage.html" target="_top" style="color: cornflowerblue;">做任务</a>，' +
+                            '也可以选择继续<a href="p_publishIndex.html" target="_top" style="color: cornflowerblue;">发布任务</a></div>',
+                        })
+                    });
+
+
                 });
+            }
 
-
-            });
+           
 
         },error: function (XMLHttpRequest, textStatus, errorThrown) {
             // console.log(XMLHttpRequest.status);
@@ -780,7 +805,7 @@ function ajaxType3(mformData){
         data: mformData,
         contentType: false,
         processData: false,//这个很有必要，不然不行
-        dataType: "text",
+        dataType: "json",
         mimeType: "multipart/form-data",
         success: function (data) {
 
@@ -819,7 +844,7 @@ function ajaxType4(mformData) {
         data: mformData,
         contentType: false,
         processData: false,//这个很有必要，不然不行
-        dataType: "text",
+        dataType: "json",
         mimeType: "multipart/form-data",
         success: function (data) {
 
@@ -858,7 +883,7 @@ function ajaxType5(mformData) {
         data: mformData,
         contentType: false,
         processData: false,//这个很有必要，不然不行
-        dataType: "text",
+        dataType: "json",
         mimeType: "multipart/form-data",
         success: function (data) {
 
@@ -887,5 +912,7 @@ function ajaxType5(mformData) {
 
     });
 }
+
+
 
 

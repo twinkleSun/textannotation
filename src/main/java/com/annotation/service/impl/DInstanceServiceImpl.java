@@ -8,6 +8,7 @@ import com.annotation.model.DTask;
 import com.annotation.service.IDInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -27,14 +28,13 @@ public class DInstanceServiceImpl implements IDInstanceService {
 
 
 
+    @Transactional
     public int updateStatusByDocId(int userId,int docId,int taskId){
         DTask dTask=dTaskMapper.selectByTaskIdAndUserId(taskId,userId);
         if(dTask==null){
             return 4010;
         }else{
             int dTaskId=dTask.getTkid();
-
-
 
             int[] pids=instanceMapper.selectInstanceByDocId(docId);
 
@@ -92,7 +92,7 @@ public class DInstanceServiceImpl implements IDInstanceService {
                 dTask.setAlreadypart(alreadyPart);
 
                 /**
-                 * 保留两位小数
+                 * 保留一位小数
                  */
                 NumberFormat nf=NumberFormat.getPercentInstance();
                 nf.setMinimumFractionDigits(1);

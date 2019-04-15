@@ -6,8 +6,10 @@ import com.annotation.dao.ParagraphMapper;
 import com.annotation.model.DParagraph;
 import com.annotation.model.DTask;
 import com.annotation.service.IDParagraphService;
+import com.annotation.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -26,8 +28,12 @@ public class DParagraphServiceImpl implements IDParagraphService {
     @Autowired
     ParagraphMapper paragraphMapper;
 
+
+
     public int addDParagraph(int dTaskId,int docId,int paraId){
         //插入d_paragraph
+
+
         int dtid;
         DParagraph dParagraphSelect=dParagraphMapper.selectByDtaskIdAndParaId(dTaskId,docId,paraId);
 
@@ -53,7 +59,7 @@ public class DParagraphServiceImpl implements IDParagraphService {
         return dtid;
     }
 
-
+    @Transactional
     public int updateStatusByDocId(int userId,int docId,int taskId){
         DTask dTask=dTaskMapper.selectByTaskIdAndUserId(taskId,userId);
         if(dTask==null){
@@ -101,6 +107,7 @@ public class DParagraphServiceImpl implements IDParagraphService {
         return 0;
     }
 
+    @Transactional
     public int updateStatus(int userId,int docId,int taskId,int paraId){
         DTask dTask=dTaskMapper.selectByTaskIdAndUserId(taskId,userId);
         if(dTask==null){

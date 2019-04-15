@@ -449,26 +449,19 @@ public class DocumentServiceImpl implements IDocumentService {
      * @return
      */
     public int addDocInstanceListItem(Document document,int userId,String docContent){
-
-        //读取的文件内容由#分隔
-        //检查每段内容大小
         String[] instanceArr = docContent.split("#");
-
-        //开始插入文件相关信息
         document.setUserId(userId);
         int docInsertRes = documentMapper.insert(document);//插入结果
 
-        //插入文件失败
+        //插入失败
         if(docInsertRes <0){
             return 2006;
         }else{
-            //插入文件成功
             int docId=document.getDid();//插入成功的文件ID
-            //防止自增的ID不连续
+            //防止自增ID的不连续
             instanceMapper.alterInstanceTable();
-            //文件内容，用#分隔了
+            //调用插入instance
             int addContentRes =addInstanceListItem(docId,instanceArr);
-            //instance插入失败
             if(addContentRes !=0){
                 return addContentRes;
             }else{

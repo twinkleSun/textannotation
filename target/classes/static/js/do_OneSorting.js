@@ -50,9 +50,12 @@ $(function () {
      * 同时将任务详细信息折叠面板设为hide
      */
     $("#btn-dotask").click(function(){
-       // $("#op-dotask").hide();
-       // $("#op-button").show();
-        $("#div-dotaskbtn").hide();
+
+
+        // $("#div-dotaskbtn").html("倒计时：0:20:09");
+
+
+       $("#div-dotaskbtn").hide();
         $("#div-btn-hide").show();
         $('#taskInfoPanel').collapse('hide');
 
@@ -67,6 +70,7 @@ $(function () {
     });
 
     $("#select-docStatus").click(function(){
+        curInstanceIndex=0;
         ajaxDocSortingInstanceItem(docId);
     });
 
@@ -220,41 +224,107 @@ function ajaxDocSortingInstanceItem(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            //console.log(data);
+            if(data.instanceItem==null || data.instanceItem==""){
+                alert("该文档已经全部完成！");
+            }else{
 
-            instanceItem=data.instanceItem; //console.log(instanceItem);
-            instanceLength=instanceItem.length;
-            for(var i=0;i<instanceLength;i++){
-                instanceItem[parseInt(data.instanceItem[i].insindex)-1]=data.instanceItem[i];
-            }
-            itemList= instanceItem[curInstanceIndex].itemList;
-            alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
-
-            //$("#right-sorting").html("");
-
-            /**
-             * 写入内容
-             */
-            //console.log(curInstanceIndex);
-            paintSortingContent(itemList,alreadyDone);
-
-            /**
-             * 左边ul导航点击定位
-             */
-            var ul_html="";
-            for(var i=0;i<instanceLength;i++){
-                var li_html="";
-                if(i==curInstanceIndex){
-                    li_html=' <li class="active" id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
-                        '第' + (i+1) + '部分' + '</a></li>';
-                }else{
-                    li_html=' <li  id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
-                        '第' + (i+1) + '部分' + '</a></li>';
+                instanceItem=data.instanceItem; //console.log(instanceItem);
+                instanceLength=instanceItem.length;
+                for(var i=0;i<instanceLength;i++){
+                    instanceItem[parseInt(data.instanceItem[i].insindex)-1]=data.instanceItem[i];
                 }
-                ul_html=ul_html+li_html;
-                ul_li_instanceIndex[i]="li-"+i;
+                itemList= instanceItem[curInstanceIndex].itemList;
+                alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
+
+                var sflag=0;
+                for(var i=0;i<instanceItem.length;i++){
+
+                    if(instanceItem[i].dtstatus=="已完成"){
+                        sflag++;
+                    }
+                }
+
+                if(sflag==instanceItem.length){
+                    if(!($("#complete-doc").hasClass("disabled"))){
+                        $("#complete-doc").addClass("disabled");
+                        $("#complete-doc").attr("disabled","true");
+
+                    }
+
+                    if(!($("#complete-instance").hasClass("disabled"))){
+                        $("#complete-instance").addClass("disabled");
+                        $("#complete-instance").attr("disabled","true");
+                    }
+
+                    if(!($("#submit-sorting").hasClass("disabled"))){
+                        $("#submit-sorting").addClass("disabled");
+                        $("#submit-sorting").attr("disabled","true");
+                    }
+                }else{
+                    if($("#complete-doc").hasClass("disabled")){
+                        $("#complete-doc").removeClass("disabled");
+                        $("#complete-doc").removeAttr("disabled");
+                    }
+                    if($("#complete-instance").hasClass("disabled")){
+                        $("#complete-instance").removeClass("disabled");
+                        $("#complete-instance").removeAttr("disabled");
+                    }
+                    if($("#submit-sorting").hasClass("disabled")){
+                        $("#submit-sorting").removeClass("disabled");
+                        $("#submit-sorting").removeAttr("disabled");
+                    }
+                }
+
+                /**
+                 * 写入内容
+                 */
+                //console.log(curInstanceIndex);
+                paintSortingContent(itemList,alreadyDone);
+
+                /**
+                 * 左边ul导航点击定位
+                 */
+                var ul_html="";
+                for(var i=0;i<instanceLength;i++){
+                    var li_html="";
+                    if(i==curInstanceIndex){
+                        li_html=' <li class="active" id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
+                            '第' + (i+1) + '部分' + '</a></li>';
+                    }else{
+                        li_html=' <li  id="li-'+i+'"><a id="a-'+i+'" onclick="curInstanceId(this.id)">' +
+                            '第' + (i+1) + '部分' + '</a></li>';
+                    }
+                    ul_html=ul_html+li_html;
+                    ul_li_instanceIndex[i]="li-"+i;
+                }
+                $("#ul-nav").html(ul_html);
             }
-            $("#ul-nav").html(ul_html);
+
+
+            if(instanceItem[curInstanceIndex].dtstatus=="已完成"){
+
+
+                if(!($("#complete-instance").hasClass("disabled"))){
+                    $("#complete-instance").addClass("disabled");
+                    $("#complete-instance").attr("disabled","true");
+                }
+
+                if(!($("#submit-sorting").hasClass("disabled"))){
+                    $("#submit-sorting").addClass("disabled");
+                    $("#submit-sorting").attr("disabled","true");
+                }
+            }else{
+
+                if($("#complete-instance").hasClass("disabled")){
+                    $("#complete-instance").removeClass("disabled");
+                    $("#complete-instance").removeAttr("disabled");
+                }
+                if($("#submit-sorting").hasClass("disabled")){
+                    $("#submit-sorting").removeClass("disabled");
+                    $("#submit-sorting").removeAttr("disabled");
+                }
+            }
 
 
 
@@ -291,6 +361,30 @@ function curInstanceId(obj) {
     alreadyDone=instanceItem[curInstanceIndex].alreadyDone;
 
     paintSortingContent(itemList,alreadyDone);
+
+    if(instanceItem[curInstanceIndex].dtstatus=="已完成"){
+
+
+        if(!($("#complete-instance").hasClass("disabled"))){
+            $("#complete-instance").addClass("disabled");
+            $("#complete-instance").attr("disabled","true");
+        }
+
+        if(!($("#submit-sorting").hasClass("disabled"))){
+            $("#submit-sorting").addClass("disabled");
+            $("#submit-sorting").attr("disabled","true");
+        }
+    }else{
+
+        if($("#complete-instance").hasClass("disabled")){
+            $("#complete-instance").removeClass("disabled");
+            $("#complete-instance").removeAttr("disabled");
+        }
+        if($("#submit-sorting").hasClass("disabled")){
+            $("#submit-sorting").removeClass("disabled");
+            $("#submit-sorting").removeAttr("disabled");
+        }
+    }
 }
 
 /**
@@ -307,8 +401,14 @@ function addSortingTask(doTaskData) {
         dataType: "json",
         data:doTaskData,
         success: function (data) {
-            console.log(data);
-            ajaxDocSortingInstanceItem(docId);
+           // console.log(data);
+            if(data.status==0){
+                alert("提交成功");
+                ajaxDocSortingInstanceItem(docId);
+            }else{
+                alert("提交失败!");
+            }
+
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -382,7 +482,13 @@ function ajaxCompleteDoc(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            if(data.status==0){
+                alert("该文本已经完成");
+                ajaxDocSortingInstanceItem(docId);
+            }else{
+
+                alert("还有段落没有做");
+            }
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -405,7 +511,13 @@ function ajaxCompleteInstance(docId) {
         dataType: "json",
         data:docid,
         success: function (data) {
-            console.log(data);
+            if(data.status==0){
+                alert("该段已经完成");
+                ajaxDocSortingInstanceItem(docId);
+            }else{
+
+                alert("该段还没有做");
+            }
 
         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
 
