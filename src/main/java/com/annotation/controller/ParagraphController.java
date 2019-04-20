@@ -23,7 +23,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("paragraph/")
+@RequestMapping("/paragraph/")
 public class ParagraphController {
 
     @Autowired

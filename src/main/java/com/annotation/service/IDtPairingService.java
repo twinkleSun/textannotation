@@ -1,6 +1,8 @@
 package com.annotation.service;
 
 import com.annotation.model.entity.InstanceListitemEntity;
+import com.annotation.model.entity.PairingData;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.util.List;
 
@@ -58,6 +60,9 @@ public interface IDtPairingService {
     String insertManyToManyRelations(int dtInstId,int[] aListitemId,int[] bListitemId);
 
 
+    List<PairingData> queryPairingData(int tid);
+
+    HSSFWorkbook getPairingExcel(List<PairingData> pairingDataList);
 
 
 }

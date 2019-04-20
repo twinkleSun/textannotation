@@ -23,7 +23,7 @@ import java.util.List;
  * Created by twinkleStar on 2019/2/8.
  */
 @RestController
-@RequestMapping("dinstance")
+@RequestMapping("/dinstance")
 public class DInstanceController {
 
     @Autowired
@@ -36,8 +36,16 @@ public class DInstanceController {
     @PostMapping("/doc/status")
     public ResponseEntity updateStatusByDocId(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse,
                                        int docId, int taskId) {
-        User user =(User)httpSession.getAttribute("currentUser");
 
+
+        User user =(User)httpSession.getAttribute("currentUser");
+//        String uId;
+//        if(userId=""|| userId==null){
+//            User user =(User)httpSession.getAttribute("currentUser");
+//            uId=user.getId();
+//        }else{
+//            uId=userId;
+//        }
         int upRes=idInstanceService.updateStatusByDocId(user.getId(),docId,taskId);
         if(upRes==4010|| upRes==4011|| upRes==4012){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

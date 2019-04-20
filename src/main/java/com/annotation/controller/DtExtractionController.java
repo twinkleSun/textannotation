@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by twinkleStar on 2019/2/2.
  */
 @RestController
-@RequestMapping("extraction")
+@RequestMapping("/extraction")
 public class DtExtractionController {
 
     @Autowired

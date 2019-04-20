@@ -18,7 +18,7 @@ import java.util.List;
  * Created by twinkleStar on 2018/12/19.
  */
 @RestController
-@RequestMapping("label/")
+@RequestMapping("/label/")
 public class LabelController {
 
     @Autowired

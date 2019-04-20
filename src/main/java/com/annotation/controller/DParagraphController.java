@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  */
 
 @RestController
-@RequestMapping("dpara")
+@RequestMapping("/dpara")
 public class DParagraphController {
     @Autowired
     IDParagraphService idParagraphService;

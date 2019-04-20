@@ -2,6 +2,7 @@ package com.annotation.dao;
 
 import com.annotation.model.DtPairing;
 import com.annotation.model.entity.InstanceListitemEntity;
+import com.annotation.model.entity.PairingData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -64,7 +65,12 @@ public interface DtPairingMapper {
     int insertRelationListByManyToMany(@Param("dtid")int dtid, @Param("aListItemId")int aListItemId, @Param("bListItemId")int bListItemId);
 
 
-
+    /**
+     * 标注数据导出
+     * @param tid
+     * @return
+     */
+    List<PairingData> getPairingDataOut(int tid);
 
 
 

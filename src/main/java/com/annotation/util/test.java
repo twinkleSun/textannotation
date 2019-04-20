@@ -1,18 +1,18 @@
 package com.annotation.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.annotation.elasticsearch.document.TaskDoc;
+//import com.annotation.elasticsearch.document.TaskDoc;
 import com.annotation.model.*;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import com.annotation.model.entity.ResponseEntity;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+//import org.elasticsearch.index.query.QueryBuilders;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.annotation.AccessType;
+//import org.springframework.data.domain.Page;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.Pageable;
+//import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -173,31 +173,31 @@ public class test {
 //    return jso;
 //}
 
-public class ExcelUtil {
-public HSSFWorkbook getExcelDoc(String sheetName,String[] title,String[][] values, HSSFWorkbook wb){
-    if(wb == null){
-        wb = new HSSFWorkbook();
-    }
-    HSSFSheet excelDoc = wb.createSheet(sheetName);
-    HSSFRow excelDocRow = excelDoc.createRow(0);
-    HSSFCellStyle excelStyle = wb.createCellStyle();
-    excelStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-    HSSFCell hssfCell = null;
-    for(int i=0;i<title.length;i++){
-        hssfCell = excelDocRow.createCell(i);
-        hssfCell.setCellValue(title[i]);
-        hssfCell.setCellStyle(excelStyle);
-    }
-
-    for(int i=0;i<values.length;i++){
-        excelDocRow = excelDoc.createRow(i + 1);
-        for(int j=0;j<values[i].length;j++){
-            excelDocRow.createCell(j).setCellValue(values[i][j]);
-        }
-    }
-    return wb;
-}
-}
+//public class ExcelUtil {
+//public HSSFWorkbook getExcelDoc(String sheetName,String[] title,String[][] values, HSSFWorkbook wb){
+//    if(wb == null){
+//        wb = new HSSFWorkbook();
+//    }
+//    HSSFSheet excelDoc = wb.createSheet(sheetName);
+//    HSSFRow excelDocRow = excelDoc.createRow(0);
+//    HSSFCellStyle excelStyle = wb.createCellStyle();
+//    excelStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+//    HSSFCell hssfCell = null;
+//    for(int i=0;i<title.length;i++){
+//        hssfCell = excelDocRow.createCell(i);
+//        hssfCell.setCellValue(title[i]);
+//        hssfCell.setCellStyle(excelStyle);
+//    }
+//
+//    for(int i=0;i<values.length;i++){
+//        excelDocRow = excelDoc.createRow(i + 1);
+//        for(int j=0;j<values[i].length;j++){
+//            excelDocRow.createCell(j).setCellValue(values[i][j]);
+//        }
+//    }
+//    return wb;
+//}
+//}
 
 //public ResponseEntity checkAddDocInstanceListitem(MultipartFile[] files, int userId) throws IllegalStateException{
 //    //省略遍历校验文件代码
@@ -323,8 +323,8 @@ public HSSFWorkbook getExcelDoc(String sheetName,String[] title,String[][] value
 
 
 
-@Autowired
-ResponseUtil responseUtil;
+//@Autowired
+//ResponseUtil responseUtil;
 
 //public ResponseEntity sendEmail(String userName,String userEmail,String sendAddress,
 //                       List<Task> taskList,String auth,String title,String serverName) {

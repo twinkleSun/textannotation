@@ -17,7 +17,7 @@ import java.util.List;
  * Created by twinkleStar on 2019/2/2.
  */
 @RestController
-@RequestMapping("sorting")
+@RequestMapping("/sorting")
 public class DtSortingController {
 
     @Autowired

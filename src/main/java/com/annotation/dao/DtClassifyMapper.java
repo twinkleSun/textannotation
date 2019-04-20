@@ -1,6 +1,7 @@
 package com.annotation.dao;
 
 import com.annotation.model.DtClassify;
+import com.annotation.model.entity.ClassifyData;
 import com.annotation.model.entity.LabelCountEntity;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import org.apache.ibatis.annotations.Mapper;
@@ -45,6 +46,9 @@ public interface DtClassifyMapper {
 
     List<LabelCountEntity> selectLabelCount(@Param("tid") Integer tid);
 
+
+    //标注数据导出
+    List<ClassifyData> getClassifyDataOut(int tid);
 
 
 

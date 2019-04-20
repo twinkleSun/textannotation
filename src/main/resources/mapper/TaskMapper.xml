@@ -25,7 +25,7 @@
         taskcompstatus, otherinfo, user_id,
         viewnum, attendnum)
         values (#{tid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
-        #{typeName,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{deadline,jdbcType=VARCHAR},
+        #{typeName,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{deadline,jdbcType=TIMESTAMP},
         #{taskcompstatus,jdbcType=VARCHAR}, #{otherinfo,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
         #{viewnum,jdbcType=INTEGER}, #{attendnum,jdbcType=INTEGER})
     </insert>
@@ -283,8 +283,30 @@
     <!--<select id="selectUserName" parameterType="Integer" resultType="String">-->
         <!--select username from `user` u,task t WHERE t.tid=#{tid} AND t.userid=u.id-->
     <!--</select>-->
-    
-    
 
+
+
+
+    <!--文本配对类型标注数据导出-->
+    <resultMap id="UserTaskEmail" type="com.annotation.model.entity.UserTaskEmail">
+        <result column="userId" jdbcType="INTEGER" property="userId" />
+        <result column="userName" property="userName" jdbcType="VARCHAR" />
+        <result column="userEmail" property="userEmail" jdbcType="VARCHAR" />
+        <collection property="taskInfo" ofType="Map">
+            <result column="taskType" property="taskType" jdbcType="INTEGER" />
+            <result column="title" property="title" jdbcType="INTEGER" />
+            <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+    <select id="getUserTaskEmail" parameterType="Map" resultMap="UserTaskEmail">
+        select u.id userId,u.username userName,u.email userEmail,
+        t.type_name taskType,t.title,t.deadline
+        from user u
+        left join d_task dt on dt.user_id=u.id
+        left join task t on  t.tid=dt.task_id
+        where t.deadline > #{curDateTime}
+
+    </select>
 
 </mapper>

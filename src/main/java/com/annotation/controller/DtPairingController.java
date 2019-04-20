@@ -16,7 +16,7 @@ import java.util.List;
  * Created by twinkleStar on 2019/2/2.
  */
 @RestController
-@RequestMapping("pairing")
+@RequestMapping("/pairing")
 public class DtPairingController {
 
 

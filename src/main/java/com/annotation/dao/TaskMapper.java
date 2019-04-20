@@ -2,7 +2,9 @@ package com.annotation.dao;
 
 import com.annotation.model.Task;
 import com.annotation.model.entity.TaskInfoEntity;
+import com.annotation.model.entity.UserTaskEmail;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -130,6 +132,9 @@ public interface TaskMapper {
      * @return
      */
     String selectUserName(Integer tid);
+
+
+    List<UserTaskEmail> getUserTaskEmail(String curDateTime);
 
 
 }

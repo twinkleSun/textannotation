@@ -5,7 +5,11 @@ import com.annotation.model.DInstance;
 import com.annotation.model.DTask;
 import com.annotation.model.Task;
 import com.annotation.model.entity.InstanceListitemEntity;
+import com.annotation.model.entity.PairingData;
 import com.annotation.service.IDtPairingService;
+import com.annotation.util.ExcelUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +33,8 @@ public class DtPairingServiceImpl implements IDtPairingService {
     TaskMapper taskMapper;
     @Autowired
     InstanceMapper instanceMapper;
+    @Autowired
+    ExcelUtil excelUtil;
 
 
 
@@ -224,4 +230,27 @@ public class DtPairingServiceImpl implements IDtPairingService {
         }
         return sb.toString();
     }
+
+
+
+
+
+   public List<PairingData> queryPairingData(int tid){
+        List<PairingData> pairingDataList=dtPairingMapper.getPairingDataOut(tid);
+        return pairingDataList;
+   }
+
+
+   public HSSFWorkbook getPairingExcel( List<PairingData> pairingDataList){
+       String[] title = {"用户名","文件名","段落索引","列表1","列表2"};
+
+       String sheetName = "文本配对数据导出";
+
+       HSSFWorkbook wb = excelUtil.getPairingExcel(sheetName, title, pairingDataList, null);
+       return wb;
+   }
+
+
+
+
 }

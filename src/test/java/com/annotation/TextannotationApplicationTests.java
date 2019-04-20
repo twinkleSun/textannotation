@@ -3,18 +3,20 @@ package com.annotation;
 //import com.annotation.elasticsearch.document.TaskDoc;
 //import com.annotation.elasticsearch.repository.TaskDocRepository;
 //import com.annotation.elasticsearch.service.TaskDocService;
-import com.annotation.model.Task;
-import com.annotation.service.ITaskService;
-import org.elasticsearch.index.query.QueryBuilders;
+import com.annotation.dao.TaskMapper;
+import com.annotation.model.entity.UserTaskEmail;
+//import org.elasticsearch.index.query.QueryBuilders;
+import com.annotation.util.EmailUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+//import org.springframework.data.domain.Page;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.Pageable;
+//import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+//import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -22,6 +24,34 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TextannotationApplicationTests {
+
+
+    @Autowired
+     TaskMapper taskMapper;
+    @Autowired
+    EmailUtil emailUtil;
+
+
+
+    @Test
+    @Scheduled(cron="0/5 * * * * ?")
+    public void job(){
+        System.out.println("每五秒执行一次");
+    }
+//    @Test
+//    public void test3() throws Exception {
+//
+//    }
+
+
+    @Test
+    public void test2() throws Exception {
+      String curtiem="2019-04-01 00:00:00";
+      List<UserTaskEmail> userTaskEmails=taskMapper.getUserTaskEmail(curtiem);
+
+      emailUtil.sendSimpleMail("479681178@qq.com","任务提醒",userTaskEmails);
+     // System.out.println(userTaskEmails.size());
+    }
 //
 //    @Autowired
 //    TaskDocRepository taskDocRepository;
@@ -32,8 +62,8 @@ public class TextannotationApplicationTests {
 //    @Autowired
 //    TaskDocService taskDocService;
 
-    @Autowired
-    ITaskService iTaskService;
+  //  @Autowired
+   // ITaskService iTaskService;
 //    @Test
 //    public void test() {
 //        TaskTest taskTest=new TaskTest();
@@ -72,8 +102,8 @@ public class TextannotationApplicationTests {
 //
 //
 //    }
-    @Test
-    public void te(){
+ //   @Test
+  //  public void te(){
 
 //        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
 //        queryBuilder.withQuery(QueryBuilders.termQuery("typeName", "文本").boost(3));
@@ -91,7 +121,7 @@ public class TextannotationApplicationTests {
       //  taskDocService.saveTask();
         //elasticsearchTemplate.createIndex(TaskDoc.class);
         //elasticsearchTemplate.deleteIndex(TaskDoc.class);
-    }
+ //   }
 
 //    @Test
 //    public void testQueryAll() {

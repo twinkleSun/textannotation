@@ -24,7 +24,7 @@ import java.util.*;
  */
 
 @RestController
-@RequestMapping("task")
+@RequestMapping("/task")
 public class TaskController {
 
     @Autowired

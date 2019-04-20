@@ -1,9 +1,11 @@
 package com.annotation.service;
 
 import com.annotation.model.DtClassify;
+import com.annotation.model.entity.ClassifyData;
 import com.annotation.model.entity.LabelCountEntity;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import com.annotation.model.entity.ResponseEntity;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.util.List;
 
@@ -37,4 +39,9 @@ public interface IDtClassifyService {
     List<LabelCountEntity> queryAlreadyLabel(int tid);
 
     //int updateStatus(int userId,int docId,int taskId);
+
+
+    List<ClassifyData> queryClassifyData(int tid);
+
+    HSSFWorkbook getClassifyExcel(List<ClassifyData> classifyDataList);
 }

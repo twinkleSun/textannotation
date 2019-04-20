@@ -3,10 +3,17 @@ package com.annotation.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.Document;
 import com.annotation.model.User;
+import com.annotation.model.entity.ClassifyData;
+import com.annotation.model.entity.PairingData;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.service.IDocumentService;
+import com.annotation.service.IDtClassifyService;
+import com.annotation.service.IDtPairingService;
+import com.annotation.util.ExcelUtil;
 import com.annotation.util.FileUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.extractor.WordExtractor;
+import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +41,89 @@ public class DocumentController {
 
 //    @Autowired
 //    IDocumentService iDocumentService;
+
+    @Autowired
+    ExcelUtil excelUtil;
+    @Autowired
+    IDtPairingService iDtPairingService;
+    @Autowired
+    IDtClassifyService iDtClassifyService;
+
+    //文本配对类型导出
+    @RequestMapping(value = "/pairing")
+    @ResponseBody
+    public void exportPairing(HttpServletRequest request,HttpServletResponse response,int tid) throws Exception {
+        //获取数据
+       List<PairingData> pairingDataList=iDtPairingService.queryPairingData(tid);
+
+
+       //todo:判断d_task表中完成度！=0%的记录
+           String fileName = "文本配对数据导出"+System.currentTimeMillis()+".xls";
+           HSSFWorkbook wb=iDtPairingService.getPairingExcel(pairingDataList);
+
+           //响应到客户端
+           try {
+               this.setResponseHeader(response, fileName);
+               OutputStream os = response.getOutputStream();
+               wb.write(os);
+               os.flush();
+               os.close();
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+
+
+    }
+
+
+    //发送响应流方法
+    public void setResponseHeader(HttpServletResponse response, String fileName) {
+        try {
+            try {
+                fileName = new String(fileName.getBytes(),"ISO8859-1");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            response.setContentType("application/octet-stream;charset=ISO8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+    @RequestMapping(value = "/classify")
+    @ResponseBody
+    public void exportClassify(HttpServletRequest request,HttpServletResponse response,int tid) throws Exception {
+        //获取数据
+        List<ClassifyData> classifyDataList=iDtClassifyService.queryClassifyData(tid);
+
+        String fileName = "文本分类数据导出"+System.currentTimeMillis()+".xls";
+        HSSFWorkbook wb=iDtClassifyService.getClassifyExcel(classifyDataList);
+
+        //响应到客户端
+        try {
+            this.setResponseHeader(response, fileName);
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
 
     /**
      * 添加单个文件

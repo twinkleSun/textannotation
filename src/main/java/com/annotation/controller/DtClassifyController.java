@@ -24,7 +24,7 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("classify")
+@RequestMapping("/classify")
 public class DtClassifyController {
 
     @Autowired

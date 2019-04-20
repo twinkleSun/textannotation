@@ -103,6 +103,41 @@
 
 
 
+    <!--文本配对类型标注数据导出-->
+    <resultMap id="PairingDataOut" type="com.annotation.model.entity.PairingData">
+        <result column="userId" jdbcType="INTEGER" property="userId" />
+        <result column="userName" property="userName" jdbcType="VARCHAR" />
+        <result column="docName" property="docName" jdbcType="VARCHAR" />
+        <result column="paraIndex" property="paraIndex" jdbcType="INTEGER" />
+        <collection property="pairingContent" ofType="Map">
+            <result column="a_litemid" property="a_litemid" jdbcType="INTEGER" />
+            <result column="b_litemid" property="b_litemid" jdbcType="INTEGER" />
+            <result column="a_litemcontent" property="a_litemcontent" jdbcType="VARCHAR" />
+            <result column="b_litemcontent" property="b_litemcontent" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+    <select id="getPairingDataOut" parameterType="Map" resultMap="PairingDataOut">
+        select dt.user_id userId,
+        u.username userName,
+        dc.filename docName,
+        ins.instindex paraIndex,
+        dtp.a_litemid,dtp.b_litemid,
+        lt1.litemcontent a_litemcontent,
+        lt2.litemcontent b_litemcontent
+        from d_task dt
+        left join user u on u.id=dt.user_id
+        left join d_instance di on  dt.tkid=di.dtask_id
+        left join document dc on dc.did=di.document_id
+        left join instance ins on ins.instid = di.instance_id
+        left join dt_pairing dtp on di.dtid =dtp.dt_id
+        left join listitem lt1 on lt1.ltid =dtp.a_litemid
+        left join listitem lt2 on lt2.ltid =dtp.b_litemid
+        where dt.task_id=#{tid}
+        ORDER by dt.user_id and dc.filename and ins.instindex
+    </select>
+
+
 
 
 

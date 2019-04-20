@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by twinkleStar on 2019/2/2.
  */
 @RestController
-@RequestMapping("relation")
+@RequestMapping("/relation")
 public class DtRelationController {
 
     @Autowired

@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("instance/")
+@RequestMapping("/instance/")
 public class InstanceController {
 
     @Autowired

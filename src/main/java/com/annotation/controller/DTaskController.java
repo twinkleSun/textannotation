@@ -16,7 +16,7 @@ import java.util.List;
  * Created by twinkleStar on 2019/2/4.
  */
 @RestController
-@RequestMapping("dtask")
+@RequestMapping("/dtask")
 public class DTaskController {
 
     @Autowired

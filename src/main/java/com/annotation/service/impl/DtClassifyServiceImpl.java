@@ -2,12 +2,15 @@ package com.annotation.service.impl;
 
 import com.annotation.dao.*;
 import com.annotation.model.*;
+import com.annotation.model.entity.ClassifyData;
 import com.annotation.model.entity.LabelCountEntity;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.service.IDParagraphService;
 import com.annotation.service.IDTaskService;
 import com.annotation.service.IDtClassifyService;
+import com.annotation.util.ExcelUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +40,8 @@ public class DtClassifyServiceImpl implements IDtClassifyService {
     ParagraphMapper paragraphMapper;
     @Autowired
     DtuCommentMapper dtuCommentMapper;
+    @Autowired
+    ExcelUtil excelUtil;
 
 
     /**
@@ -181,4 +186,21 @@ public class DtClassifyServiceImpl implements IDtClassifyService {
        List<LabelCountEntity> labelCountEntityList=dtClassifyMapper.selectLabelCount(tid);
        return  labelCountEntityList;
    }
+
+
+
+    public List<ClassifyData> queryClassifyData(int tid){
+        List<ClassifyData> classifyDataList=dtClassifyMapper.getClassifyDataOut(tid);
+        return classifyDataList;
+    }
+
+
+    public HSSFWorkbook getClassifyExcel(List<ClassifyData> classifyDataList){
+        String[] title = {"文件名","段落序号","段落内容","标签","标签选择数"};
+
+        String sheetName = "文本分类数据导出";
+
+        HSSFWorkbook wb = excelUtil.getClassifyExcel(sheetName, title, classifyDataList, null);
+        return wb;
+    }
 }

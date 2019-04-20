@@ -9,7 +9,6 @@
       <result column="badlabel" property="badlabel" jdbcType="INTEGER" />
   </resultMap>
 
-
     <resultMap id="labelCount" type="com.annotation.model.entity.LabelCountEntity" >
         <id column="paragraph_id" property="paragraph_id" jdbcType="INTEGER" />
         <collection property="labelCl" ofType="Map">
@@ -108,6 +107,38 @@
     <update id="alterDtClassifyTable">
         ALTER TABLE dt_classify AUTO_INCREMENT =1
     </update>
+
+
+
+
+
+    <resultMap id="classifyDataOut" type="com.annotation.model.entity.ClassifyData" >
+        <result column="docName" property="docName" jdbcType="VARCHAR" />
+        <result column="paraIndex" property="paraIndex" jdbcType="INTEGER" />
+        <result column="paraContent" property="paraContent" jdbcType="VARCHAR" />
+        <collection property="classifyContent" ofType="Map">
+            <result column="labelName" property="labelName" jdbcType="VARCHAR" />
+            <result column="labelNum" property="labelNum" jdbcType="INTEGER" />
+        </collection>
+    </resultMap>
+
+    <select id="getClassifyDataOut" parameterType="Integer" resultMap="classifyDataOut">
+        SELECT  dc.filename docName,
+        dp.paragraph_id,
+        pa.paraindex paraIndex,pa.paracontent paraContent,
+        lb.labelname labelName,
+        dtc.label_id ,count(*) as labelNum
+        FROM d_task dt
+        left join d_paragraph dp on dt.tkid=dp.dtask_id
+        left join dt_classify dtc on dtc.dt_id=dp.dtid
+        left join document dc on dc.did=dp.document_id
+        left join paragraph pa on pa.pid = dp.paragraph_id
+        left join label lb on lb.lid=dtc.label_id
+        where dt.task_id=#{tid}
+        group by dtc.label_id,dp.paragraph_id
+        order by dp.paragraph_id;
+    </select>
+
 
 
 
