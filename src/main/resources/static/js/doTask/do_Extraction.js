@@ -83,7 +83,7 @@ $(function () {
         $("#row-div-dotask").show();
         $("#div-dotaskbtn").hide();
         $('#taskInfoPanel').collapse('hide');
-        $("#timer").show();
+        //$("#timer").show();
 
 
         console.log(spaceTime);
@@ -245,6 +245,7 @@ function imgOkClick(obj) {
         var doTaskData={
             taskId :taskId,
             docId:docId,
+            userId:0,
             paraId:paraId[curParaIndex],
             labelId:labelList[curLabelIndex].lid,
             indexBegin:label_ul_li_start[curLabelIndex][addLiNum],
@@ -294,7 +295,8 @@ function imgDeleteClick(obj) {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:1
+        typeId:1,
+        userId:0
     };
 
     $.ajax({
@@ -414,7 +416,8 @@ function ajaxDocContent(docId){
     var docid={
         docId: docId,
         status:docStatus,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/extraction",
@@ -827,7 +830,8 @@ function ajaxtaskFileId(obj){
     var docId=documentList[parseInt(i)].did;
     console.log(docId);
     var dataDocId={
-        docId: docId
+        docId: docId,
+        userId:0
     };
 
     $.ajax({
@@ -944,7 +948,8 @@ function paintAlreadyDone2() {
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/dpara/doc/status",
@@ -972,7 +977,8 @@ function ajaxCompletePara(docId) {
     var docid={
         docId: docId,
         taskId:taskId,
-        paraId:paraId[curParaIndex]
+        paraId:paraId[curParaIndex],
+        userId:0
     };
     $.ajax({
         url: "/dpara/status",

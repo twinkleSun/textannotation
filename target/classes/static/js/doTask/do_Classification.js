@@ -108,6 +108,7 @@ $(function () {
                 docId:docId,
                 paraId:paraId[curParaIndex],
                 labelId:ajaxLabelId,
+                userId:0,
                 dtId:0
             };
             //console.log(doTaskData);
@@ -153,38 +154,7 @@ function imgClick(obj) {
 
 };
 
-/**
- * 页脚1，2，3对应的点击事件
- * @param obj
- */
-// function footerIndex(obj) {
-//
-//     $("#"+obj).css("color","red");
-//     console.log(obj);
-//     console.log(panel_footer_index[curParaIndex]);
-//
-//     $("#"+panel_footer_index[curParaIndex]).css("color","#0d96f2");
-//
-//     var aIndex=obj.substring(19,obj.length);//console.log("当前的段落索引为："+aIndex);
-//     curParaIndex=aIndex;//当前段落的索引
-//
-//     var curParaIndexNum =parseInt(curParaIndex);
-//     $("#span-index").html("第"+(curParaIndexNum+1)+"段");//设置内容面板的标题
-//     $("#p-para").html(paraContent[curParaIndex]);//设置内容
-//
-//     labelHtml(labelList);
-//
-//     for(var i=0;i<labelLength;i++){
-//         if(para_label[curParaIndexNum][i]>-1) {
-//             $("#" + label_list_img[i]).attr("src", "/images/isAnsBlue.png");
-//             $("#" + label_list_img[i]).removeClass("notAns").addClass("isAns");
-//         }
-//         // }else{
-//         //     $("#"+label_list_img[i]).attr("src","/images/notAns.png");
-//         //     $("#"+label_list_img[i]).addClass("notAns").removeClass("isAns");
-//         // }
-//     }
-// };
+
 
 /**
  * 获取任务的详细信息，taskInfo,labelList,documentList
@@ -193,7 +163,8 @@ function imgClick(obj) {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:2
+        typeId:2,
+        userId:0
     };
 
     $.ajax({
@@ -313,11 +284,146 @@ function ajaxTaskInfo(taskId) {
  * 获取文件的内容
  * @param docId
  */
+// function ajaxDocContent2(docId) {
+//     var docid={
+//         docId: docId,
+//         status:docStatus,
+//         taskId:taskId,
+//         userId:0
+//     };
+//     $.ajax({
+//         url: "/classify",
+//         type: "get",
+//         traditional: true,
+//         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+//         dataType: "json",
+//         data:docid,
+//         success: function (data) {
+//
+//             console.log(data.data);
+//             if(data.data==null || data.data==""){
+//                 alert("该文档已经全部完成,请查看其他文档或进行其他任务");
+//             }else{
+//                 /**
+//                  * 左边文件内容的显示处理
+//                  */
+//                 paraIndex =data.data.length;//段落数
+//                 var sflag=0;
+//                 // var div_footer='<div class="text-center">';
+//                 for(var i=0;i<paraIndex;i++){
+//                     //todo:可以合并存
+//                     para_label[i]=new Array;
+//                     paraContent[i]=data.data[i].paracontent;//每段内容
+//
+//                     dtstatus[i]=data.data[i].dtstatus;
+//                     paraLabelAlreadyDone[i]=data.data[i].alreadyDone;
+//                     paraId[i]=data.data[i].pid;//console.log(paraId[i]);//每段内容的ID
+//                     if(data.data[i].dtstatus=="已完成"){
+//
+//                         sflag++;
+//                     }
+//
+//                 }
+//
+//
+//                 if(sflag==paraIndex){
+//
+//                     if(!($("#complete-doc").hasClass("disabled"))){
+//                         $("#complete-doc").addClass("disabled");
+//                         $("#complete-doc").attr("disabled","true");
+//                     }
+//
+//                     if(!($("#complete-para").hasClass("disabled"))){
+//                         $("#complete-para").addClass("disabled");
+//                         $("#complete-para").attr("disabled","true");
+//                     }
+//
+//                 }else{
+//                     if($("#complete-doc").hasClass("disabled")){
+//                         $("#complete-doc").removeClass("disabled");
+//                         $("#complete-doc").removeAttr("disabled");
+//                     }
+//                     if($("#complete-para").hasClass("disabled")){
+//                         $("#complete-para").removeClass("disabled");
+//                         $("#complete-para").removeAttr("disabled");
+//                     }
+//                 }
+//                 //curParaIndex=0;
+//
+//                 /**
+//                  * 调用label处理函数
+//                  */
+//                 labelHtml(labelList);
+//
+//                 $("#p-para").html(paraContent[curParaIndex]);
+//
+//
+//                 if(curParaIndex==0){
+//                     if(dtstatus[0]=="已完成"){
+//
+//                         console.log(dtstatus[0]);
+//                         //todo:设置右边标签不可以被选中
+//
+//                         for(var i=0;i<labelLength;i++){
+//                             // if(para_label[0][i]>-1) {
+//                             //     $("#" + label_list_img[i]).attr("src", "/images/isAnsBlue.png");
+//                             //     $("#" + label_list_img[i]).removeClass("notAns").addClass("isAns");
+//                             // }
+//
+//                             if($("#" + label_list_img[i]).hasClass("notAns")) {
+//                                 $("#" + label_list_img[i]).attr("src", "/images/noClick.png");
+//                                 $("#" + label_list_img[i]).removeClass("notAns").addClass("noClick");
+//                             }
+//
+//                         }
+//                         //todo:设置提交按钮不可以被提交
+//                         if(!($("#complete-para").hasClass("disabled"))){
+//                             $("#complete-para").addClass("disabled");
+//                             $("#complete-para").attr("disabled","true");
+//                         }
+//
+//                     }else{
+//
+//                         for(var i=0;i<labelLength;i++){
+//                             if(para_label[0][i]>-1) {
+//                                 $("#" + label_list_img[i]).attr("src", "/images/isAnsBlue.png");
+//                                 $("#" + label_list_img[i]).removeClass("notAns").addClass("isAns");
+//                             }
+//
+//                             if($("#" + label_list_img[i]).hasClass("noClick")) {
+//                                 $("#" + label_list_img[i]).attr("src", "/images/notAns.png");
+//                                 $("#" + label_list_img[i]).removeClass("noClick").addClass("notAns");
+//                             }
+//
+//                         }
+//                         if($("#complete-para").hasClass("disabled")){
+//                             $("#complete-para").removeClass("disabled");
+//                             $("#complete-para").removeAttr("disabled");
+//
+//                         }
+//                     }
+//                 }
+//
+//                 //$("#div-para-footer").html(div_footer);//显示页脚
+//
+//                 pageHandle();
+//
+//             }
+//
+//
+//         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+//
+//
+//         },
+//     });
+// }
+
 function ajaxDocContent(docId) {
     var docid={
         docId: docId,
         status:docStatus,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/classify",
@@ -350,23 +456,9 @@ function ajaxDocContent(docId) {
 
                         sflag++;
                     }
-                    // var panel_footer="";
-                    // if(i==curParaIndex){
-                    //     panel_footer= '\xa0\xa0\xa0\xa0<a class="layui-form-label" id="panel-footer-index-'+i+'" style="color: #FF0000" onclick="footerIndex(this.id)">'
-                    //         + (i+1)
-                    //         +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
-                    // }else{
-                    //     panel_footer= '\xa0\xa0\xa0\xa0<a class="layui-form-label" id="panel-footer-index-'+i+'" style="color: #0d96f2" onclick="footerIndex(this.id)">'
-                    //         + (i+1)
-                    //         +'</a>\xa0\xa0\xa0';//页脚 1，2，3数字
-                    // }
 
-
-                    //panel_footer_index[i]="panel-footer-index-"+i;//页脚a标签对应的ID
-
-                    //div_footer=div_footer+panel_footer;
                 }
-                //div_footer=div_footer+'</div>';
+
 
                 if(sflag==paraIndex){
 
@@ -448,10 +540,6 @@ function ajaxDocContent(docId) {
 
                 //$("#div-para-footer").html(div_footer);//显示页脚
 
-
-
-
-
                 $('.Pagination').pagination({
                     pageCount: paraIndex,
                     coping: true,
@@ -513,6 +601,7 @@ function ajaxDocContent(docId) {
 
                     }
                 });
+
             }
 
 
@@ -523,6 +612,9 @@ function ajaxDocContent(docId) {
     });
 }
 
+function pageHandle() {
+
+}
 /**
  * label部分的初始化
  * @param labelList
@@ -630,7 +722,8 @@ function ajaxdoTaskInfo(doTaskData) {
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/dpara/doc/status",
@@ -658,7 +751,8 @@ function ajaxCompletePara(docId) {
     var docid={
         docId: docId,
         taskId:taskId,
-        paraId:paraId[curParaIndex]
+        paraId:paraId[curParaIndex],
+        userId:0
     };
     $.ajax({
         url: "/dpara/status",

@@ -62,6 +62,10 @@
     from item
   </select>
 
-
+  <select id="selectItemContentByDocId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+   select it.itid, it.itemcontent, it.itemindex, it.instance_id, it.labelnum
+    from item it,instance inst
+   where it.instance_id = inst.instid and inst.document_id = #{docId,jdbcType=INTEGER}
+  </select>
 
 </mapper>

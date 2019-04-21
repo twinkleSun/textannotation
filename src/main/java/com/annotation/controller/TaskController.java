@@ -5,6 +5,7 @@ import com.annotation.model.*;
 import com.annotation.model.entity.ResponseEntity;
 import com.annotation.model.entity.TaskInfoEntity;
 import com.annotation.service.IDocumentService;
+import com.annotation.service.IPointUnitService;
 import com.annotation.service.ITaskService;
 import com.annotation.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class TaskController {
     ITaskService iTaskService;
     @Autowired
     ResponseUtil responseUtil;
+    @Autowired
+    IPointUnitService iPointUnitService;
 
 
     /**
@@ -43,6 +46,7 @@ public class TaskController {
      * @param task
      * @param label
      * @param color
+     * @param userId
      * @return
      * @throws IllegalStateException
      * @throws IOException
@@ -52,13 +56,17 @@ public class TaskController {
     public ResponseEntity pubParaLabelTask(
             @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,
             HttpServletRequest request, HttpSession httpSession,
-            Task task, String[] label, String[] color)throws IllegalStateException, IOException {
-        User user =(User)httpSession.getAttribute("currentUser");
+            Task task, String[] label, String[] color,@RequestParam(defaultValue="0")int userId,@RequestParam(defaultValue="0")int pointUnit)throws IllegalStateException, IOException {
+
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
         List<Integer> docids = new ArrayList<Integer>();
 
         //文件上传结果
-        ResponseEntity docResponseEntity = IDocumentService.checkAddDocParagraph(multipartFiles,user.getId());
+        ResponseEntity docResponseEntity = IDocumentService.checkAddDocParagraph(multipartFiles,userId);
         if(docResponseEntity.getStatus()!=0){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return docResponseEntity;
@@ -68,8 +76,14 @@ public class TaskController {
             docids = hashmap.get("docIds");
         }
 
-        task.setUserId(user.getId());
+
+
+        task.setUserId(userId);
         ResponseEntity taskRes =iTaskService.addTaskOfDocPara(task,docids,label,color);//创建任务的结果
+
+        int taskid = (Integer)taskRes.getData();
+        iPointUnitService.insert(pointUnit,taskid);
+
         return responseUtil.judgeTaskController(taskRes,docids);
 
     }
@@ -81,14 +95,17 @@ public class TaskController {
             @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,
             HttpServletRequest request,HttpSession httpSession,
             Task task, String[] instLabel, String[] item1Label, String[] item2Label,
-            int labelnum, int labelnum1, int labelnum2)throws IllegalStateException, IOException {
+            int labelnum, int labelnum1, int labelnum2,@RequestParam(defaultValue="0")int userId,@RequestParam(defaultValue="0")int pointUnit)throws IllegalStateException, IOException {
 
-        User user =(User)httpSession.getAttribute("currentUser");
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
         List<Integer> docids = new ArrayList<Integer>();
 
         //获取上传的文件数组
-        ResponseEntity fileResponseEntity = IDocumentService.checkAddDocInstanceItem(multipartFiles,user.getId(),labelnum,labelnum1,labelnum2);
+        ResponseEntity fileResponseEntity = IDocumentService.checkAddDocInstanceItem(multipartFiles,userId,labelnum,labelnum1,labelnum2);
         if(fileResponseEntity.getStatus()!=0){
             //插入数据库有错误时整体回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -104,8 +121,12 @@ public class TaskController {
 //            }
         }
 
-        task.setUserId(user.getId());
+        task.setUserId(userId);
         ResponseEntity taskRes =iTaskService.addTaskOfRelation(task,docids,instLabel,item1Label,item2Label);//创建任务的结果
+
+        int taskid = (Integer)taskRes.getData();
+        iPointUnitService.insert(pointUnit,taskid);
+
         return responseUtil.judgeTaskController(taskRes,docids);
     }
 
@@ -113,13 +134,16 @@ public class TaskController {
     @PostMapping(value = "/pairing")
     @Transactional
     public ResponseEntity pubPairingTask(@RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,
-            HttpServletRequest request,HttpSession httpSession, Task task)throws IllegalStateException, IOException {
+            HttpServletRequest request,HttpSession httpSession, Task task,@RequestParam(defaultValue="0")int userId)throws IllegalStateException, IOException {
 
-        User user =(User)httpSession.getAttribute("currentUser");
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
         List<Integer> docids = new ArrayList<Integer>();
 
         //获取上传的文件数组
-        ResponseEntity docRes = IDocumentService.checkAddDocInstanceListitem(multipartFiles,user.getId());
+        ResponseEntity docRes = IDocumentService.checkAddDocInstanceListitem(multipartFiles,userId);
 
         if(docRes.getStatus() != 0){
             //插入数据库有错误时整体回滚
@@ -135,7 +159,7 @@ public class TaskController {
 //            }
         }
 
-        task.setUserId(user.getId());
+        task.setUserId(userId);
         ResponseEntity taskRes =iTaskService.addTaskOfPairingAndSorting(task,docids);//创建任务的结果
 
         return responseUtil.judgeTaskController(taskRes,docids);
@@ -148,20 +172,24 @@ public class TaskController {
      * @param request
      * @param multipartFiles
      * @param task
+     * @param userId
      * @return
      */
     @Transactional
     @RequestMapping(value = "/sorting", method = RequestMethod.POST)
     public ResponseEntity pubSortingTask(
             @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles,
-            HttpServletRequest request, HttpSession httpSession, Task task,int typeId)throws IllegalStateException, IOException {
+            HttpServletRequest request, HttpSession httpSession, Task task,int typeId,@RequestParam(defaultValue="0")int userId,@RequestParam(defaultValue="0")int pointUnit)throws IllegalStateException, IOException {
 
-        User user = (User) httpSession.getAttribute("currentUser");
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
         List<Integer> docids = new ArrayList<Integer>();
         //User user =(User)iUserService.queryUserByUsername("test");
 
         //获取上传的文件数组
-        ResponseEntity fileResponseEntity = IDocumentService.checkAddSortingDoc(multipartFiles, user.getId(),typeId);
+        ResponseEntity fileResponseEntity = IDocumentService.checkAddSortingDoc(multipartFiles,userId,typeId);
         if (fileResponseEntity.getStatus()!=0) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return fileResponseEntity;
@@ -171,8 +199,12 @@ public class TaskController {
             docids = hashmap.get("docIds");
         }
 
-        task.setUserId(user.getId());
+        task.setUserId(userId);
         ResponseEntity taskRes = iTaskService.addTaskOfPairingAndSorting(task,docids);//创建任务的结果
+
+        int taskid = (Integer)taskRes.getData();
+        iPointUnitService.insert(pointUnit,taskid);
+
         return responseUtil.judgeTaskController(taskRes,docids);
     }
 
@@ -198,7 +230,7 @@ public class TaskController {
      * @return
      */
     @GetMapping(value = "/all")
-    public JSONObject getTotalTaskOfUndo(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int page, int limit) {
+    public JSONObject getTotalTaskOfUndo(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession,int page,int limit) {
         List<Task> taskList = iTaskService.queryTotalTaskOfUndo(page,limit);
         int count=iTaskService.countNumOfUndo();
         JSONObject jso =new JSONObject();
@@ -223,13 +255,17 @@ public class TaskController {
      * @param httpSession
      * @param page
      * @param limit
+     * @param userId
      * @return
      */
     @GetMapping(value = "/my/pub")
-    public JSONObject getTasklist(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int page, int limit) {
-        User user =(User)httpSession.getAttribute("currentUser");
-        List<Task> taskList = iTaskService.queryMyPubTask(user.getId(),page,limit);
-        int count=iTaskService.countNumOfMyPubTask(user.getId());
+    public JSONObject getTasklist(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession httpSession, int page, int limit,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
+        List<Task> taskList = iTaskService.queryMyPubTask(userId,page,limit);
+        int count=iTaskService.countNumOfMyPubTask(userId);
         JSONObject rs =new JSONObject();
         if(taskList==null){
             rs.put("msg","查询失败");
@@ -282,7 +318,7 @@ public class TaskController {
      * @param request
      * @param httpServletResponse
      * @param httpSession
-     * @param tid
+     * @param taskId
      * @param typeId
      * @return
      */
@@ -300,6 +336,28 @@ public class TaskController {
             jso.put("msg","success");
             jso.put("code",0);
         }
+        return jso;
+    }
+
+
+    /**
+     * 根据任务类型查询任务
+     * @param tasktype
+     * @return
+     */
+    @GetMapping(value = "/tasktype")
+    public JSONObject selectTaskByType(String tasktype) {
+        List<Task> taskList = iTaskService.selectTaskByType(tasktype);
+        JSONObject jso =new JSONObject();
+        if(taskList==null){
+            jso.put("msg","查询失败");
+            jso.put("code",-1);
+        }else{
+            jso.put("msg","success");
+            jso.put("code",0);
+            jso.put("data",taskList);
+        }
+
         return jso;
     }
 

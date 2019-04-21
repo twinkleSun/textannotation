@@ -111,7 +111,8 @@ $(function () {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:6
+        typeId:6,
+        userId:0
     };
 
     $.ajax({
@@ -241,7 +242,8 @@ function ajaxDocSortingInstanceItem(docId) {
             var ajaxNewData={
                     instanceIndex:instanceItem[0].instid,
                     tid:taskId,
-                    docId:docId
+                    docId:docId,
+                    userId:0
                 };
             paintSortingContent(itemList);
             ajaxResHandle(ajaxNewData);
@@ -301,7 +303,8 @@ function curInstanceId(obj) {
     var ajaxNewData={
         instanceIndex:instanceItem[curInstanceIndex].instid,
         tid:taskId,
-        docId:docId
+        docId:docId,
+        userId:0
     };
     ajaxResHandle(ajaxNewData);
 

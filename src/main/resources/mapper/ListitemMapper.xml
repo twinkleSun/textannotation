@@ -39,12 +39,6 @@
     where instance_id = #{instId,jdbcType=INTEGER}
   </delete>
 
-
-
-
-
-
-
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select ltid, litemcontent, list_index, litemindex, instance_id
     from listitem
@@ -59,5 +53,11 @@
     delete from listitem
     where ltid = #{ltid,jdbcType=INTEGER}
   </delete>
+
+  <select id="selectListItemContentByDocId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select list.ltid, list.litemcontent, list.list_index, list.litemindex, list.instance_id
+     from listitem list,instance inst
+    where list.instance_id = inst.instid and inst.document_id = #{docId,jdbcType=INTEGER}
+  </select>
 
 </mapper>

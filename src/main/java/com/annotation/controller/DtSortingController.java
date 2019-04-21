@@ -30,14 +30,18 @@ public class DtSortingController {
      * @param httpServletRequest
      * @param httpServletResponse
      * @param docId
+     * @param userId
      * @return
      */
     @GetMapping
     public JSONObject getSortingInstanceItem(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpSession httpSession,
-                                             int docId,String status,int taskId) {
-        User user =(User)httpSession.getAttribute("currentUser");
+                                             int docId,String status,int taskId,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        List<InstanceItemEntity> instanceItemEntityList = iDtSortingService.querySortingInstanceItem(docId,user.getId(),status,taskId);
+        List<InstanceItemEntity> instanceItemEntityList = iDtSortingService.querySortingInstanceItem(docId,userId,status,taskId);
 
         JSONObject rs = new JSONObject();
         if(instanceItemEntityList != null){
@@ -74,10 +78,13 @@ public class DtSortingController {
 
     @PostMapping
     public ResponseEntity doSorting(HttpSession httpSession,
-                                         int taskId,int docId,int instanceId, int[] itemIds, int[] newIndex) {
+                                         int taskId,int docId,int instanceId, int[] itemIds, int[] newIndex,@RequestParam(defaultValue="0")int userId) {
 
-        User user =(User)httpSession.getAttribute("currentUser");
-        ResponseEntity responseEntity =iDtSortingService.addSorting(taskId,docId, instanceId,user.getId(),itemIds,newIndex);//创建做任务表的结果
+       if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
+        ResponseEntity responseEntity =iDtSortingService.addSorting(taskId,docId, instanceId,userId,itemIds,newIndex);//创建做任务表的结果
         return responseEntity;
     }
 

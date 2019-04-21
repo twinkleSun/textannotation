@@ -192,7 +192,8 @@ $(function () {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:2
+        typeId:2,
+        userId:0
     };
 
     $.ajax({
@@ -585,7 +586,8 @@ function badfunc(obj) {
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/classify/doc/status",

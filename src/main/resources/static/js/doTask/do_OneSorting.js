@@ -93,7 +93,8 @@ $(function () {
                    docId:docId,
                    instanceId:instanceItem[curInstanceIndex].instid,
                    itemIds:itemId,
-                   newIndex:newIndex
+                   newIndex:newIndex,
+                   userId:0
                };
                addSortingTask(doTaskData);
                //console.log(doTaskData);
@@ -115,7 +116,8 @@ $(function () {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:5
+        typeId:5,
+        userId:0
     };
 
     $.ajax({
@@ -214,7 +216,8 @@ function ajaxDocSortingInstanceItem(docId) {
     var docid={
         docId: docId,
         status:docStatus,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/sorting",
@@ -472,7 +475,8 @@ function paintSortingContent(itemList,alreadyDone) {
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/dinstance/doc/status",
@@ -501,7 +505,8 @@ function ajaxCompleteInstance(docId) {
     var docid={
         docId: docId,
         taskId:taskId,
-        instanceId:instanceItem[curInstanceIndex].instid
+        instanceId:instanceItem[curInstanceIndex].instid,
+        userId:0
     };
     $.ajax({
         url: "/dinstance/status",

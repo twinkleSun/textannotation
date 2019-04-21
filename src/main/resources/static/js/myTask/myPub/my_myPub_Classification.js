@@ -93,95 +93,11 @@ $(function () {
     });
 
 
-    /**
-     * ajaxdoTask提交事件
-     */
-    // $("#submit-paraLabel").click(function(){
-    //     ajaxTag=0;//用来判定是否有失败的标签
-    //     console.log(para_label);
-    //     var ajaxLabelId=new Array;
-    //     var ajaxLabelNum=0;
-    //     for(var i=0;i<labelLength;i++){
-    //         console.log(curParaIndex);
-    //         if(para_label[curParaIndex][i]>-1){
-    //             ajaxLabelId[ajaxLabelNum]=labelList[i].lid;
-    //             ajaxLabelNum++;
-    //
-    //         }
-    //     }
-    //
-    //     var doTaskData={
-    //         taskId :taskId,
-    //         docId:docId,
-    //         paraId:paraId[curParaIndex],
-    //         labelId:ajaxLabelId,
-    //         dtId:0
-    //     };
-    //     //console.log(doTaskData);
-    //     /**
-    //      * 调用ajax上传标签
-    //      */
-    //     ajaxdoTaskInfo(doTaskData);
-    //
-    // });
+
 
 });
 
-/**
- * 选中label的事件
- * @param obj
- */
-// function imgClick(obj) {
-//     var i=obj.substring(15,obj.length);
-//     curLabelIndex=parseInt(i);
-//     console.log(curLabelIndex);
-//     if($("#"+label_list_img[i]).hasClass("isAns")){
-//         $("#"+label_list_img[i]).attr("src","./images/notAns.png");
-//         $("#"+label_list_img[i]).addClass("notAns").removeClass("isAns");
-//
-//         para_label[curParaIndex][curLabelIndex]=-1;
-//         curLabelIndex=-1;
-//         //console.log(para_label);
-//     }else{
-//         $("#"+label_list_img[i]).attr("src","./images/isAnsBlue.png");
-//         $("#"+label_list_img[i]).removeClass("notAns").addClass("isAns");
-//         para_label[curParaIndex][curLabelIndex]=curLabelIndex;
-//         //console.log(para_label);
-//     }
-// };
 
-/**
- * 页脚1，2，3对应的点击事件
- * @param obj
- */
-// function footerIndex(obj) {
-//
-//     $("#"+obj).css("color","red");
-//     console.log(obj);
-//     console.log(panel_footer_index[curParaIndex]);
-//
-//     $("#"+panel_footer_index[curParaIndex]).css("color","#0d96f2");
-//
-//     var aIndex=obj.substring(19,obj.length);//console.log("当前的段落索引为："+aIndex);
-//     curParaIndex=aIndex;//当前段落的索引
-//
-//     var curParaIndexNum =parseInt(curParaIndex);
-//     $("#span-index").html("第"+(curParaIndexNum+1)+"段");//设置内容面板的标题
-//     $("#p-para").html(paraContent[curParaIndex]);//设置内容
-//
-//     labelHtml(labelList);
-//
-//     for(var i=0;i<labelLength;i++){
-//         if(para_label[curParaIndexNum][i]>-1) {
-//             $("#" + label_list_img[i]).attr("src", "./images/isAnsBlue.png");
-//             $("#" + label_list_img[i]).removeClass("notAns").addClass("isAns");
-//         }
-//         // }else{
-//         //     $("#"+label_list_img[i]).attr("src","./images/notAns.png");
-//         //     $("#"+label_list_img[i]).addClass("notAns").removeClass("isAns");
-//         // }
-//     }
-// };
 
 /**
  * 获取任务的详细信息，taskInfo,labelList,documentList
@@ -190,7 +106,8 @@ $(function () {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:2
+        typeId:2,
+        userId:0
     };
 
     $.ajax({
@@ -556,7 +473,7 @@ function badfunc(obj) {
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
-        taskId:taskId
+        taskId:taskId,userId:0
     };
     $.ajax({
         url: "/classify/doc/status",

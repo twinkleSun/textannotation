@@ -816,11 +816,15 @@ public class TaskServiceImpl implements ITaskService{
 //        return responseEntity;
 //    }
 
-//
-
-//
-
-//
+    /**
+     * 根据任务类型查询任务
+     * @param tasktype
+     * @return
+     */
+    public List<Task> selectTaskByType(String tasktype){
+        List<Task> tasks = taskMapper.selectTaskByType(tasktype);
+        return tasks;
+    }
 
 }
 

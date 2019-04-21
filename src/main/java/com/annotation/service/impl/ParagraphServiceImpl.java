@@ -24,11 +24,10 @@ public class ParagraphServiceImpl implements IParagraphService {
      * @param docId
      * @return
      */
-//    public List<Paragraph> selectContentByDocId(int docId){
-//        List<Paragraph> contentList =paragraphMapper.selectContentByDocumentId(docId);
-//        return contentList;
-//    }
-
+    public List<Paragraph> selectContentByDocId(int docId){
+        List<Paragraph> contentList =paragraphMapper.selectContentByDocId(docId);
+        return contentList;
+    }
 
 
 

@@ -2,10 +2,14 @@ package com.annotation.controller;
 
 import com.annotation.model.User;
 import com.annotation.model.entity.ResponseEntity;
+import com.annotation.service.IDtasktypeService;
+import com.annotation.service.IPointService;
 import com.annotation.service.IUserService;
 import com.annotation.util.ResponseUtil;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +32,11 @@ public class UserController {
     IUserService iUserService;
     @Autowired
     ResponseUtil responseUtil;
+
+    @Autowired
+    IDtasktypeService iDtasktypeService;
+    @Autowired
+    IPointService iPointService;
 
     /**
      * 用户登陆，新建session
@@ -118,6 +127,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @Transactional
     @PostMapping
     public ResponseEntity userRegister(HttpServletRequest request, HttpServletResponse httpServletResponse,
                                       User user){
@@ -130,6 +140,24 @@ public class UserController {
                 ResponseEntity responseEntity = new ResponseEntity();
                 responseEntity.setStatus(200);
                 responseEntity.setMsg("注册成功，请重新登陆");
+
+                int userId = user.getId();
+                int upRes = iDtasktypeService.insert(userId);
+                if(upRes<0){
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    ResponseEntity responseEntity2=new ResponseEntity();
+                    responseEntity2.setMsg("新建是否做任务表失败");
+                    responseEntity2.setStatus(-1);
+                    return responseEntity2;
+                }
+                int pointres = iPointService.insert(userId);
+                if(upRes<0){
+                    ResponseEntity responseEntity3=new ResponseEntity();
+                    responseEntity3.setMsg("新建积分表失败");
+                    responseEntity3.setStatus(-1);
+                    return responseEntity3;
+                }
+
                 return responseEntity;
             }else{
                 ResponseEntity responseEntity=responseUtil.judgeResult(1004);

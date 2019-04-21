@@ -23,4 +23,6 @@ public interface ItemMapper {
     int updateByPrimaryKey(Item record);
 
     int alterItemTable();
+
+    List<Item> selectItemContentByDocId(int docId);
 }

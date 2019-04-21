@@ -137,4 +137,12 @@ public interface TaskMapper {
     List<UserTaskEmail> getUserTaskEmail(String curDateTime);
 
 
+    /**
+     * 根据任务类型查询任务
+     * @param tasktype
+     * @return
+     */
+    List<Task> selectTaskByType(String tasktype);
+
+
 }

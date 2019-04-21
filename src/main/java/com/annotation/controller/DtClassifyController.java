@@ -39,14 +39,18 @@ public class DtClassifyController {
      * @param httpServletRequest
      * @param httpServletResponse
      * @param docId
+     * @param userId
      * @return
      */
     @GetMapping
     public JSONObject getClassificationPara(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse,
-                                            int docId,String status,int taskId) {
-        User user =(User)httpSession.getAttribute("currentUser");
+                                            int docId,String status,int taskId,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        List<ParagraphLabelEntity> paragraphLabelEntityList=iDtClassifyService.queryClassifyParaLabel(docId,user.getId(),status,taskId);
+        List<ParagraphLabelEntity> paragraphLabelEntityList=iDtClassifyService.queryClassifyParaLabel(docId,userId,status,taskId);
 
         //List<Content> contentList = iContentService.selectContentByDocId(docId);
         JSONObject rs = new JSONObject();
@@ -69,16 +73,19 @@ public class DtClassifyController {
      * @param docId
      * @param paraId
      * @param labelId
-
+     * @param userId
      * @return
      */
     @PostMapping
     public ResponseEntity doClassify(HttpSession httpSession,
-                                     int taskId,int docId,int paraId,int[] labelId) {
+                                     int taskId,int docId,int paraId,int[] labelId,@RequestParam(defaultValue="0")int userId) {
 
-        User user =(User)httpSession.getAttribute("currentUser");
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        int dtid =iDtClassifyService.addClassify(user.getId(),taskId, docId, paraId,labelId);//创建做任务表的结果
+        int dtid =iDtClassifyService.addClassify(userId,taskId, docId, paraId,labelId);//创建做任务表的结果
 
         if(dtid==4001 || dtid==4005|| dtid==4006|| dtid==4007|| dtid==4008|| dtid==4009){
             ResponseEntity responseEntity = responseUtil.judgeResult(dtid);

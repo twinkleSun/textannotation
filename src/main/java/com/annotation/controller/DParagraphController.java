@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,10 +33,13 @@ public class DParagraphController {
     @Transactional
     @PostMapping("/doc/status")
     public ResponseEntity updateStatusByDocId(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse,
-                                       int docId, int taskId) {
-        User user =(User)httpSession.getAttribute("currentUser");
+                                       int docId, int taskId,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        int upRes=idParagraphService.updateStatusByDocId(user.getId(),docId,taskId);
+        int upRes=idParagraphService.updateStatusByDocId(userId,docId,taskId);
         if(upRes==4010|| upRes==4011|| upRes==4012){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             ResponseEntity responseEntity=responseUtil.judgeResult(upRes);
@@ -50,14 +54,16 @@ public class DParagraphController {
     }
 
 
-
     @Transactional
     @PostMapping("/status")
     public ResponseEntity updateStatus(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse,
-                                       int docId, int taskId,int paraId) {
-        User user =(User)httpSession.getAttribute("currentUser");
+                                       int docId, int taskId,int paraId,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        int upRes=idParagraphService.updateStatus(user.getId(),docId,taskId,paraId);
+        int upRes=idParagraphService.updateStatus(userId,docId,taskId,paraId);
         if(upRes==4010|| upRes==4013|| upRes==4012){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             ResponseEntity responseEntity=responseUtil.judgeResult(upRes);

@@ -228,7 +228,8 @@ $(function ($) {
             instanceId:instanceItem[curInstanceIndex].instid,
             aListitemId:aListitemId,
             bListitemId:bListitemId,
-            taskType:taskType
+            taskType:taskType,
+            userId:0
         };console.log(doTaskData);
 
         ajaxdoTaskInfo(doTaskData,fRes);
@@ -251,7 +252,8 @@ $(function ($) {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:4
+        typeId:4,
+        userId:0
     };
 
     $.ajax({
@@ -444,7 +446,8 @@ function curInstanceId(obj) {
     var ajaxNewData={
         instanceIndex:instanceItem[curInstanceIndex].instid,
         tid:taskId,
-        docId:docId
+        docId:docId,
+        userId:0
     };
     ajaxResHandle(ajaxNewData);
 

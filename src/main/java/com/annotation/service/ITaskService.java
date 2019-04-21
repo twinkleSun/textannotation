@@ -128,10 +128,15 @@ public interface ITaskService {
      */
 //    String queryUserName(int tid);
 
+     /**
+     * 根据任务类型查询任务
+     * @param tasktype
+     * @return
+     */
+     List<Task> selectTaskByType(String tasktype);
 
 
 
-//
 
 
 

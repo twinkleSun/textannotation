@@ -224,6 +224,7 @@ $(function(){
             $("#type4-relation-div").show();
 
         }else if(taskValue=="5" ||taskValue=="6" ){
+            $("#type4-relation-div").hide();
             $("#tag-div").html("");
         }
 

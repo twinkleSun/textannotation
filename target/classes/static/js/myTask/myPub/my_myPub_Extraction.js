@@ -290,7 +290,8 @@ $(function () {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:1
+        typeId:1,
+        userId:0
     };
 
     $.ajax({
@@ -553,115 +554,9 @@ function labelHtml(labelList){
 
 };
 
-/**
- * 做任务上传自己的标签
- * @param doTaskData
- */
-// function ajaxdoTaskInfo(doTaskData,curLabelIndex,addLiNum,str) {
-//
-//     $.ajax({
-//         url: "extraction",
-//         type: "post",
-//         traditional: true,
-//         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-//         dataType: "json",
-//         data:doTaskData,
-//         success: function (data) {
-//             //console.log(data);
-//             if(data.status=="0"){
-//
-//                 /**
-//                  * 每段文本的内容变为标记成功后的内容
-//                  */
-//                 paraContent[curParaIndex]=str;console.log(str);
-//                 alert("添加成功");
-//                 $("#"+li_img_ok[curLabelIndex][addLiNum]).attr("src","./images/blank.PNG");
-//                 $("#"+li_img_ok[curLabelIndex][addLiNum]).removeAttr("onclick");
-//                 $("#"+li_img_del[curLabelIndex][addLiNum]).attr("src","./images/labelsuccess.png");
-//                 $("#"+li_img_del[curLabelIndex][addLiNum]).removeAttr("onclick");
-//
-//
-//                 li_img_num[curLabelIndex]++;
-//                 /**
-//                  * 提交一个li之后，添加一个li
-//                  */
-//                 var addLi= '<li class="list-group-item" id="label-ans-li-'+curLabelIndex+'-'+(addLiNum+1)+'">'
-//                     +'<div class="row">'
-//                     +'<div class="col-lg-10" id="li-ans-div-'+curLabelIndex+'-'+(addLiNum+1)+'">'
-//                     +'</div>'
-//                     +'<div class="col-lg-1">'
-//                     +'<img class="okAns" src="./images/ok.png" id="li-img-ok-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgOkClick(this.id)">'
-//                     +'</div>'
-//                     +'<div class="col-lg-1">'
-//                     +'<img class="delAns" src="./images/delete.png" id="li-img-del-'+curLabelIndex+'-'+(addLiNum+1)+'" onclick="imgDelClick(this.id)">'
-//                     +'</div>'
-//                     +'</div>'
-//                     +'</li>';
-//                 label_ans_li[curLabelIndex][addLiNum+1]= "label-ans-li-"+curLabelIndex+"-"+(addLiNum+1);
-//                 li_ans_div[curLabelIndex][addLiNum+1]= "li-ans-div-"+curLabelIndex+"-"+(addLiNum+1);
-//                 li_img_ok[curLabelIndex][addLiNum+1] ="li-img-ok-"+curLabelIndex+"-"+(addLiNum+1);
-//                 label_ul_li_span[curLabelIndex][addLiNum+1] ="label-ul-li-span-"+curLabelIndex+"-"+(addLiNum+1);
-//                 li_img_del[curLabelIndex][addLiNum+1] ="li-img-del-"+curLabelIndex+"-"+(addLiNum+1);
-//
-//                 $("#"+label_ans_ul[curLabelIndex]).append(addLi);
-//             }
-//
-//
-//         }, error: function (XMLHttpRequest, textStatus, errorThrown) {
-//
-//         },
-//     });
-//
-//
-// };
 
-/**
- * 获取被选中的文本的startIndex和endIndex
- * 这里用的是递归去除span标签
- * todo:试试正则表达式？
- * @param paraStr
- * @param paraLabelId
- * @param testNum
- * @param strLen
- * @param addLiNum
- * @returns {*}
- */
-// function getParaStartEnd(paraStr,paraLabelId,testNum,strLen,addLiNum){
-//     // console.log("---------------------------------------start")
-//     // console.log("paraStr="+paraStr);
-//     // console.log("paraLabelId="+paraLabelId);
-//     // console.log("strLen="+strLen);
-//
-//     var num1=paraStr.indexOf("<");//console.log("num1="+num1);
-//     var num2=paraStr.indexOf(">");//console.log("num2="+num2);
-//     var str1=paraStr.substring(num1,num2+1);//console.log("str1="+str1);
-//     var str2=paraStr.substring(0,num1)+paraStr.substring(num2+1);//console.log("str2="+str2);
-//
-//     if(num1<0 || num2<0){
-//         /**
-//          * 没有往页面里插入span成功的情况，容易造成死循环
-//          */
-//         return -1;
-//     }else if(str1.indexOf(paraLabelId)!=-1){
-//         // console.log("num1段落="+paraStr.substring(0,num1));
-//         testNum=paraStr.substring(0,num1).length; //console.log("testNum="+testNum);
-//
-//         /**
-//          * 设置被选中的str 的startIndex,endIndex
-//          * @type {*}
-//          */
-//         label_ul_li_start[curLabelIndex][addLiNum]=testNum+1;//todo:+1
-//         label_ul_li_end[curLabelIndex][addLiNum]=testNum+strLen;
-//
-//         return 1;
-//
-//     }else{
-//         return getParaStartEnd(str2,paraLabelId,testNum,strLen,addLiNum);
-//     }
-//
-//
-//
-// }
+
+
 
 /**
  * 查看文件内容
@@ -674,7 +569,8 @@ function ajaxtaskFileId(obj){
     var docId=documentList[parseInt(i)].did;
     console.log(docId);
     var dataDocId={
-        docId: docId
+        docId: docId,
+        userId:0
     };
 
     $.ajax({

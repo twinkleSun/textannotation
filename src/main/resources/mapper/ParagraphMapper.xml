@@ -74,9 +74,10 @@
     from paragraph
   </select>
 
-
-
-
+  <select id="selectContentByDocId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  p.pid, p.paracontent, p.paraindex, p.document_id from paragraph p
+    where p.document_id = #{docId,jdbcType=INTEGER}
+  </select>
 
 
 </mapper>

@@ -37,14 +37,18 @@ public class DtRelationController {
      * @param httpServletRequest
      * @param httpServletResponse
      * @param docId
+     * @param userId
      * @return
      */
     @GetMapping
     public JSONObject getRelationInstance(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpSession httpSession,
-                                          int docId,String status,int taskId) {
-        User user =(User)httpSession.getAttribute("currentUser");
+                                          int docId,String status,int taskId,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        List<InstanceItemEntity> instanceItemEntityList = iDtRelationService.queryInstanceItem(docId,user.getId(),status,taskId);
+        List<InstanceItemEntity> instanceItemEntityList = iDtRelationService.queryInstanceItem(docId,userId,status,taskId);
         List<Label> instanceLabel =iInstanceLabelService.queryInstanceLabelByDocId(docId);
         List<Label> item1Label =iInstanceLabelService.queryItem1LabelByDocId(docId);
         List<Label> item2Label = iInstanceLabelService.queryItem2LabelByDocId(docId);
@@ -102,15 +106,19 @@ public class DtRelationController {
      * @param item1Labels
      * @param item2Id
      * @param item2Labels
+     * @param userId
      * @return
      */
     @PostMapping
     public ResponseEntity doRelation(HttpSession httpSession,
-                                      int taskId,int docId,int instanceId,int[] instanceLabels, int item1Id, int[] item1Labels, int item2Id, int[] item2Labels) {
+                                      int taskId,int docId,int instanceId,int[] instanceLabels, int item1Id, int[] item1Labels, int item2Id, int[] item2Labels,@RequestParam(defaultValue="0")int userId) {
 
-        User user =(User)httpSession.getAttribute("currentUser");
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        int dtid =iDtRelationService.addRelation(user.getId(),taskId,docId,instanceId,instanceLabels,item1Id,item1Labels,item2Id,item2Labels);//创建做任务表的结果
+        int dtid =iDtRelationService.addRelation(userId,taskId,docId,instanceId,instanceLabels,item1Id,item1Labels,item2Id,item2Labels);//创建做任务表的结果
         if(dtid==4001 || dtid==4002|| dtid==4004|| dtid==4005){
             ResponseEntity responseEntity = responseUtil.judgeResult(dtid);
             return responseEntity;

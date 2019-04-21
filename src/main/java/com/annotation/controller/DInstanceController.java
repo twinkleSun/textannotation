@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,10 +36,12 @@ public class DInstanceController {
     @Transactional
     @PostMapping("/doc/status")
     public ResponseEntity updateStatusByDocId(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse,
-                                       int docId, int taskId) {
+                                       int docId, int taskId,@RequestParam(defaultValue="0")int userId) {
 
-
-        User user =(User)httpSession.getAttribute("currentUser");
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 //        String uId;
 //        if(userId=""|| userId==null){
 //            User user =(User)httpSession.getAttribute("currentUser");
@@ -46,7 +49,7 @@ public class DInstanceController {
 //        }else{
 //            uId=userId;
 //        }
-        int upRes=idInstanceService.updateStatusByDocId(user.getId(),docId,taskId);
+        int upRes=idInstanceService.updateStatusByDocId(userId,docId,taskId);
         if(upRes==4010|| upRes==4011|| upRes==4012){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             ResponseEntity responseEntity=responseUtil.judgeResult(upRes);
@@ -66,9 +69,12 @@ public class DInstanceController {
     @Transactional
     @PostMapping("/status")
     public ResponseEntity updateStatus(HttpSession httpSession,
-                                       int docId, int taskId, int instanceId) {
-        User user =(User)httpSession.getAttribute("currentUser");
-        int upRes=idInstanceService.updateStatus(user.getId(),docId,taskId,instanceId);
+                                       int docId, int taskId, int instanceId,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
+        int upRes=idInstanceService.updateStatus(userId,docId,taskId,instanceId);
         if(upRes==4010|| upRes==4013|| upRes==4012){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             ResponseEntity responseEntity=responseUtil.judgeResult(upRes);

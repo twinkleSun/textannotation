@@ -44,5 +44,7 @@ public interface ParagraphMapper {
 
     int updateByPrimaryKey(Paragraph record);
 
+    List<Paragraph> selectContentByDocId(Integer docId);
+
 
 }

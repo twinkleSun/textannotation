@@ -38,5 +38,7 @@ public interface ListitemMapper {
 
     int updateByPrimaryKey(Listitem record);
 
+    List<Listitem> selectListItemContentByDocId(int docId);
+
 
 }

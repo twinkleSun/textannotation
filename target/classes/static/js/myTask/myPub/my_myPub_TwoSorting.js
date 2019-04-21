@@ -111,7 +111,7 @@ $(function () {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:6
+        typeId:6,userId:0
     };
 
     $.ajax({

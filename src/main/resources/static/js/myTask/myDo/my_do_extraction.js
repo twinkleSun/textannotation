@@ -222,7 +222,8 @@ function imgOkClick(obj) {
             paraId:paraId[curParaIndex],
             labelId:labelList[curLabelIndex].lid,
             indexBegin:label_ul_li_start[curLabelIndex][addLiNum],
-            indexEnd:label_ul_li_end[curLabelIndex][addLiNum]
+            indexEnd:label_ul_li_end[curLabelIndex][addLiNum],
+            userId:0
         };
         console.log(doTaskData);
 
@@ -289,7 +290,8 @@ function footerIndex(obj) {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:1
+        typeId:1,
+        userId:0
     };
 
     $.ajax({
@@ -414,7 +416,8 @@ function ajaxDocContent(docId){
     var docid={
         docId: docId,
         status:docStatus,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/extraction",
@@ -703,7 +706,8 @@ function ajaxtaskFileId(obj){
     var docId=documentList[parseInt(i)].did;
     console.log(docId);
     var dataDocId={
-        docId: docId
+        docId: docId,
+        userId:0
     };
 
     $.ajax({
@@ -820,7 +824,8 @@ function paintAlreadyDone2() {
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/dpara/doc/status",
@@ -843,7 +848,8 @@ function ajaxCompletePara(docId) {
     var docid={
         docId: docId,
         taskId:taskId,
-        paraId:paraId[curParaIndex]
+        paraId:paraId[curParaIndex],
+        userId:0
     };
     $.ajax({
         url: "/dpara/status",

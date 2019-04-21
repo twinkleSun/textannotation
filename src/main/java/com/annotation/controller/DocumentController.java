@@ -38,7 +38,7 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("file/")
+@RequestMapping("/file")
 public class DocumentController {
 
 //    @Autowired

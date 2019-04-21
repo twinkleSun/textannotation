@@ -15,7 +15,9 @@ public interface IParagraphService {
      * @param docId
      * @return
      */
+   public List<Paragraph> selectContentByDocId(int docId);
    // public List<Paragraph> selectContentByDocId(int docId);
+
 
 
 

@@ -33,11 +33,13 @@ public class DtPairingController {
      */
     @GetMapping
     public JSONObject getPairingInstance(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, HttpSession httpSession,
-                                         int docId,String status,int taskId) {
-        User user =(User)httpSession.getAttribute("currentUser");
+                                         int docId,String status,int taskId,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-
-        List<InstanceListitemEntity> instanceItemEntityList = iDtPairingService.queryInstanceListitem(docId,user.getId(),status,taskId);
+        List<InstanceListitemEntity> instanceItemEntityList = iDtPairingService.queryInstanceListitem(docId,userId,status,taskId);
         JSONObject rs = new JSONObject();
         if(instanceItemEntityList != null){
             rs.put("msg","查询文件内容成功");
@@ -77,18 +79,19 @@ public class DtPairingController {
      * @param aListitemId
      * @param bListitemId
      * @param taskType
+     * @param userId
      * @return
      */
     @PostMapping
     public JSONObject doPairing(HttpSession httpSession,
-                                  int taskId,int docId,int instanceId,int[] aListitemId, int[] bListitemId,String taskType) {
+                                  int taskId,int docId,int instanceId,int[] aListitemId, int[] bListitemId,String taskType,@RequestParam(defaultValue="0")int userId) {
 
-        User user =(User)httpSession.getAttribute("currentUser");
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        //User user =(User)iUserService.queryUserByUsername("test");
-        // userid = user.getId();
-
-        String dtInstItRes =iDtPairingService.addPairing(taskId,docId,instanceId,user.getId(),aListitemId,bListitemId,taskType);
+        String dtInstItRes =iDtPairingService.addPairing(taskId,docId,instanceId,userId,aListitemId,bListitemId,taskType);
         JSONObject jso =new JSONObject();
 
         if(dtInstItRes.contains("0")){

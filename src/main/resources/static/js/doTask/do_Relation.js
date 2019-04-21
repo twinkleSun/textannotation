@@ -136,7 +136,8 @@ $(function () {
             item1Id:instanceItem[curInstanceIndex].itemList[0].itid,
             item1Labels:doTaskItem1,
             item2Id:instanceItem[curInstanceIndex].itemList[1].itid,
-            item2Labels:doTaskItem2
+            item2Labels:doTaskItem2,
+            userId:0
 
         };  console.log(doTaskData);
 
@@ -154,7 +155,8 @@ $(function () {
 function ajaxTaskInfo(taskId) {
     var taskid={
         tid:taskId,
-        typeId:3
+        typeId:3,
+        userId:0
     };
     // var taskid={
     //     tid:"12"
@@ -257,7 +259,8 @@ function ajaxDocInstanceItem(docId) {
     var docid={
         docId: docId,
         status:docStatus,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/relation",
@@ -275,6 +278,9 @@ function ajaxDocInstanceItem(docId) {
             item1Label=data.item1Label;
             item2Label=data.item2Label;
 
+            if(instanceItem.length<1){
+                alert("该部分已经全部完成");
+            }
             limitInstanceLabelNum=instanceItem[curInstanceIndex].labelnum;
 
             // curInstanceIndex=0;
@@ -696,7 +702,8 @@ function changeLabelColor(obj) {
 function ajaxCompleteDoc(docId) {
     var docid={
         docId: docId,
-        taskId:taskId
+        taskId:taskId,
+        userId:0
     };
     $.ajax({
         url: "/dinstance/doc/status",
@@ -725,7 +732,8 @@ function ajaxCompleteInstance(docId) {
     var docid={
         docId: docId,
         taskId:taskId,
-        instanceId:instanceItem[curInstanceIndex].instid
+        instanceId:instanceItem[curInstanceIndex].instid,
+        userId:0
     };
     $.ajax({
         url: "/dinstance/status",

@@ -43,6 +43,7 @@
         from task t
         INNER JOIN user u on u.id=t.user_id
         where taskcompstatus != "已完成"
+        order by t.tid
         limit #{currIndex},#{pageSize}
     </select>
 
@@ -307,6 +308,13 @@
         left join task t on  t.tid=dt.task_id
         where t.deadline > #{curDateTime}
 
+    </select>
+
+    <select id="selectTaskByType"  resultMap="BaseResultMap" parameterType="String">
+        select t.tid, t.title, t.description,t.type_name, t.createtime, t.deadline,
+        t.taskcompstatus, t.otherinfo, t.user_id,t.viewnum, t.attendnum
+        from task t
+        where t.type_name = #{tasktype}
     </select>
 
 </mapper>

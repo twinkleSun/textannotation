@@ -66,16 +66,19 @@ public class DTaskController {
      * @param limit
      * @return
      */
-    @GetMapping(value = "status")
+    @GetMapping(value = "/status")
     public JSONObject getMyDoingTaskList(
             HttpServletRequest request,
             HttpServletResponse httpServletResponse,
             HttpSession httpSession,
             String dtstatus,
-            int page, int limit) {
-        User user =(User)httpSession.getAttribute("currentUser");
+            int page, int limit,@RequestParam(defaultValue="0")int userId) {
+        if(userId==0){
+            User user =(User)httpSession.getAttribute("currentUser");
+            userId = user.getId();
+        }
 
-        List<DTask> dTaskList = idTaskService.queryMyDoingTask(user.getId(),dtstatus,page,limit);
+        List<DTask> dTaskList = idTaskService.queryMyDoingTask(userId,dtstatus,page,limit);
         int count=dTaskList.size();
         JSONObject rs =new JSONObject();
         if(dTaskList==null){
