@@ -3,6 +3,7 @@ package com.annotation.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.User;
 import com.annotation.model.entity.InstanceListitemEntity;
+import com.annotation.model.entity.resHandle.ResPairingData;
 import com.annotation.service.IDtPairingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -123,5 +124,23 @@ public class DtPairingController {
         return jso;
     }
 
+
+    @GetMapping("/result")
+    public JSONObject getResPairing( HttpSession httpSession,
+                                     int tid,int docId,int instanceIndex) {
+
+        List<ResPairingData> resPairingDataList = iDtPairingService.queryResPairingData(tid,docId,instanceIndex);
+
+        JSONObject rs = new JSONObject();
+        if(resPairingDataList != null){
+            rs.put("msg","查询成功");
+            rs.put("code",0);
+            rs.put("resPairing",resPairingDataList);
+        }else{
+            rs.put("msg","查询失败");
+            rs.put("code",-1);
+        }
+        return rs;
+    }
 
 }

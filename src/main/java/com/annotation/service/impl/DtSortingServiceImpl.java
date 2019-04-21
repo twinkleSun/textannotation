@@ -7,8 +7,12 @@ import com.annotation.model.DtSorting;
 import com.annotation.model.Task;
 import com.annotation.model.entity.InstanceItemEntity;
 import com.annotation.model.entity.ResponseEntity;
+import com.annotation.model.entity.SortingData;
+import com.annotation.model.entity.resHandle.ResSortingData;
 import com.annotation.service.IDtSortingService;
+import com.annotation.util.ExcelUtil;
 import com.annotation.util.ResponseUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +40,8 @@ public class DtSortingServiceImpl implements IDtSortingService {
     ResponseUtil responseUtil;
     @Autowired
     InstanceMapper instanceMapper;
+    @Autowired
+    ExcelUtil excelUtil;
 
 
 
@@ -199,4 +205,24 @@ public int[] insertSortingItem2(int dtid,int[] itemIds,int[] newIndexs){
     }
     return res;
 }
+
+
+    public List<SortingData> querySortingData(int tid){
+        List<SortingData> sortingDataList=dtSortingMapper.getSortingDataOut(tid);
+        return sortingDataList;
+    }
+
+
+    public HSSFWorkbook getSortingExcel(List<SortingData> sortingDataList){
+        String[] title = {"文件名","段落序号","列表分句","原序号","新序号","被选择次数"};
+        String sheetName = "排序类型数据导出";
+        HSSFWorkbook wb = excelUtil.getSortingExcel(sheetName, title, sortingDataList, null);
+        return wb;
+    }
+
+
+    public List<ResSortingData> queryResSortingData(int tid, int docId, int instanceIndex){
+        List<ResSortingData> resSortingDataList=dtSortingMapper.getResSortingData(tid,docId,instanceIndex);
+        return resSortingDataList;
+    }
 }

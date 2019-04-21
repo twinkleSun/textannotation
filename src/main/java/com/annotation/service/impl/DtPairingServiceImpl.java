@@ -6,6 +6,7 @@ import com.annotation.model.DTask;
 import com.annotation.model.Task;
 import com.annotation.model.entity.InstanceListitemEntity;
 import com.annotation.model.entity.PairingData;
+import com.annotation.model.entity.resHandle.ResPairingData;
 import com.annotation.service.IDtPairingService;
 import com.annotation.util.ExcelUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -246,11 +247,17 @@ public class DtPairingServiceImpl implements IDtPairingService {
 
        String sheetName = "文本配对数据导出";
 
-       HSSFWorkbook wb = excelUtil.getPairingExcel(sheetName, title, pairingDataList, null);
-       return wb;
+
+           HSSFWorkbook wb = excelUtil.getPairingExcel(sheetName, title, pairingDataList, null);
+           return wb;
+
+
    }
 
-
+    public List<ResPairingData> queryResPairingData(int tid, int docId, int instanceIndex){
+        List<ResPairingData> resPairingDataList=dtPairingMapper.getResPairingData(tid,docId,instanceIndex);
+        return resPairingDataList;
+    }
 
 
 }

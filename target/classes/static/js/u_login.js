@@ -20,7 +20,7 @@ $(function(){
             data: user,
             success: function (data) {
                 if(data.status=="200"){
-                    location.href = "html/u_homepage.html";
+                    location.href = "/html/u_homepage.html";
                 }else{
                     alert(data.msg);
                 }

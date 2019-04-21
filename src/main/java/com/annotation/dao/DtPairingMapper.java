@@ -3,6 +3,7 @@ package com.annotation.dao;
 import com.annotation.model.DtPairing;
 import com.annotation.model.entity.InstanceListitemEntity;
 import com.annotation.model.entity.PairingData;
+import com.annotation.model.entity.resHandle.ResPairingData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -73,6 +74,9 @@ public interface DtPairingMapper {
     List<PairingData> getPairingDataOut(int tid);
 
 
+    List<ResPairingData> getResPairingData(@Param("tid")Integer tid,
+                                                @Param("docId")Integer docId,
+                                                @Param("instanceIndex")Integer instanceIndex);
 
 
     int deleteByPrimaryKey(Integer dtdId);

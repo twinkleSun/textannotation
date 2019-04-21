@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.*;
 import com.annotation.model.entity.ParagraphLabelEntity;
 import com.annotation.model.entity.ResponseEntity;
+import com.annotation.model.entity.SortingData;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 //import org.elasticsearch.index.query.QueryBuilders;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -345,7 +346,7 @@ public class test {
 //}
 
 
-
+    //文本分类类型数据导出
 
 
 

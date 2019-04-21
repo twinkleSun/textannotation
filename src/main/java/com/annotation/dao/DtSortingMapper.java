@@ -2,6 +2,8 @@ package com.annotation.dao;
 
 import com.annotation.model.DtSorting;
 import com.annotation.model.entity.InstanceItemEntity;
+import com.annotation.model.entity.SortingData;
+import com.annotation.model.entity.resHandle.ResSortingData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,7 @@ public interface DtSortingMapper {
      * 根据文件id获取所有的instance和item
      * 包括已经做好的
      * @param docId
-     * @param userId
+     * @param
      * @return
      */
     List<InstanceItemEntity> selectSorting(@Param("docId")Integer docId);
@@ -39,7 +41,14 @@ public interface DtSortingMapper {
                                     @Param("itemId")Integer itemId);
 
 
+    //标注数据导出
+    List<SortingData> getSortingDataOut(int tid);
 
+
+
+    List<ResSortingData> getResSortingData(@Param("tid")Integer tid,
+                                           @Param("docId")Integer docId,
+                                           @Param("instanceIndex")Integer instanceIndex);
 
     int alterDtSortingTable();
 

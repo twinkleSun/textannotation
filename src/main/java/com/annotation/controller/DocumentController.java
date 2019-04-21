@@ -6,9 +6,11 @@ import com.annotation.model.User;
 import com.annotation.model.entity.ClassifyData;
 import com.annotation.model.entity.PairingData;
 import com.annotation.model.entity.ResponseEntity;
+import com.annotation.model.entity.SortingData;
 import com.annotation.service.IDocumentService;
 import com.annotation.service.IDtClassifyService;
 import com.annotation.service.IDtPairingService;
+import com.annotation.service.IDtSortingService;
 import com.annotation.util.ExcelUtil;
 import com.annotation.util.FileUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -48,6 +50,8 @@ public class DocumentController {
     IDtPairingService iDtPairingService;
     @Autowired
     IDtClassifyService iDtClassifyService;
+    @Autowired
+    IDtSortingService iDtSortingService;
 
     //文本配对类型导出
     @RequestMapping(value = "/pairing")
@@ -57,10 +61,9 @@ public class DocumentController {
        List<PairingData> pairingDataList=iDtPairingService.queryPairingData(tid);
 
 
-       //todo:判断d_task表中完成度！=0%的记录
+           //todo:判断d_task表中完成度！=0%的记录
            String fileName = "文本配对数据导出"+System.currentTimeMillis()+".xls";
            HSSFWorkbook wb=iDtPairingService.getPairingExcel(pairingDataList);
-
            //响应到客户端
            try {
                this.setResponseHeader(response, fileName);
@@ -71,6 +74,11 @@ public class DocumentController {
            } catch (Exception e) {
                e.printStackTrace();
            }
+
+
+
+
+
 
 
     }
@@ -119,6 +127,27 @@ public class DocumentController {
 
 
 
+
+    @RequestMapping(value = "/sorting")
+    @ResponseBody
+    public void exportSorting(HttpServletRequest request,HttpServletResponse response,int tid) throws Exception {
+        //获取数据
+        List<SortingData> sortingDataList=iDtSortingService.querySortingData(tid);
+
+        String fileName = "排序类型数据导出"+System.currentTimeMillis()+".xls";
+        HSSFWorkbook wb=iDtSortingService.getSortingExcel(sortingDataList);
+
+        //响应到客户端
+        try {
+            this.setResponseHeader(response, fileName);
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

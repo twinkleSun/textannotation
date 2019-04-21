@@ -140,6 +140,33 @@
 
 
 
+    <resultMap id="ResPairingData" type="com.annotation.model.entity.resHandle.ResPairingData">
+
+        <result column="aContent" property="aContent" jdbcType="VARCHAR" />
+        <result column="bContent" property="bContent" jdbcType="VARCHAR" />
+        <result column="num" property="num" jdbcType="INTEGER" />
+
+    </resultMap>
+
+    <select id="getResPairingData" parameterType="Map" resultMap="ResPairingData">
+        select
+        dtp.a_litemid,dtp.b_litemid,
+        lt1.litemcontent aContent,
+        lt2.litemcontent bContent,
+        count(*) as num
+        from d_task dt
+        left join d_instance di on  dt.tkid=di.dtask_id
+        left join document dc on dc.did=di.document_id
+        left join instance ins on ins.instid = di.instance_id
+        left join dt_pairing dtp on di.dtid =dtp.dt_id
+        left join listitem lt1 on lt1.ltid =dtp.a_litemid
+        left join listitem lt2 on lt2.ltid =dtp.b_litemid
+        where dt.task_id=#{tid} and di.document_id=#{docId} and di.instance_id=#{instanceIndex}
+        group by a_litemid,b_litemid
+        ORDER by dtp.a_litemid
+    </select>
+
+
 
     <delete id="deleteByDtId" parameterType="java.lang.Integer" >
         delete from dt_pairing

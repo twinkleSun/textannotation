@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.annotation.model.User;
 import com.annotation.model.entity.InstanceItemEntity;
 import com.annotation.model.entity.ResponseEntity;
+import com.annotation.model.entity.resHandle.ResSortingData;
 import com.annotation.service.IDtSortingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -78,5 +79,25 @@ public class DtSortingController {
         User user =(User)httpSession.getAttribute("currentUser");
         ResponseEntity responseEntity =iDtSortingService.addSorting(taskId,docId, instanceId,user.getId(),itemIds,newIndex);//创建做任务表的结果
         return responseEntity;
+    }
+
+
+
+    @GetMapping("/result")
+    public JSONObject getResSorting( HttpSession httpSession,
+                                             int tid,int docId,int instanceIndex) {
+
+        List<ResSortingData> resSortingDataList = iDtSortingService.queryResSortingData(tid,docId,instanceIndex);
+
+        JSONObject rs = new JSONObject();
+        if(resSortingDataList != null){
+            rs.put("msg","查询成功");
+            rs.put("code",0);
+            rs.put("resSorting",resSortingDataList);
+        }else{
+            rs.put("msg","查询失败");
+            rs.put("code",-1);
+        }
+        return rs;
     }
 }
