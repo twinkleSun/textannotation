@@ -68,6 +68,9 @@ public class TaskServiceImpl implements ITaskService{
     @Autowired
     ILabelService iLabelService;
 
+    @Autowired
+    PointUnitMapper pointUnitMapper;
+
    public Label test(){
        Label labelList=iLabelService.queryLabelByTaskId("1");
        return labelList;
@@ -642,6 +645,11 @@ public class TaskServiceImpl implements ITaskService{
         }
 
         int[] docIds=taskDocumentMapper.selectDocIdByTid(tid);
+        int delPointUnit=pointUnitMapper.deleteByTid(tid);
+        if(delPointUnit<0){
+
+            return -1;
+        }
 
         if(typeId==1 || typeId==2){
 

@@ -18,4 +18,6 @@ public interface PointUnitMapper {
 
     PointUnit selectBytaskId(Integer taskId);
 
+    int deleteByTid(Integer tid);
+
 }

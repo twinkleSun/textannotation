@@ -23,4 +23,10 @@
     where p.task_id = #{taskId,jdbcType=INTEGER}
   </select>
 
+
+  <delete id="deleteByTid" parameterType="java.lang.Integer">
+    delete from pointunit
+    where task_id = #{tid,jdbcType=INTEGER}
+  </delete>
+
 </mapper>
