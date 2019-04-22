@@ -27,7 +27,7 @@ public class DtasktypeServiceImpl implements IDtasktypeService {
             dtasktype.setTasktype(i);
             //信息抽取初始可以做任务的值为0
             if(i==1){
-                dtasktype.setTypevalue(0);
+                dtasktype.setTypevalue(1);
             }else{
                 dtasktype.setTypevalue(1);
             }
